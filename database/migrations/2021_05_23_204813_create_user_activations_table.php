@@ -19,7 +19,7 @@ class CreateUserActivationsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('reference_id');
-            $table->foreign('reference_id')->references('id')->on('users');
+            $table->foreign('reference_id')->references('id')->on('references');
             $table->date('activation_date');
         });
     }

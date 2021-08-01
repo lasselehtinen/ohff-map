@@ -19,13 +19,13 @@ class ReferenceResource extends JsonResource
             'reference' => $this->reference,
             'status' => $this->status,
             'name' => $this->name,
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
+            'latitude' => $this->location->getLat(),
+            'longitude' => $this->location->getLng(),
             'iota_reference' => $this->iota_reference,
             'program' => new ProgramResource($this->program),
             'dxcc' => new DxccResource($this->dxcc),
             'continent' => new ContinentResource($this->continent),
-            //'activators' => UserActivationResource::collection($this->activators),
+            'activations' => UserActivationResource::collection($this->activators),
         ];
     }
 }

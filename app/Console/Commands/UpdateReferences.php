@@ -6,6 +6,7 @@ use App\Models\Continent;
 use App\Models\Dxcc;
 use App\Models\Program;
 use App\Models\Reference;
+use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use League\Csv\Reader;
@@ -50,7 +51,7 @@ class UpdateReferences extends Command
         $references = collect($reader->getRecords());
 
         // Create progress bar
-        $bar = $this->output->createProgressBar($references->where('program', 'OHFF')->count());
+        $bar = $this->output->createProgressBar($references->count());
         $bar->setFormat('very_verbose');
         $bar->start();
 
@@ -70,7 +71,7 @@ class UpdateReferences extends Command
         });
 
         // Create / update references
-        $references->where('program', 'OHFF')->each(function ($sourceReference) use ($bar) {
+        $references->each(function ($sourceReference) use ($bar) {
             // Replace empty and '-' values with null
             $sourceReference = array_map(function($value) {
                return ($value === "" || $value === '-') ? NULL : $value;
@@ -79,10 +80,11 @@ class UpdateReferences extends Command
             $reference = Reference::firstOrCreate(['reference' => $sourceReference['reference']], [
                 'name' => $sourceReference['name'],
                 'status' => $sourceReference['status'],
-                'latitude' => $sourceReference['latitude'],
-                'longitude' => $sourceReference['longitude'],
                 'iota_reference' => $sourceReference['iota'],
             ]);
+
+            // Update location
+            $reference->location = new Point($sourceReference['latitude'], $sourceReference['longitude']);
 
             // Add relations
             $program = Program::where('name', $sourceReference['program'])->firstOrFail();
@@ -95,6 +97,7 @@ class UpdateReferences extends Command
             $reference->continent()->associate($continent);
 
             $reference->save();
+
             $bar->advance();
         });
 

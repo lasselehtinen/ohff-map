@@ -17,6 +17,7 @@ class ProgramResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'references' => ReferenceResource::collection($this->whenLoaded('references')),
         ];
     }
 }

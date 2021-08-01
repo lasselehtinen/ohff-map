@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserActivationResource extends JsonResource
+class UserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,7 +17,9 @@ class UserActivationResource extends JsonResource
         return [
             'id' => $this->id,
             'callsign' => $this->callsign,
-            'activation_date' => $this->pivot->activation_date,
+            'name' => $this->name,
+            'email' => $this->email,
+            'activations' => $this->activations,
         ];
     }
 }

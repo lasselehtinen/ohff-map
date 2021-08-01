@@ -19,8 +19,9 @@ class CreateReferencesTable extends Migration
             $table->string('reference', 10)->unique();
             $table->enum('status', ['active', 'deleted', 'national']);
             $table->string('name')->nullable();
-            $table->decimal('latitude', 10, 7)->nullable();
-            $table->decimal('longitude', 11, 8)->nullable();
+            //$table->decimal('latitude', 10, 7)->nullable();
+            //$table->decimal('longitude', 11, 8)->nullable();
+            $table->point('location')->nullable();
             $table->string('iota_reference', 6)->nullable();
             $table->unsignedBigInteger('program_id')->nullable();
             $table->foreign('program_id')->references('id')->on('programs');

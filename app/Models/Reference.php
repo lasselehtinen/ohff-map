@@ -3,28 +3,26 @@
 namespace App\Models;
 
 use App\Models\User;
+use Grimzy\LaravelMysqlSpatial\Eloquent\SpatialTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Reference extends Model
 {
-    use HasFactory;
+    use HasFactory, SpatialTrait;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['reference', 'status', 'name', 'latitude', 'longitude', 'iota_reference'];
+    protected $fillable = ['reference', 'status', 'name', 'iota_reference'];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array
+     * The attributes that are spatial
      */
-    protected $casts = [
-        'latitude' => 'float',
-        'longitude' => 'float',
+    protected $spatialFields = [
+        'location',
     ];
 
     /**
@@ -56,6 +54,6 @@ class Reference extends Model
      */
     public function activators()
     {
-        return $this->belongsToMany(User::class, 'user_activations', 'user_id', 'reference_id')->withPivot('activation_date');
+        return $this->belongsToMany(User::class, 'user_activations')->withPivot('activation_date');
     }    
 }

@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\ReferenceController;
+use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,8 +18,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::resource('references', ReferenceController::class);
+Route::resource('users', UserController::class)->only(['show', 'update', 'destroy'])->middleware('auth:sanctum');
+Route::resource('users', UserController::class)->only(['store']);
+Route::put('/users/{user}/activations/{reference}', [UserController::class, 'userActivation'])->middleware('auth:sanctum');
+Route::resource('references', ReferenceController::class)->only(['index', 'show'])->middleware('auth:sanctum');
+Route::resource('programs', ProgramController::class)->only(['index', 'show']);
+Route::post('login', [LoginController::class, 'authenticate'])->name('login');

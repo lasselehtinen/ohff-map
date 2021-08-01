@@ -3,7 +3,10 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
+use Illuminate\Auth\AuthenticationException;
 
 class Handler extends ExceptionHandler
 {
@@ -34,8 +37,71 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        // Illegal HTTP methods
+        $this->renderable(function (MethodNotAllowedHttpException $e, $request) {
+            return response()->json([
+                'errors' => [
+                    [
+                        'status' => '405',
+                        'source' => ['pointer' => $request->url()],
+                        'title' => 'Invalid method',
+                        'detail' => 'Targeted resource does not support the requested HTTP method. Please check the documentation.',
+                    ],
+                ],
+            ], 405);
         });
+
+        // When 404 is returned because the targeted resource does not exist
+        $this->renderable(function (NotFoundHttpException $e, $request) {
+            return response()->json([
+                'errors' => [
+                    [
+                        'status' => '404',
+                        'source' => ['pointer' => $request->url()],
+                        'title' => 'Resource not found',
+                        'detail' => 'Targeted resource does not exist. Check the URL of the given resource ID.',
+                    ],
+                ],
+            ], 404);
+        });
+
+        $this->renderable(function (AuthorizationException $e, $request) {
+            return response()->json([
+                'errors' => [
+                    [
+                        'status' => '404',
+                        'source' => ['pointer' => $request->url()],
+                        'title' => 'Not authorized',
+                        'detail' => 'Targeted resource does not exist. Check the URL of the given resource ID.',
+                    ],
+                ],
+            ], 404);
+        });
+
+
+        $this->reportable(function (Throwable $e) {
+            
+        });
+    }
+
+    /**
+     * Convert an authentication exception into a response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        return response()->json([
+            'errors' => [
+                [
+                    'status' => '403',
+                    'source' => ['pointer' => $request->url()],
+                    'title' => 'Forbidden',
+                    'detail' => 'The given resource requires authentication.',
+                ],
+            ],
+        ], 403);
     }
 }
