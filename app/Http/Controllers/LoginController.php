@@ -45,4 +45,18 @@ class LoginController extends Controller
         
         return response()->json(['token' => $token->plainTextToken]);
     }
+
+    /**
+     * Handle the logout.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        // Remove existing tokens
+        $request->user()->tokens()->delete();
+        
+        return response()->json(['message' => 'Logged out.']);
+    }
 }

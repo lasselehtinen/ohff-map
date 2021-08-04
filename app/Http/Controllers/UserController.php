@@ -12,27 +12,7 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Create a new user
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -83,7 +63,16 @@ class UserController extends Controller
     public function show(Request $request, User $user)
     {
         if ($request->user()->id !== $user->id) {
-            return 'you are only allowed to view yourself';
+            return response()->json([
+                'errors' => [
+                    [
+                        'status' => '403',
+                        'source' => ['pointer' => $request->url()],
+                        'title' => 'Forbidden',
+                        'detail' => 'You are only allowed to view your own user information.',
+                    ],
+                ],
+            ], 403);
         }
 
         return new UserResource($request->user());
@@ -98,7 +87,22 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        return 'user updated';
+        if ($request->user()->id !== $user->id) {
+            return response()->json([
+                'errors' => [
+                    [
+                        'status' => '403',
+                        'source' => ['pointer' => $request->url()],
+                        'title' => 'Forbidden',
+                        'detail' => 'You are only allowed to edit your own user information.',
+                    ],
+                ],
+            ], 403);
+        }
+
+        $request->user()->update($request->all());
+
+        return new UserResource($request->user());
     }
 
     /**

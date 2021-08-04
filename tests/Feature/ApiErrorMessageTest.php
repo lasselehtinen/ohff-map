@@ -62,4 +62,26 @@ class ApiErrorMessageTest extends TestCase
                 ],
             ]);
     }
+
+    /**
+     * Test resource requiring authentication returns error message
+     * 
+     */
+    public function test_resource_requiring_authentication_returns_error_message()
+    {
+        $response = $this->get('/api/users/1');
+
+        $response
+            ->assertStatus(403)
+            ->assertExactJson([
+                'errors' => [
+                    [
+                        'status' => '403',
+                        'source' => ['pointer' => 'http://localhost/api/users/1'],
+                        'title' => 'Forbidden',
+                        'detail' => 'The given resource requires authentication.',
+                    ],
+                ],
+            ]);
+    }
 }

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class UsersApiTest extends TestCase
@@ -40,6 +41,12 @@ class UsersApiTest extends TestCase
                     'activations' => []
                 ]
             ]);
+
+        $this->assertDatabaseHas('users', [
+            'callsign' => $user->callsign,
+            'name' => $user->name,
+            'email' => $user->email,
+        ]);
     }
 
     /**
@@ -61,6 +68,21 @@ class UsersApiTest extends TestCase
             ->assertJson(fn (AssertableJson $json) =>
                 $json->whereType('token', 'string')
             );
+    }
+
+    /**
+     * Test that logging out removes all tokens from the user
+     * 
+     * @return void
+     */
+    public function test_logging_out_as_an_user() {
+        $user = User::factory()->create();
+        $user->createToken('*');
+        Sanctum::actingAs($user, ['*']);
+
+        $response = $this->post('/api/logout');
+        $response->assertExactJson(['message' => 'Logged out.']);
+        $this->assertCount(0, $user->tokens);
     }
 
     /**
@@ -92,12 +114,35 @@ class UsersApiTest extends TestCase
     }
 
     /**
-     * Test resource requiring authentication returns error message
+     * Test that user can only view their own information
      * 
+     * @return void
      */
-    public function test_resource_requiring_authentication_returns_error_message()
+    public function test_user_can_only_view_their_own_information()
     {
+        // Create two users
+        $userOne = User::factory()->create();
+        $userTwo = User::factory()->create();
+        
+        Sanctum::actingAs($userOne, ['*']);
+
+        // User should be able to view their own info
         $response = $this->get('/api/users/1');
+
+        $response
+            ->assertStatus(200)
+            ->assertExactJson([
+                'data' => [
+                    'id' => $userOne->id,
+                    'callsign' => $userOne->callsign,
+                    'name' => $userOne->name,
+                    'email' => $userOne->email,
+                    "activations" => [],
+                ],
+            ]);
+
+        // User should not be able to see other users info
+        $response = $this->get('/api/users/2');
 
         $response
             ->assertStatus(403)
@@ -105,11 +150,84 @@ class UsersApiTest extends TestCase
                 'errors' => [
                     [
                         'status' => '403',
-                        'source' => ['pointer' => 'http://localhost/api/users/1'],
+                        'source' => ['pointer' => 'http://localhost/api/users/2'],
                         'title' => 'Forbidden',
-                        'detail' => 'The given resource requires authentication.',
+                        'detail' => 'You are only allowed to view your own user information.',
                     ],
                 ],
             ]);
+    }
+
+    /**
+     * Test that user can only edit their own information
+     * 
+     * @return void
+     */
+    public function test_user_can_only_edit_their_own_information()
+    {
+        // Create two users
+        $userOne = User::factory()->create();
+        $userTwo = User::factory()->create();
+        
+        Sanctum::actingAs($userOne, ['*']);
+
+        // User should be able to edit their own info
+        $response = $this->put('/api/users/1', [
+            'email' => 'newemail@domain.com',
+        ]);
+
+        $response
+            ->assertStatus(200)
+            ->assertExactJson([
+                'data' => [
+                    'id' => $userOne->id,
+                    'callsign' => $userOne->callsign,
+                    'name' => $userOne->name,
+                    'email' => 'newemail@domain.com',
+                    "activations" => [],
+                ],
+            ]);
+
+        // User should not be able to edit other users info
+        $response = $this->put('/api/users/2', [
+            'email' => 'newemail@domain.com',
+        ]);
+
+        $response
+            ->assertStatus(403)
+            ->assertExactJson([
+                'errors' => [
+                    [
+                        'status' => '403',
+                        'source' => ['pointer' => 'http://localhost/api/users/2'],
+                        'title' => 'Forbidden',
+                        'detail' => 'You are only allowed to edit your own user information.',
+                    ],
+                ],
+            ]);
+    }
+
+    /**
+     * Test that user can mark WWFF reference as activated
+     * 
+     * @return void
+     */
+    public function test_user_can_mark_reference_as_activated()
+    {
+        $this->markTestIncomplete(
+          'This test has not been implemented yet.'
+        );
+    }
+
+    /**
+     * Test that user cannot mark WWFF reference as activated for someone elase
+     * 
+     * @return void
+     */
+    public function test_user_cannot_mark_reference_as_activated_for_another_user()
+    {
+        $this->markTestIncomplete(
+          'This test has not been implemented yet.'
+        );
     }
 }

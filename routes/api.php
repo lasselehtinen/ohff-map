@@ -24,3 +24,4 @@ Route::put('/users/{user}/activations/{reference}', [UserController::class, 'use
 Route::resource('references', ReferenceController::class)->only(['index', 'show'])->middleware('auth:sanctum');
 Route::resource('programs', ProgramController::class)->only(['index', 'show']);
 Route::post('login', [LoginController::class, 'authenticate'])->name('login');
+Route::post('logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth:sanctum');
