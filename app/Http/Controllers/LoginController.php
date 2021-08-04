@@ -12,7 +12,7 @@ class LoginController extends Controller
      * Handle an authentication attempt.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function authenticate(Request $request)
     {
@@ -50,7 +50,7 @@ class LoginController extends Controller
      * Handle the logout.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function logout(Request $request)
     {

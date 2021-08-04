@@ -66,16 +66,16 @@ class UsersApiTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) =>
-                $json->whereType('token', 'string')
-            );
+                $json->whereType('token', 'string'));
     }
 
     /**
      * Test that logging out removes all tokens from the user
-     * 
+     *
      * @return void
      */
-    public function test_logging_out_as_an_user() {
+    public function test_logging_out_as_an_user()
+    {
         $user = User::factory()->create();
         $user->createToken('*');
         Sanctum::actingAs($user, ['*']);
@@ -115,7 +115,7 @@ class UsersApiTest extends TestCase
 
     /**
      * Test that user can only view their own information
-     * 
+     *
      * @return void
      */
     public function test_user_can_only_view_their_own_information()
@@ -160,7 +160,7 @@ class UsersApiTest extends TestCase
 
     /**
      * Test that user can only edit their own information
-     * 
+     *
      * @return void
      */
     public function test_user_can_only_edit_their_own_information()
@@ -209,25 +209,25 @@ class UsersApiTest extends TestCase
 
     /**
      * Test that user can mark WWFF reference as activated
-     * 
+     *
      * @return void
      */
     public function test_user_can_mark_reference_as_activated()
     {
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
     }
 
     /**
      * Test that user cannot mark WWFF reference as activated for someone elase
-     * 
+     *
      * @return void
      */
     public function test_user_cannot_mark_reference_as_activated_for_another_user()
     {
         $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+            'This test has not been implemented yet.'
         );
     }
 }

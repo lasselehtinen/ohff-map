@@ -84,7 +84,6 @@ class ProgramsApiTest extends TestCase
         $response = $this->get('/api/programs?filter[name]=foobar');
 
         $response->assertJson(fn (AssertableJson $json) =>
-            $json->has('data', 0)->etc()
-        );
+            $json->has('data', 0)->etc());
     }
 }

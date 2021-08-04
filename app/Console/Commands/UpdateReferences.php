@@ -73,8 +73,8 @@ class UpdateReferences extends Command
         // Create / update references
         $references->each(function ($sourceReference) use ($bar) {
             // Replace empty and '-' values with null
-            $sourceReference = array_map(function($value) {
-               return ($value === "" || $value === '-') ? NULL : $value;
+            $sourceReference = array_map(function ($value) {
+                return ($value === "" || $value === '-') ? null : $value;
             }, $sourceReference);
 
             $reference = Reference::firstOrCreate(['reference' => $sourceReference['reference']], [

@@ -55,5 +55,5 @@ class Reference extends Model
     public function activators()
     {
         return $this->belongsToMany(User::class, 'user_activations')->withPivot('activation_date');
-    }    
+    }
 }

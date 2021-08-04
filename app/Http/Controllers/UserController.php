@@ -15,7 +15,7 @@ class UserController extends Controller
      * Create a new user
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\App\Http\Resources\UserResource
      */
     public function store(Request $request)
     {
@@ -58,7 +58,7 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\App\Http\Resources\UserResource
      */
     public function show(Request $request, User $user)
     {
@@ -83,7 +83,7 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|\App\Http\Resources\UserResource
      */
     public function update(Request $request, User $user)
     {
@@ -109,7 +109,7 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(User $user)
     {
@@ -121,9 +121,10 @@ class UserController extends Controller
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Reference  $reference
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function userActivation(User $user, Reference $reference) {
+    public function userActivation(User $user, Reference $reference)
+    {
         $user->activations()->attach($reference, ['activation_date' => '2021-01-01']);
 
         return 'foobar';

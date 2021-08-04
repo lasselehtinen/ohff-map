@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Throwable;
 use Illuminate\Auth\AuthenticationException;
 
@@ -80,7 +81,6 @@ class Handler extends ExceptionHandler
 
 
         $this->reportable(function (Throwable $e) {
-            
         });
     }
 

@@ -16,7 +16,7 @@ class ReferenceController extends Controller
      * Display a listing of the resource.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
@@ -25,14 +25,14 @@ class ReferenceController extends Controller
             AllowedFilter::callback('nearest', function ($query, $coordinates) {
                     $point = new Point($coordinates[0], $coordinates[1]);
                     $query->orderByDistance('location', $point);
-                }),
+            }),
             AllowedFilter::callback('activated_by_me', function ($query, $value) use ($request) {
-                    if ($value === false) {
-                        $query->whereNotIn('id', $request->user()->activations->pluck('id')->unique());
-                    } else {
-                        $query->whereIn('id', $request->user()->activations->pluck('id')->unique());
-                    }
-                }),
+                if ($value === false) {
+                    $query->whereNotIn('id', $request->user()->activations->pluck('id')->unique());
+                } else {
+                    $query->whereIn('id', $request->user()->activations->pluck('id')->unique());
+                }
+            }),
             'name'
         ])
         ->paginate()
@@ -45,7 +45,7 @@ class ReferenceController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Resources\ReferenceResource
      */
     public function show($id)
     {
