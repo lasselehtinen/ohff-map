@@ -17,7 +17,7 @@ class CreateReferencesTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('reference', 10)->unique();
-            $table->enum('status', ['active', 'deleted', 'national']);
+            $table->enum('status', ['active', 'deleted', 'national', 'proposed']);
             $table->string('name')->nullable();
             //$table->decimal('latitude', 10, 7)->nullable();
             //$table->decimal('longitude', 11, 8)->nullable();

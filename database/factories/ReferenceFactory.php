@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Reference;
+use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ReferenceFactory extends Factory
@@ -212,8 +213,8 @@ class ReferenceFactory extends Factory
         return [
             'reference' => $this->faker->numerify($this->faker->randomElement($programmes) . 'FF-####'),
             'name' => $this->faker->streetName() . ' ' . $this->faker->randomElement(['park', 'national park', 'nature reserve']),
-            'latitude' => $this->faker->latitude(),
-            'longitude' => $this->faker->longitude(),
+            //'location' => new Point($this->faker->latitude(), $this->faker->longitude())
+            'status' => $this->faker->randomElement(['active', 'deleted', 'national']),
         ];
     }
 }

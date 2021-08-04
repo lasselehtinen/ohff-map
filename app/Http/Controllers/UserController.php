@@ -119,14 +119,31 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
      * @param  \App\Models\Reference  $reference
      * @return \Illuminate\Http\JsonResponse
      */
-    public function userActivation(User $user, Reference $reference)
+    public function userActivation(Request $request, User $user, Reference $reference)
     {
+        if ($request->user()->id !== $user->id) {
+            return response()->json([
+                'errors' => [
+                    [
+                        'status' => '403',
+                        'source' => ['pointer' => $request->url()],
+                        'title' => 'Forbidden',
+                        'detail' => 'You are only allowed to edit your own user information.',
+                    ],
+                ],
+            ], 403);
+        }
+
         $user->activations()->attach($reference, ['activation_date' => '2021-01-01']);
 
-        return 'foobar';
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Reference marked as activated for user.',
+        ]);
     }
 }

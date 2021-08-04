@@ -19,7 +19,7 @@ class UserResource extends JsonResource
             'callsign' => $this->callsign,
             'name' => $this->name,
             'email' => $this->email,
-            'activations' => $this->activations,
+            'activations' => ReferenceResource::collection($this->activations),
         ];
     }
 }

@@ -2,7 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\Reference;
 use App\Models\User;
+use App\Models\Program;
+use App\Models\Dxcc;
+use App\Models\Continent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
@@ -214,9 +218,87 @@ class UsersApiTest extends TestCase
      */
     public function test_user_can_mark_reference_as_activated()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
+        $user = User::factory()->create();
+        
+        $reference = Reference::factory()
+            ->for(Program::factory())
+            ->for(Dxcc::factory())
+            ->for(Continent::factory())
+            ->create();
+
+        Sanctum::actingAs(
+            $user,
+            ['auth_token']
         );
+
+        $response = $this->get('/api/users/1');
+
+        $response
+            ->assertStatus(200)
+            ->assertExactJson([
+                'data' => [
+                    'id' => $user->id,
+                    'callsign' => $user->callsign,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'activations' => [],
+                ],
+            ]);
+
+        // Mark reference as activated
+        $response = $this->put('/api/users/1/activations/1');
+
+        $response
+            ->assertStatus(200)
+            ->assertExactJson([
+                'status' => 'success',
+                'message' => 'Reference marked as activated for user.',
+            ]);
+
+        // The activation should now appear on the user
+        $user->refresh();
+        $response = $this->get('/api/users/1');
+
+        $response
+            ->assertStatus(200)
+            ->assertExactJson([
+                'data' => [
+                    'id' => $user->id,
+                    'callsign' => $user->callsign,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'activations' => [
+                        [
+                            'id' => $reference->id,
+                            'reference' => $reference->reference,
+                            'status' => $reference->status,
+                            'name' => $reference->name,
+                            'latitude' => null,
+                            'longitude' => null,
+                            'iota_reference' => null,                           
+                            'program' => [
+                                'id' => $reference->program->id,
+                                'name' => $reference->program->name,
+                            ],
+                            'dxcc' => [
+                                'id' => $reference->dxcc->id,
+                                'name' => $reference->dxcc->name,
+                            ],                            
+                            'continent' => [
+                                'id' => $reference->continent->id,
+                                'name' => $reference->continent->name,
+                            ],
+                            'activators' => [
+                                [
+                                    'id' => $user->id,
+                                    'callsign' => $user->callsign,
+                                    'activation_date' => '2021-01-01',
+                                ]
+                            ],                                                      
+                        ],
+                    ],
+                ],
+            ]);        
     }
 
     /**
@@ -226,8 +308,32 @@ class UsersApiTest extends TestCase
      */
     public function test_user_cannot_mark_reference_as_activated_for_another_user()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        // Create two users
+        $userOne = User::factory()->create();
+        $userTwo = User::factory()->create();
+        
+        $reference = Reference::factory()
+            ->for(Program::factory())
+            ->for(Dxcc::factory())
+            ->for(Continent::factory())
+            ->create();
+
+        Sanctum::actingAs($userOne, ['*']);
+
+        // User should not be able to edit other users info
+        $response = $this->put('/api/users/2/activations/1');
+
+        $response
+            ->assertStatus(403)
+            ->assertExactJson([
+                'errors' => [
+                    [
+                        'status' => '403',
+                        'source' => ['pointer' => 'http://localhost/api/users/2/activations/1'],
+                        'title' => 'Forbidden',
+                        'detail' => 'You are only allowed to edit your own user information.',
+                    ],
+                ],
+            ]);
     }
 }
