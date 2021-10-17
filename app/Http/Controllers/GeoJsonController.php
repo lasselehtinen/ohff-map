@@ -31,7 +31,7 @@ class GeoJsonController extends Controller
                 AllowedFilter::custom('activated_by', new FiltersReferencesActivatedByCallsign),
                 AllowedFilter::custom('not_activated_by', new FiltersReferencesNotActivatedByCallsign), 
             ])
-            ->get();
+            ->where('status', '!=', 'deleted')->get();
 
         $features = [];
 
