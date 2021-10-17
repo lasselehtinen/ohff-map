@@ -10,7 +10,7 @@ function initMap() {
 
   const queryString = window.location.search;
 
-  map.data.loadGeoJson("/geojson?" + queryString);
+  map.data.loadGeoJson("/geojson" + queryString);
 
   // Read icon from property
   map.data.setStyle(function(feature) {
