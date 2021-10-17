@@ -10,11 +10,13 @@
         "fruitcake/laravel-cors": "^2.0",
         "grimzy/laravel-mysql-spatial": "^4.0",
         "guzzlehttp/guzzle": "^7.3",
+        "jmikola/geojson": "~1.0",
         "laravel/framework": "^8.40",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "league/csv": "^9.7",
-        "spatie/laravel-query-builder": "^3.4"
+        "spatie/laravel-query-builder": "^3.4",
+        "symfony/dom-crawler": "^5.3"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

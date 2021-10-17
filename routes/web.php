@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReferenceWebController;
+use App\Http\Controllers\GeoJsonController;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +16,10 @@ use App\Http\Controllers\ReferenceWebController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function (Request $request) {
+    return view('welcome', ['request' => $request]);
 });
+
+Route::get('/geojson', [GeoJsonController::class, 'index']);
 
 require __DIR__.'/auth.php';

@@ -1,0 +1,34 @@
+/* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+#map {
+  height: 94%;
+}
+
+/* Optional: Makes the sample page fill the window. */
+html,
+body {
+  font-family: Helvetica, sans-serif;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.legend {
+  display:inline;
+  font-size: small;
+  padding: 5px 5px;
+  margin: 20px 10px;
+}
+
+input[type=text] {
+  display:inline;
+  padding: 5px 5px;
+  margin: 4px 10px;
+  box-sizing: border-box;
+}
+
+input[type=submit] {
+  display:inline;
+  padding: 5px 12px;
+  margin: 4px 10px;
+}

@@ -6,6 +6,7 @@ use App\Models\User;
 use Grimzy\LaravelMysqlSpatial\Eloquent\SpatialTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Reference extends Model
 {
@@ -56,4 +57,20 @@ class Reference extends Model
     {
         return $this->belongsToMany(User::class, 'user_activations')->withPivot('activation_date');
     }
+
+    /**
+     * Scope for the reference is activated
+     */
+    public function scopeActivated(Builder $query): Builder
+    {
+        return $query->whereNotNull('first_activation_date');
+    }
+
+    /**
+     * Scope for the reference is not activated
+     */
+    public function scopeNotActivated(Builder $query): Builder
+    {
+        return $query->whereNull('first_activation_date');
+    }   
 }

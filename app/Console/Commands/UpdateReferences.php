@@ -50,6 +50,11 @@ class UpdateReferences extends Command
         $reader->setHeaderOffset(0);
         $references = collect($reader->getRecords());
 
+        // Filter out other than OHFF
+        $references = $references->filter(function ($reference, $key) {
+            return $reference['program'] === 'OHFF';
+        });
+
         // Create progress bar
         $bar = $this->output->createProgressBar($references->count());
         $bar->setFormat('very_verbose');

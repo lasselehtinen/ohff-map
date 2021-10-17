@@ -18,6 +18,8 @@ class ReferenceResource extends JsonResource
             'id' => $this->id,
             'reference' => $this->reference,
             'status' => $this->status,
+            'first_activation_date' => $this->first_activation_date,
+            'latest_activation_date' => $this->latest_activation_date,
             'name' => $this->name,
             'latitude' => optional($this->location)->getLat(),
             'longitude' => optional($this->location)->getLng(),
