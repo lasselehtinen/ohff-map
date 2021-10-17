@@ -10,10 +10,10 @@
     <form action="/" method="get">
         &nbsp;&nbsp;&nbsp;
         <label for="activated_by">Activated by:</label>
-        <input type="text" id="activated_by" name="filter[activated_by]" size="10" placeholder="Callsign" value="{{strtoupper($request->input('filter')['activated_by'])}}">
+        <input type="text" id="activated_by" name="filter[activated_by]" size="10" placeholder="Callsign" value="{{strtoupper($request->input('filter.activated_by'))}}">
         
         <label for="not_activated_by">Not activated by:</label>      
-        <input type="text" id="not_activated_by" name="filter[not_activated_by]" size="10" placeholder="Callsign" value="{{strtoupper($request->input('filter')['not_activated_by'])}}">
+        <input type="text" id="not_activated_by" name="filter[not_activated_by]" size="10" placeholder="Callsign" value="{{strtoupper($request->input('filter.not_activated_by'))}}">
         
         <label for="not_activated">Not activated by anyone</label>
         <input type="checkbox" id="not_activated" name="filter[not_activated]">
