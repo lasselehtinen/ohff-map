@@ -47,7 +47,8 @@ class UpdateActivations extends Command
     {
         $references = Reference::all();
 
-        $references->each(function ($reference, $key) use ($bar) {
+        // Update activation dates and activations
+        $references->each(function ($reference, $key) {
             $response = Http::get('https://wwff.co/directory/?showRef=' . $reference['reference']);
             $crawler = new Crawler($response->body());
 
