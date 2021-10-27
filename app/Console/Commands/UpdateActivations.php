@@ -47,11 +47,6 @@ class UpdateActivations extends Command
     {
         $references = Reference::all();
 
-        // Create progress bar
-        $bar = $this->output->createProgressBar($references->count());
-        $bar->setFormat('very_verbose');
-        $bar->start();
-
         $references->each(function ($reference, $key) use ($bar) {
             $response = Http::get('https://wwff.co/directory/?showRef=' . $reference['reference']);
             $crawler = new Crawler($response->body());
@@ -90,11 +85,7 @@ class UpdateActivations extends Command
 
             // Wait a bit not to hammer the WWFF site
             sleep(2);
-
-            $bar->advance();
         });
-
-        $bar->finish();
 
         return 0;
     }
