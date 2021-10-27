@@ -22,7 +22,7 @@ class UsersApiTest extends TestCase
      *
      * @return void
      */
-    public function test_creating_an_user()
+    public function testCreatingAnUser()
     {
         // Use factory to create faker data
         $user = User::factory()->make();
@@ -58,7 +58,7 @@ class UsersApiTest extends TestCase
      *
      * @return void
      */
-    public function test_logging_in_as_an_user()
+    public function testLoggingInAsAnUser()
     {
         $user = User::factory()->create();
 
@@ -78,7 +78,7 @@ class UsersApiTest extends TestCase
      *
      * @return void
      */
-    public function test_logging_out_as_an_user()
+    public function testLoggingOutAsAnUser()
     {
         $user = User::factory()->create();
         $user->createToken('*');
@@ -94,7 +94,7 @@ class UsersApiTest extends TestCase
      *
      * @return void
      */
-    public function test_logging_in_with_incorrect_password_returns_error_message()
+    public function testLoggingInWithIncorrectPasswordReturnsErrorMessage()
     {
         $user = User::factory()->create();
 
@@ -122,7 +122,7 @@ class UsersApiTest extends TestCase
      *
      * @return void
      */
-    public function test_user_can_only_view_their_own_information()
+    public function testUserCanOnlyViewTheirOwnInformation()
     {
         // Create two users
         $userOne = User::factory()->create();
@@ -167,7 +167,7 @@ class UsersApiTest extends TestCase
      *
      * @return void
      */
-    public function test_user_can_only_edit_their_own_information()
+    public function testUserCanOnlyEditTheirOwnInformation()
     {
         // Create two users
         $userOne = User::factory()->create();
@@ -216,7 +216,7 @@ class UsersApiTest extends TestCase
      *
      * @return void
      */
-    public function test_user_can_mark_reference_as_activated()
+    public function testUserCanMarkReferenceAsActivated()
     {
         $user = User::factory()->create();
         
@@ -272,10 +272,12 @@ class UsersApiTest extends TestCase
                             'id' => $reference->id,
                             'reference' => $reference->reference,
                             'status' => $reference->status,
+                            'first_activation_date' => $reference->first_activation_date,
+                            'latest_activation_date' => $reference->latest_activation_date,
                             'name' => $reference->name,
                             'latitude' => null,
                             'longitude' => null,
-                            'iota_reference' => null,                           
+                            'iota_reference' => null,
                             'program' => [
                                 'id' => $reference->program->id,
                                 'name' => $reference->program->name,
@@ -283,7 +285,7 @@ class UsersApiTest extends TestCase
                             'dxcc' => [
                                 'id' => $reference->dxcc->id,
                                 'name' => $reference->dxcc->name,
-                            ],                            
+                            ],
                             'continent' => [
                                 'id' => $reference->continent->id,
                                 'name' => $reference->continent->name,
@@ -294,11 +296,11 @@ class UsersApiTest extends TestCase
                                     'callsign' => $user->callsign,
                                     'activation_date' => '2021-01-01',
                                 ]
-                            ],                                                      
+                            ],
                         ],
                     ],
                 ],
-            ]);        
+            ]);
     }
 
     /**
@@ -306,7 +308,7 @@ class UsersApiTest extends TestCase
      *
      * @return void
      */
-    public function test_user_cannot_mark_reference_as_activated_for_another_user()
+    public function testUserCannotMarkReferenceAsActivatedForAnotherUser()
     {
         // Create two users
         $userOne = User::factory()->create();

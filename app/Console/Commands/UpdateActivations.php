@@ -103,7 +103,7 @@ class UpdateActivations extends Command
                 $user = User::firstOrCreate(['callsign' => strtok($activation['callsign'], '/')], ['password' => Hash::make(Str::random(8))]);
                 
                 // Prevent duplicates
-                $activationExists = $user->with('activations')->whereHas('activations', function($query) use ($reference, $activation) {
+                $activationExists = $user->with('activations')->whereHas('activations', function ($query) use ($reference, $activation) {
                     $query->where('reference_id', $reference->id)->where('activation_date', $activation['date']);
                 })->exists();
 

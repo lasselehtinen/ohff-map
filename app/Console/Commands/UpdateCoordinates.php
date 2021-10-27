@@ -41,8 +41,8 @@ class UpdateCoordinates extends Command
     {
         $path = resource_path('oh3bhl-coordinates.csv');
 
-        if (($handle = fopen($path, "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {                    
+        if (($handle = fopen($path, "r")) !== false) {
+            while (($data = fgetcsv($handle, 1000, ";")) !== false) {
                 $reference = Reference::where('reference', $data[0])->first();
                 if (array_key_exists('1', $data) && array_key_exists('2', $data)) {
                     $reference->location = new Point($data[1], $data[2]);

@@ -72,5 +72,5 @@ class Reference extends Model
     public function scopeNotActivated(Builder $query): Builder
     {
         return $query->whereNull('first_activation_date');
-    }   
+    }
 }

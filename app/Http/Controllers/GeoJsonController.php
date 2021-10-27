@@ -29,7 +29,8 @@ class GeoJsonController extends Controller
                 AllowedFilter::scope('activated'),
                 AllowedFilter::scope('not_activated'),
                 AllowedFilter::custom('activated_by', new FiltersReferencesActivatedByCallsign),
-                AllowedFilter::custom('not_activated_by', new FiltersReferencesNotActivatedByCallsign), 
+                AllowedFilter::custom('not_activated_by', new FiltersReferencesNotActivatedByCallsign),
+                'reference',
             ])
             ->where('status', '!=', 'deleted')->get();
 
@@ -55,7 +56,7 @@ class GeoJsonController extends Controller
                 switch ($diff->y) {
                     case '0':
                         $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/blue.png';
-                        break;   
+                        break;
                     case '1':
                         $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/green.png';
                         break;
@@ -67,7 +68,7 @@ class GeoJsonController extends Controller
                         break;
                     case '4':
                         $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/red.png';
-                        break;                                                                     
+                        break;
                     default:
                         $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/red.png';
                         break;
