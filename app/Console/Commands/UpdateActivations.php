@@ -4,12 +4,13 @@ namespace App\Console\Commands;
 
 use App\Models\Reference;
 use App\Models\User;
+use DateTime;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Symfony\Component\DomCrawler\Crawler;
-use DateTime;
 
 class UpdateActivations extends Command
 {
@@ -60,45 +61,20 @@ class UpdateActivations extends Command
                     return trim($td->text());
                 });
             });
-            
-            // Get first and latest activation date
-            $dates = collect($table)->filter(function ($row, $key) {
-                $firstColumnIsDate = (array_key_exists('0', $row) && DateTime::createFromFormat('Y-m-d', $row[0]) !== false);
-                $secondColumnIsDate = (array_key_exists('1', $row) && DateTime::createFromFormat('Y-m-d', $row[1]) !== false);
-                $hasTotalQsoCount = (array_key_exists('2', $row) && ctype_digit($row[2]));
-                $hasTotalActivatorCount = (array_key_exists('3', $row) && ctype_digit($row[3]));
 
-                return $firstColumnIsDate && $secondColumnIsDate && $hasTotalQsoCount && $hasTotalActivatorCount;
-            })->first();
+            // Get first and latest activation dates
+            $dates = $this->getActivationDates($table);
 
-            if (!is_null($dates)) {
+            if (is_array($dates)) {
                 $reference->first_activation_date = $dates[0];
                 $reference->latest_activation_date = $dates[1];
                 $reference->save();
             }
 
-            // Clean up all other than those that look like activations
-            $activations = collect($table)->filter(function ($activation, $key) {
-                $firstColumnIsDate = (array_key_exists('0', $activation) && DateTime::createFromFormat('Y-m-d', $activation[0]) !== false);
-                $secondColumnIsNotDate = (array_key_exists('1', $activation) && DateTime::createFromFormat('Y-m-d', $activation[1]) === false);
-                $hasQsoCount = (array_key_exists('2', $activation) && ctype_digit($activation[2]));
-                $hasActivatorCount = (array_key_exists('3', $activation) && ctype_digit($activation[3]));
-
-                return $firstColumnIsDate && $secondColumnIsNotDate && $hasQsoCount && $hasActivatorCount;
-            });
-
-            // Remap and remove the (op: OHXXXX) from callsigns
-            $activations = $activations->map(function ($activation, $key) {
-                $activationDate = DateTime::createFromFormat('Y-m-d', strtok($activation[0], ' '));
-
-                return [
-                    'date' => ($activationDate !== false) ? $activationDate : null,
-                    'callsign' => strtok($activation[1], ' '),
-                ];
-            });
+            $activations = $this->getActivations($table);
 
             // Add user activations to reference
-            $activations->each(function ($activation, $key) use ($reference, $bar) {
+            $activations->each(function ($activation, $key) use ($reference) {
                 // Create / fetch user exists
                 $user = User::firstOrCreate(['callsign' => strtok($activation['callsign'], '/')], ['password' => Hash::make(Str::random(8))]);
                 
@@ -113,7 +89,7 @@ class UpdateActivations extends Command
             });
 
             // Wait a bit not to hammer the WWFF site
-            //sleep(5);
+            sleep(2);
 
             $bar->advance();
         });
@@ -121,5 +97,46 @@ class UpdateActivations extends Command
         $bar->finish();
 
         return 0;
+    }
+
+    /**
+     * Get the first and latest activation date
+     *
+     * @return array|null
+     */
+    public function getActivationDates($table)
+    {
+        $dates = collect($table)->filter(function ($row, $key) {
+            // Check that the row has four fields. First two should be dates and two after that should be digits
+            return count($row) === 4 && DateTime::createFromFormat('Y-m-d', $row[0]) !== false && DateTime::createFromFormat('Y-m-d', $row[1]) !== false && is_numeric($row[2]) && is_numeric($row[3]);
+        })->transform(function ($dates, $key) {
+            return array_slice($dates, 0, 2);
+        });
+
+        return $dates->first();
+    }
+
+    /**
+     * Get the activations
+     *
+     * @return Collection
+     */
+    public function getActivations($table)
+    {
+        // Clean up all other than those that look like activations
+        $activations = collect($table)->filter(function ($row, $key) {
+            // Check that the row has four fields. First one should be dates, second callsign and two after that should be digits
+            return count($row) === 4 && DateTime::createFromFormat('Y-m-d', $row[0]) !== false && DateTime::createFromFormat('Y-m-d', $row[1]) === false && is_numeric($row[2]) && is_numeric($row[3]);
+        })->map(function ($activation, $key) {
+            // Remap and remove the (op: OHXXXX) from callsigns
+            $activationDate = DateTime::createFromFormat('Y-m-d', strtok($activation[0], ' '));
+
+            return [
+                'date' => ($activationDate !== false) ? $activationDate : null,
+                'callsign' => strtok($activation[1], ' '),
+            ];
+        });
+
+        return $activations;
     }
 }
