@@ -40,8 +40,9 @@ class UpdateCoordinates extends Command
     public function handle()
     {
         $path = resource_path('oh3bhl-coordinates.csv');
+        $handle = fopen($path, "r");
 
-        if (($handle = fopen($path, "r")) !== false) {
+        if ($handle !== false) {
             while (($data = fgetcsv($handle, 1000, ";")) !== false) {
                 $reference = Reference::where('reference', $data[0])->first();
                 if (array_key_exists('1', $data) && array_key_exists('2', $data)) {

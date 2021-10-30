@@ -20,7 +20,7 @@ class GeoJsonController extends Controller
     /**
      * Display GeoJSON listing for the references
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
@@ -42,38 +42,11 @@ class GeoJsonController extends Controller
                 $reference->location->getLat(),
             ]);
 
-            // Determine icon based on the latest activation
+            // Get the latest activator
             $latestActivator = $reference->activators->sortBy('user_activations.activation_date')->pluck('callsign')->first();
-            
-            if (is_null($reference->first_activation_date)) {
-                $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/tree.png';
-            } else {
-                // Calculate years from latest activation
-                $currentDate = new DateTime();
-                $latestActivation = new DateTime($reference->latest_activation_date);
-                $diff = $currentDate->diff($latestActivation);
 
-                switch ($diff->y) {
-                    case '0':
-                        $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/blue.png';
-                        break;
-                    case '1':
-                        $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/green.png';
-                        break;
-                    case '2':
-                        $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/yellow.png';
-                        break;
-                    case '3':
-                        $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/orange.png';
-                        break;
-                    case '4':
-                        $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/red.png';
-                        break;
-                    default:
-                        $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/red.png';
-                        break;
-                }
-            }
+            // Get icon based on when the reference was last activated
+            $icon = $this->getIcon($reference);
 
             $feature = new Feature($point, [
                 'reference' => $reference->reference,
@@ -91,5 +64,45 @@ class GeoJsonController extends Controller
         $featureCollection = new FeatureCollection($features);
 
         return response($featureCollection, 200, ['Content-Type => application/json']);
+    }
+
+    /**
+     * Returns the icon URL for the given reference
+     * @param  \Illuminate\Database\Eloquent\Model $reference
+     * @return string
+     */
+    public function getIcon($reference)
+    {
+        if (is_null($reference->first_activation_date)) {
+            return 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/tree.png';
+        }
+
+        // Calculate years from latest activation
+        $currentDate = new DateTime();
+        $latestActivation = new DateTime($reference->latest_activation_date);
+        $diff = $currentDate->diff($latestActivation);
+
+        switch ($diff->y) {
+            case '0':
+                $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/blue.png';
+                break;
+            case '1':
+                $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/green.png';
+                break;
+            case '2':
+                $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/yellow.png';
+                break;
+            case '3':
+                $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/orange.png';
+                break;
+            case '4':
+                $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/red.png';
+                break;
+            default:
+                $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/red.png';
+                break;
+        }
+
+        return $icon;
     }
 }
