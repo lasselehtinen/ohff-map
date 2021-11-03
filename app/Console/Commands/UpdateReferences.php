@@ -44,9 +44,6 @@ class UpdateReferences extends Command
      */
     public function handle()
     {
-        $references = Reference::where('name', 'LIKE', '%Ã¤%')->orWhere('name', 'LIKE', '%?%')->get();
-        dd($references->pluck('reference', 'name'));
-
         // Download CSV
         $csv = Http::get('http://wwff.co/wwff-data/wwff_directory.csv');
         $reader = Reader::createFromString($csv);
