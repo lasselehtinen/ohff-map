@@ -9,6 +9,7 @@
         "algolia/algoliasearch-client-php": "^3.1",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
+        "gasparesganga/php-shapefile": "^3.4",
         "grimzy/laravel-mysql-spatial": "^4.0",
         "guzzlehttp/guzzle": "^7.3",
         "jmikola/geojson": "~1.0",

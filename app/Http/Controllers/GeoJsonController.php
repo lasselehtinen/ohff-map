@@ -10,6 +10,7 @@ use DateTime;
 use GeoJson\Feature\Feature;
 use GeoJson\Feature\FeatureCollection;
 use GeoJson\Geometry\Point;
+use GeoJson\Geometry\Polygon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -37,18 +38,13 @@ class GeoJsonController extends Controller
         $features = [];
 
         foreach ($references as $reference) {
-            $point = new Point([
-                $reference->location->getLng(),
-                $reference->location->getLat(),
-            ]);
-
             // Get the latest activator
             $latestActivator = $reference->activators->sortBy('user_activations.activation_date')->pluck('callsign')->first();
 
             // Get icon based on when the reference was last activated
             $icon = $this->getIcon($reference);
 
-            $feature = new Feature($point, [
+            $feature = new Feature($reference->location->jsonSerialize(), [
                 'reference' => $reference->reference,
                 'is_activated' => !empty($reference->first_activation_date),
                 'first_activation_date' => $reference->first_activation_date,
@@ -59,6 +55,12 @@ class GeoJsonController extends Controller
             ]);
 
             array_push($features, $feature);
+
+            // Add geometry as a feature
+            if (is_null($reference->area) === false) {
+                $feature = new Feature($reference->area->jsonSerialize());
+                array_push($features, $feature);
+            }
         }
 
         $featureCollection = new FeatureCollection($features);
