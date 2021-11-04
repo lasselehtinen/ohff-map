@@ -11,6 +11,9 @@ use GeoJson\Feature\Feature;
 use GeoJson\Feature\FeatureCollection;
 use GeoJson\Geometry\Point;
 use GeoJson\Geometry\Polygon;
+use Grimzy\LaravelMysqlSpatial\Types\LineString as SpatialLineString;
+use Grimzy\LaravelMysqlSpatial\Types\Point as SpatialPoint;
+use Grimzy\LaravelMysqlSpatial\Types\Polygon as SpatialPolygon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -25,6 +28,10 @@ class GeoJsonController extends Controller
      */
     public function index(Request $request)
     {
+        // Create polygon from SW and NE coordinates
+        $boundPolygon = $this->getBoundPolygon($request->input('southwest_bounds', '(-90.0, -180.0)'), $request->input('northeast_bounds', '(90.0, 180.0)'));
+
+        // Filters
         $references = QueryBuilder::for(Reference::class)
             ->allowedFilters([
                 AllowedFilter::scope('activated'),
@@ -33,7 +40,7 @@ class GeoJsonController extends Controller
                 AllowedFilter::custom('not_activated_by', new FiltersReferencesNotActivatedByCallsign),
                 'reference',
             ])
-            ->where('status', '!=', 'deleted')->get();
+            ->where('status', '!=', 'deleted')->within('location', $boundPolygon)->get();
 
         $features = [];
 
@@ -56,10 +63,12 @@ class GeoJsonController extends Controller
 
             array_push($features, $feature);
 
-            // Add geometry as a feature
-            if (is_null($reference->area) === false) {
-                $feature = new Feature($reference->area->jsonSerialize());
-                array_push($features, $feature);
+            // Add geometry as a feature if zoom level is high enough
+            if($request->input('zoom', 5) > 7) {
+                if (is_null($reference->area) === false) {
+                    $feature = new Feature($reference->area->jsonSerialize());
+                    array_push($features, $feature);
+                }
             }
         }
 
@@ -106,5 +115,31 @@ class GeoJsonController extends Controller
         }
 
         return $icon;
+    }
+
+    /**
+     * Get the rectable polygon for the bound
+     * @param  string $southWestBounds
+     * @param  string $northEastBounds
+     * @return \Grimzy\LaravelMysqlSpatial\Types\Polygon
+     */
+    public function getBoundPolygon($southWestBounds, $northEastBounds) {
+        $regExp = '/\((\d+.\d+), (\d+.\d+)\)/';
+
+        $southLimit = preg_replace($regExp, '$1', $southWestBounds);
+        $westLimit = preg_replace($regExp, '$2', $southWestBounds);
+        $northLimit = preg_replace($regExp, '$1', $northEastBounds);
+        $eastLimit = preg_replace($regExp, '$2', $northEastBounds);
+        
+        // We around startig from SW and going around clockwise and connecting to start 
+        $polygon = new SpatialPolygon([new SpatialLineString([
+            new SpatialPoint($southLimit, $westLimit),
+            new SpatialPoint($northLimit, $westLimit),
+            new SpatialPoint($northLimit, $eastLimit),
+            new SpatialPoint($southLimit, $eastLimit),
+            new SpatialPoint($southLimit, $westLimit),
+        ])]);
+
+        return $polygon;
     }
 }

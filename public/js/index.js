@@ -10,6 +10,12 @@ function initMap() {
 
   const queryString = window.location.search;
 
+  map.addListener("idle", function() {
+    if (map.getZoom() > 7) {
+      map.data.loadGeoJson("/geojson" + queryString + "&zoom=" + map.getZoom() + "&latitude=" + map.getCenter().lat() + "&longitude=" + map.getCenter().lng() + "&southwest_bounds=" + map.getBounds().getSouthWest()+ "&northeast_bounds=" + map.getBounds().getNorthEast());
+    }
+  });
+
   map.data.loadGeoJson("/geojson" + queryString);
 
   // Read icon from property
