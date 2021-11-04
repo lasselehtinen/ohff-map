@@ -85,7 +85,7 @@ class GeoJsonController extends Controller
     public function getIcon($reference)
     {
         if (is_null($reference->first_activation_date)) {
-            return 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/tree.png';
+            return 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/tree.png';
         }
 
         // Calculate years from latest activation
@@ -95,22 +95,22 @@ class GeoJsonController extends Controller
 
         switch ($diff->y) {
             case '0':
-                $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/blue.png';
+                $icon = 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/blue.png';
                 break;
             case '1':
-                $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/green.png';
+                $icon = 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/green.png';
                 break;
             case '2':
-                $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/yellow.png';
+                $icon = 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/yellow.png';
                 break;
             case '3':
-                $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/orange.png';
+                $icon = 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/orange.png';
                 break;
             case '4':
-                $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/red.png';
+                $icon = 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/red.png';
                 break;
             default:
-                $icon = 'http://maps.google.com/intl/en_us/mapfiles/ms/micons/red.png';
+                $icon = 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/red.png';
                 break;
         }
 
