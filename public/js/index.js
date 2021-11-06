@@ -19,7 +19,7 @@ function initMap() {
           }
       });
 
-      map.data.loadGeoJson("/geojson" + queryString + "&zoom=" + map.getZoom() + "&filter[within]=" + map.getBounds().getSouthWest()+ ";" + map.getBounds().getNorthEast());
+      map.data.loadGeoJson("/geojson?" + queryString + "&zoom=" + map.getZoom() + "&filter[within]=" + map.getBounds().getSouthWest()+ ";" + map.getBounds().getNorthEast());
     }
   });
 
