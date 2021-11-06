@@ -24,7 +24,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('update:references')
+         ->daily()
+         ->pingBefore('https://hc-ping.com/36f355c2-6e24-4fc5-8a0d-5cf361666d57/start')
+         ->pingOnSuccess('https://hc-ping.com/36f355c2-6e24-4fc5-8a0d-5cf361666d57')
+         ->pingOnFailure('https://hc-ping.com/36f355c2-6e24-4fc5-8a0d-5cf361666d57/fail');
     }
 
     /**
