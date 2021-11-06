@@ -12,7 +12,14 @@ function initMap() {
 
   map.addListener("idle", function() {
     if (map.getZoom() > 7) {
-      map.data.loadGeoJson("/geojson" + queryString + "&zoom=" + map.getZoom() + "&latitude=" + map.getCenter().lat() + "&longitude=" + map.getCenter().lng() + "&southwest_bounds=" + map.getBounds().getSouthWest()+ "&northeast_bounds=" + map.getBounds().getNorthEast());
+      // Remove all existing polygons
+      map.data.forEach(function(feature) {
+          if (feature.getGeometry().getType() == 'Polygon' || feature.getGeometry().getType() == 'MultiPolygon') {
+            map.data.remove(feature);
+          }
+      });
+
+      map.data.loadGeoJson("/geojson" + queryString + "?zoom=" + map.getZoom() + "&filter[within]=" + map.getBounds().getSouthWest()+ ";" + map.getBounds().getNorthEast());
     }
   });
 
@@ -20,14 +27,17 @@ function initMap() {
 
   // Read icon from property
   map.data.setStyle(function(feature) {
-    return {icon:feature.getProperty('icon')};
+    return {
+      icon:feature.getProperty('icon'),
+      fillColor: "#12613c",
+      strokeWeight: 1
+    };
   });
 
   // When the user clicks, open an infowindow
   var infowindow = new google.maps.InfoWindow();
 
   map.data.addListener('click', function(event) {
-    // in the geojson feature that was clicked, get the "place" and "mag" attributes
     let reference = event.feature.getProperty("reference");
     let name = event.feature.getProperty("name");
     let latest_activation_date = event.feature.getProperty("latest_activation_date");
@@ -36,8 +46,13 @@ function initMap() {
     let html = '<strong>' + reference + ' - ' + name + '</strong><p> Latest activation: ' + latest_activation_date + ' by ' + latest_activator  + '</p>';
     
     infowindow.setContent(html); // show the html variable in the infowindow
-    infowindow.setPosition(event.feature.getGeometry().get()); // anchor the infowindow at the marker
-    infowindow.setOptions({pixelOffset: new google.maps.Size(0,-30)}); // move the infowindow up slightly to the top of the marker icon
+    
+    console.log(event.feature.getGeometry().getType());
+    if (event.feature.getGeometry().getType() == 'Point') {
+      infowindow.setPosition(event.feature.getGeometry().get()); // anchor the infowindow at the marker
+      infowindow.setOptions({pixelOffset: new google.maps.Size(0,-30)}); // move the infowindow up slightly to the top of the marker icon
+    }
+
     infowindow.open(map);
   });
 }

@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\QueryBuilderRequest;
 
 class GeoJsonController extends Controller
 {
@@ -28,19 +29,22 @@ class GeoJsonController extends Controller
      */
     public function index(Request $request)
     {
-        // Create polygon from SW and NE coordinates
-        $boundPolygon = $this->getBoundPolygon($request->input('southwest_bounds', '(-90.0, -180.0)'), $request->input('northeast_bounds', '(90.0, 180.0)'));
-
         // Filters
+        QueryBuilderRequest::setArrayValueDelimiter(';');
+
         $references = QueryBuilder::for(Reference::class)
             ->allowedFilters([
                 AllowedFilter::scope('activated'),
                 AllowedFilter::scope('not_activated'),
                 AllowedFilter::custom('activated_by', new FiltersReferencesActivatedByCallsign),
                 AllowedFilter::custom('not_activated_by', new FiltersReferencesNotActivatedByCallsign),
-                'reference',
+                AllowedFilter::callback('within', function (Builder $query, $boundaries) {
+                    // Create polygon from SW and NE coordinates
+                    $boundPolygon = $this->getBoundPolygon($boundaries[0], $boundaries[1]);
+                    $query->within('location', $boundPolygon);
+                }),
             ])
-            ->where('status', '!=', 'deleted')->within('location', $boundPolygon)->get();
+            ->where('status', '!=', 'deleted')->with('activators')->get();
 
         $features = [];
 
