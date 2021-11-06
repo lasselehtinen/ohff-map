@@ -68,7 +68,7 @@ class GeoJsonController extends Controller
             array_push($features, $feature);
 
             // Add geometry as a feature if zoom level is high enough
-            if($request->input('zoom', 5) > 7) {
+            if ($request->input('zoom', 5) > 7) {
                 if (is_null($reference->area) === false) {
                     $feature = new Feature($reference->area->jsonSerialize());
                     array_push($features, $feature);
@@ -127,7 +127,8 @@ class GeoJsonController extends Controller
      * @param  string $northEastBounds
      * @return \Grimzy\LaravelMysqlSpatial\Types\Polygon
      */
-    public function getBoundPolygon($southWestBounds, $northEastBounds) {
+    public function getBoundPolygon($southWestBounds, $northEastBounds)
+    {
         $regExp = '/\((\d+.\d+), (\d+.\d+)\)/';
 
         $southLimit = preg_replace($regExp, '$1', $southWestBounds);
@@ -135,7 +136,7 @@ class GeoJsonController extends Controller
         $northLimit = preg_replace($regExp, '$1', $northEastBounds);
         $eastLimit = preg_replace($regExp, '$2', $northEastBounds);
         
-        // We around startig from SW and going around clockwise and connecting to start 
+        // We around startig from SW and going around clockwise and connecting to start
         $polygon = new SpatialPolygon([new SpatialLineString([
             new SpatialPoint($southLimit, $westLimit),
             new SpatialPoint($northLimit, $westLimit),
