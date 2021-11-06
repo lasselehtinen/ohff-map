@@ -19,6 +19,7 @@
         "laravel/tinker": "^2.5",
         "league/csv": "^9.7",
         "spatie/laravel-query-builder": "^3.4",
+        "spatie/laravel-responsecache": "^7.1",
         "symfony/dom-crawler": "^5.3"
     },
     "require-dev": {
