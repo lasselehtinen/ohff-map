@@ -17,7 +17,7 @@
         <label for="not_activated">Not activated by anyone</label>
         <input type="checkbox" id="not_activated" name="filter[not_activated]">
                 
-        <input type="submit" name="send" value="Submit" id="submit"/>
+        <input type="submit" id="submit"/>
     </form>
 
     <div class="legend">
