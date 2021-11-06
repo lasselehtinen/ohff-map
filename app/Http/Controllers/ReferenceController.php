@@ -29,9 +29,9 @@ class ReferenceController extends Controller
             AllowedFilter::callback('activated_by_me', function ($query, $value) use ($request) {
                 if ($value === false) {
                     $query->whereNotIn('id', $request->user()->activations->pluck('id')->unique());
-                } else {
-                    $query->whereIn('id', $request->user()->activations->pluck('id')->unique());
                 }
+                
+                $query->whereIn('id', $request->user()->activations->pluck('id')->unique());
             }),
             'name'
         ])

@@ -68,11 +68,9 @@ class GeoJsonController extends Controller
             array_push($features, $feature);
 
             // Add geometry as a feature if zoom level is high enough
-            if ($request->input('zoom', 5) > 7) {
-                if (is_null($reference->area) === false) {
+            if ($request->input('zoom', 5) > 7 && !is_null($reference->area)) {
                     $feature = new Feature($reference->area->jsonSerialize());
                     array_push($features, $feature);
-                }
             }
         }
 
@@ -135,7 +133,7 @@ class GeoJsonController extends Controller
         $westLimit = preg_replace($regExp, '$2', $southWestBounds);
         $northLimit = preg_replace($regExp, '$1', $northEastBounds);
         $eastLimit = preg_replace($regExp, '$2', $northEastBounds);
-        
+            
         // We around startig from SW and going around clockwise and connecting to start
         $polygon = new SpatialPolygon([new SpatialLineString([
             new SpatialPoint($southLimit, $westLimit),

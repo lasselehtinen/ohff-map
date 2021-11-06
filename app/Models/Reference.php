@@ -9,6 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Searchable;
 
+/**
+ * App\Models\Reference.
+ * @property string $first_activation_date
+ * @property string $latest_activation_date
+ */
 class Reference extends Model
 {
     use HasFactory, SpatialTrait, Searchable;

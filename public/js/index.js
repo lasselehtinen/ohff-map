@@ -47,7 +47,6 @@ function initMap() {
     
     infowindow.setContent(html); // show the html variable in the infowindow
     
-    console.log(event.feature.getGeometry().getType());
     if (event.feature.getGeometry().getType() == 'Point') {
       infowindow.setPosition(event.feature.getGeometry().get()); // anchor the infowindow at the marker
       infowindow.setOptions({pixelOffset: new google.maps.Size(0,-30)}); // move the infowindow up slightly to the top of the marker icon

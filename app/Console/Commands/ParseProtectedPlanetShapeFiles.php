@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Reference;
 use Grimzy\LaravelMysqlSpatial\Types\Geometry;
+use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Grimzy\LaravelMysqlSpatial\Types\Polygon;
 use Grimzy\LaravelMysqlSpatial\Types\MultiPolygon;
 use Illuminate\Console\Command;
@@ -58,7 +59,6 @@ class ParseProtectedPlanetShapeFiles extends Command
         });
 
         // Create progress bar
-        // Create progress bar
         $bar = $this->output->createProgressBar($totalCount);
         $bar->setFormat('very_verbose');
         $bar->start();
@@ -81,7 +81,6 @@ class ParseProtectedPlanetShapeFiles extends Command
                     if ($area instanceof Polygon || $area instanceof MultiPolygon) {
                         $reference->area = $area;
                         $reference->save();
-                        $this->info('Updated ' . $reference->reference);
                     }
                 }
 

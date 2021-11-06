@@ -11,6 +11,9 @@ class FiltersReferencesNotActivatedByCallsign implements Filter
     public function __invoke(Builder $query, $value, string $property)
     {
         $user = User::where('callsign', $value)->first();
-        $query->whereNotIn('id', $user->activations->pluck('id')->unique());
+        
+        if (!is_null($user)) {
+            $query->whereNotIn('id', $user->activations->pluck('id')->unique());
+        }
     }
 }
