@@ -43,38 +43,36 @@ class GeoJsonController extends Controller
                     $boundPolygon = $this->getBoundPolygon($boundaries[0], $boundaries[1]);
                     $query->within('location', $boundPolygon);
                 }),
+                'reference',
             ])
+
             ->where('status', '!=', 'deleted')->with('activators')->get();
 
-        $features = [];
+        $features = collect([]);
 
         foreach ($references as $reference) {
-            // Get the latest activator
-            $latestActivator = $reference->activators->sortBy('user_activations.activation_date')->pluck('callsign')->first();
-
-            // Get icon based on when the reference was last activated
-            $icon = $this->getIcon($reference);
-
-            $feature = new Feature($reference->location->jsonSerialize(), [
+            // Define properties
+            $properties = [
                 'reference' => $reference->reference,
                 'is_activated' => !empty($reference->first_activation_date),
                 'first_activation_date' => $reference->first_activation_date,
                 'latest_activation_date' => $reference->latest_activation_date,
-                'latest_activator' => $latestActivator,
+                'latest_activator' => $reference->activators->sortBy('user_activations.activation_date')->pluck('callsign')->first(),
                 'name' => $reference->name,
-                'icon' => $icon,
-            ]);
+                'icon' => $this->getIcon($reference),
+            ];
 
-            array_push($features, $feature);
+            $feature = new Feature($reference->location->jsonSerialize(), $properties);
+            $features->push($feature);
 
             // Add geometry as a feature if zoom level is high enough
             if ($request->input('zoom', 5) > 7 && !is_null($reference->area)) {
-                    $feature = new Feature($reference->area->jsonSerialize());
-                    array_push($features, $feature);
+                $feature = new Feature($reference->area->jsonSerialize(), $properties);
+                $features->push($feature);
             }
         }
 
-        $featureCollection = new FeatureCollection($features);
+        $featureCollection = new FeatureCollection($features->toArray());
 
         return response($featureCollection, 200, ['Content-Type => application/json']);
     }
