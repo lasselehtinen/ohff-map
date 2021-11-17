@@ -13,10 +13,13 @@
         
         <label for="not_activated_by">Not activated by:</label>      
         <input type="text" id="not_activated_by" name="filter[not_activated_by]" size="10" placeholder="Callsign" value="{{strtoupper($request->input('filter.not_activated_by'))}}">
-        
+
+        <label for="reference">Reference:</label>      
+        <input type="text" id="reference" name="filter[reference]" size="10" value="{{$request->input('filter.reference')}}">
+
         <label for="not_activated">Not activated by anyone</label>
         <input type="checkbox" id="not_activated" name="filter[not_activated]">
-                
+
         <input type="submit" id="submit"/>
     </form>
 
@@ -31,10 +34,6 @@
 
     <div id="map"></div>
 
-    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjZYYdCJxkqonGrjoBwdwZpZtOjpjHtuA&callback=initMap&v=weekly"
-      async
-    ></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBjZYYdCJxkqonGrjoBwdwZpZtOjpjHtuA&callback=initMap&v=weekly" async></script>
   </body>
 </html>

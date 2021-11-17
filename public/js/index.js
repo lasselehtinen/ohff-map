@@ -54,4 +54,10 @@ function initMap() {
 
     infowindow.open(map);
   });
+
+  map.data.addListener('dblclick', function (event) 
+  {
+      map.panTo(event.latLng);
+      map.setZoom(12);
+  });
 }
