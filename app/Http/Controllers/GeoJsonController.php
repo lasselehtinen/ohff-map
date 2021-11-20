@@ -16,6 +16,10 @@ use Grimzy\LaravelMysqlSpatial\Types\Point as SpatialPoint;
 use Grimzy\LaravelMysqlSpatial\Types\Polygon as SpatialPolygon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use PHPCoord\CoordinateReferenceSystem\Geographic2D;
+use PHPCoord\CoordinateReferenceSystem\Projected;
+use PHPCoord\GeographicPoint;
+use PHPCoord\UnitOfMeasure\Angle\Degree;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\QueryBuilderRequest;
@@ -60,6 +64,8 @@ class GeoJsonController extends Controller
                 'latest_activator' => $reference->activators->sortBy('user_activations.activation_date')->pluck('callsign')->first(),
                 'name' => $reference->name,
                 'icon' => $this->getIcon($reference),
+                'wdpa_id' => $reference->wdpa_id,
+                'karttapaikka_link' => $this->getKansalaisenKarttaPaikkaLink($reference),
             ];
 
             $feature = new Feature($reference->location->jsonSerialize(), $properties);
@@ -115,6 +121,26 @@ class GeoJsonController extends Controller
         }
 
         return $icon;
+    }
+
+    public function getKansalaisenKarttaPaikkaLink($reference)
+    {
+        // Converting from WGS 84 to ETRS89
+        $from = GeographicPoint::create(
+            Geographic2D::fromSRID(Geographic2D::EPSG_WGS_84),
+            new Degree($reference->location->getLat()),
+            new Degree($reference->location->getLng()),
+            null
+        );
+        $toCRS = Projected::fromSRID(Projected::EPSG_ETRS89_TM35FIN_N_E);
+        
+        try {
+            $to = $from->convert($toCRS); // $to instanceof ProjectedPoint
+        } catch (\PHPCoord\Exception\UnknownConversionException $e) {
+            return null;
+        }
+
+        return 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n=' . $to->getNorthing() . '&e=' . $to->getEasting() .'&title=' . $reference->reference . '&desc=' . $reference->name . '&zoom=8';
     }
 
     /**

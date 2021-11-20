@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3063e7de5b7cbd3ee29ca354d1d8cc76",
+    "content-hash": "9188666a2afdff9ab5db29a1f06c4c6c",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -2684,6 +2684,167 @@
                 "source": "https://github.com/opis/closure/tree/3.6.2"
             },
             "time": "2021-04-09T13:42:10+00:00"
+        },
+        {
+            "name": "php-coord/datapack-europe",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dvdoug/PHPCoordEurope.git",
+                "reference": "876491dd7c29501c5160f339d39f97766f7977b5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dvdoug/PHPCoordEurope/zipball/876491dd7c29501c5160f339d39f97766f7977b5",
+                "reference": "876491dd7c29501c5160f339d39f97766f7977b5",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0",
+                "php-coord/php-coord": "^5.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.0",
+                "phpunit/phpunit": "^9.5.10"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPCoord\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "(MIT and BSD-2-Clause and CC-BY-4.0 and CC-BY-3.0 and CC0-1.0 and etalab-2.0 and proprietary)"
+            ],
+            "authors": [
+                {
+                    "name": "Doug Wright",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHPCoord high-accuracy addon datapack for Europe",
+            "homepage": "https://www.phpcoord.net/",
+            "keywords": [
+                "Europe",
+                "coord",
+                "geo",
+                "grid ref",
+                "latitude",
+                "longitude",
+                "map",
+                "projection"
+            ],
+            "support": {
+                "issues": "https://github.com/dvdoug/PHPCoordEurope/issues",
+                "source": "https://github.com/dvdoug/PHPCoordEurope/tree/v1.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/dvdoug",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-11-11T19:03:28+00:00"
+        },
+        {
+            "name": "php-coord/php-coord",
+            "version": "v5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dvdoug/PHPCoord.git",
+                "reference": "95073cf6a02aef6e6e88eae532a34468aefb301d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dvdoug/PHPCoord/zipball/95073cf6a02aef6e6e88eae532a34468aefb301d",
+                "reference": "95073cf6a02aef6e6e88eae532a34468aefb301d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "ext-json": "*",
+                "ext-sqlite3": "*",
+                "friendsofphp/php-cs-fixer": "^3.0",
+                "nikic/php-parser": "^4.10",
+                "php-coord/datapack-africa": "dev-master",
+                "php-coord/datapack-antarctic": "dev-master",
+                "php-coord/datapack-arctic": "dev-master",
+                "php-coord/datapack-asia": "dev-master",
+                "php-coord/datapack-europe": "dev-master",
+                "php-coord/datapack-northamerica": "dev-master",
+                "php-coord/datapack-oceania": "dev-master",
+                "php-coord/datapack-southamerica": "dev-master",
+                "phpunit/phpunit": "^9.5.10"
+            },
+            "suggest": {
+                "php-coord/datapack-africa": "High-accuracy addon datapack for Africa",
+                "php-coord/datapack-antarctic": "High-accuracy addon datapack for the Antartic",
+                "php-coord/datapack-arctic": "High-accuracy addon datapack for the Arctic",
+                "php-coord/datapack-asia": "High-accuracy addon datapack for Asia",
+                "php-coord/datapack-europe": "High-accuracy addon datapack for Europe",
+                "php-coord/datapack-northamerica": "High-accuracy addon datapack for North America",
+                "php-coord/datapack-oceania": "High-accuracy addon datapack for Oceania",
+                "php-coord/datapack-southamerica": "High-accuracy addon datapack for South America"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPCoord\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "(MIT and proprietary)"
+            ],
+            "authors": [
+                {
+                    "name": "Doug Wright",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHPCoord is a PHP library to aid in handling coordinates. It can convert coordinates for a point from one system to another and also calculate distance between points.",
+            "homepage": "https://www.phpcoord.net/",
+            "keywords": [
+                "UTM",
+                "coord",
+                "ed50",
+                "epsg",
+                "gda",
+                "geo",
+                "grid ref",
+                "latitude",
+                "longitude",
+                "map",
+                "nad",
+                "nzmg",
+                "osgb36",
+                "projection",
+                "wgs84"
+            ],
+            "support": {
+                "issues": "https://github.com/dvdoug/PHPCoord/issues",
+                "source": "https://github.com/dvdoug/PHPCoord/tree/v5.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/dvdoug",
+                    "type": "github"
+                }
+            ],
+            "time": "2021-11-12T13:07:23+00:00"
         },
         {
             "name": "phpoption/phpoption",

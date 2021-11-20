@@ -38,14 +38,27 @@ function initMap() {
   var infowindow = new google.maps.InfoWindow();
 
   map.data.addListener('click', function(event) {
-    let reference = event.feature.getProperty("reference");
-    let name = event.feature.getProperty("name");
-    let latest_activation_date = event.feature.getProperty("latest_activation_date");
-    let latest_activator = event.feature.getProperty("latest_activator");
-    
-    let html = '<strong>' + reference + ' - ' + name + '</strong><p> Latest activation: ' + latest_activation_date + ' by ' + latest_activator  + '</p>';
-    
-    infowindow.setContent(html); // show the html variable in the infowindow
+
+    /*
+    let html = '<strong>' + reference + ' - ' + name + '</strong>';
+    html =+ '<p>Latest activation: ' + event.feature.getProperty("latest_activation_date") + ' by ' + event.feature.getProperty("latest_activator")  + '</p>';
+    html =+ '<p><a href="' + event.feature.getProperty("karttapaikka_link") + '">Kansalaisen karttapaikka</a></p>';
+*/
+
+    contentString =
+    '<h1>'+ event.feature.getProperty("reference") +'</h1>' +
+    '<h2>'+ event.feature.getProperty("name") +'</h2>' +
+    '<div id="bodyContent">' +
+    '<p>Latest activation: ' + event.feature.getProperty("latest_activation_date") + ' by ' + event.feature.getProperty("latest_activator") + '</p>' +
+    '<p><a href='+ event.feature.getProperty("karttapaikka_link") + '" target="_new">Kansalaisen karttapaikka</a>';
+
+    if (event.feature.getProperty("wdpa_id")) {
+      contentString += '<br/><a href=https://www.protectedplanet.net/'+ event.feature.getProperty("wdpa_id") + '" target="_new">Protected Planet</a>';
+    }
+
+    contentString += '</p>'
+
+    infowindow.setContent(contentString); // show the html variable in the infowindow
     
     if (event.feature.getGeometry().getType() == 'Point') {
       infowindow.setPosition(event.feature.getGeometry().get()); // anchor the infowindow at the marker
