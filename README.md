@@ -1,5 +1,3 @@
-![Sample screenshot from the map](https://user-images.githubusercontent.com/1290186/143145700-eb391ffb-bddf-4e4f-a3e3-ea55737401fa.png)
-
 # OHFF map
 
 OHFF-map or OHFF-kartta in finnish is a small Laravel based web application to provide a Google Map view for WWFF references in Finland. It scrapes reference information from the official WWFF site for references and activations. The main goal is to provide a tool for activators find the next reference to go to. You can find a live version of this repository in:
