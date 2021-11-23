@@ -1,3 +1,4 @@
+![Sample screenshot from the map](https://user-images.githubusercontent.com/1290186/143145700-eb391ffb-bddf-4e4f-a3e3-ea55737401fa.png)
 
 # OHFF map
 
