@@ -101,26 +101,26 @@ class GeoJsonController extends Controller
 
         switch ($diff->y) {
             case '0':
-                $icon = 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/blue.png';
+                $iconColor = 'blue';
                 break;
             case '1':
-                $icon = 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/green.png';
+                $iconColor = 'green';
                 break;
             case '2':
-                $icon = 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/yellow.png';
+                $iconColor = 'yellow';
                 break;
             case '3':
-                $icon = 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/orange.png';
+                $iconColor = 'orange';
                 break;
             case '4':
-                $icon = 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/red.png';
+                $iconColor = 'red';
                 break;
             default:
-                $icon = 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/red.png';
+                $iconColor = 'red';
                 break;
         }
 
-        return $icon;
+        return sprintf('https://maps.google.com/intl/en_us/mapfiles/ms/micons/%s.png', $iconColor);
     }
 
     public function getKansalaisenKarttaPaikkaLink($reference)
