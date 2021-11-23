@@ -2,8 +2,8 @@
 name: Reporting issue with reference information
 about: Create a report to help us improve
 title: ''
-labels: ''
-assignees: ''
+labels: reference
+assignees: lasselehtinen
 
 ---
 
