@@ -28,8 +28,6 @@ jobs:
       run: vendor/bin/grumphp run --testsuite=syntax
     - name: Perform style tests
       run: vendor/bin/grumphp run --testsuite=style
-    - name: Perform static analysis
-      run: vendor/bin/grumphp run --testsuite=static
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
         DB_CONNECTION: sqlite
