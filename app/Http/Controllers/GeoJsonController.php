@@ -140,7 +140,7 @@ class GeoJsonController extends Controller
             return null;
         }
 
-        return 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n=' . $to->getNorthing() . '&e=' . $to->getEasting() .'&title=' . $reference->reference . '&desc=' . $reference->name . '&zoom=8';
+        return 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n=' . $to->getNorthing() . '&e=' . $to->getEasting() .'&title=' . $reference->reference . '&desc=' . urlencode($reference->name) . '&zoom=8';
     }
 
     /**
