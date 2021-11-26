@@ -61,7 +61,7 @@ class GeoJsonController extends Controller
                 'is_activated' => !empty($reference->first_activation_date),
                 'first_activation_date' => $reference->first_activation_date,
                 'latest_activation_date' => $reference->latest_activation_date,
-                'latest_activator' => $reference->activators->sortBy('user_activations.activation_date')->pluck('callsign')->first(),
+                'latest_activator' => $reference->activators->sortByDesc('pivot.activation_date')->pluck('callsign')->first()),
                 'name' => $reference->name,
                 'icon' => $this->getIcon($reference),
                 'wdpa_id' => $reference->wdpa_id,
