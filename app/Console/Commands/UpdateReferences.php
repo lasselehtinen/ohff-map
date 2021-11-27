@@ -88,8 +88,12 @@ class UpdateReferences extends Command
                 'name' => $sourceReference['name'],
                 'status' => $sourceReference['status'],
                 'iota_reference' => $sourceReference['iota'],
-                'location' => new Point($sourceReference['latitude'], $sourceReference['longitude']),
             ]);
+
+            // Set or update location if changed. This is so that the model does not appear dirty unnecessarily.
+            if (is_null($reference->location) || ($reference->location->getLat() !== floatval($sourceReference['latitude']) || $reference->location->getLng() !== floatval($sourceReference['longitude']))) {
+                $reference->location = new Point($sourceReference['latitude'], $sourceReference['longitude']);
+            }
 
             // Add relations
             $program = Program::where('name', $sourceReference['program'])->firstOrFail();
@@ -102,7 +106,6 @@ class UpdateReferences extends Command
             $reference->continent()->associate($continent);
 
             $reference->save();
-
             $bar->advance();
         });
 
