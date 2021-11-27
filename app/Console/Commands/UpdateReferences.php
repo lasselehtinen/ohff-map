@@ -82,14 +82,13 @@ class UpdateReferences extends Command
                 return ($value === "" || $value === '-') ? null : $value;
             }, $sourceReference);
 
+            // Create or update reference
             $reference = Reference::updateOrCreate(['reference' => $sourceReference['reference']], [
                 'name' => $sourceReference['name'],
                 'status' => $sourceReference['status'],
                 'iota_reference' => $sourceReference['iota'],
+                'location' => new Point($sourceReference['latitude'], $sourceReference['longitude']),
             ]);
-
-            // Update location
-            $reference->location = new Point($sourceReference['latitude'], $sourceReference['longitude']);
 
             // Add relations
             $program = Program::where('name', $sourceReference['program'])->firstOrFail();
