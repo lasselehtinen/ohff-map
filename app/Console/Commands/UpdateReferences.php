@@ -8,6 +8,7 @@ use App\Models\Program;
 use App\Models\Reference;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use League\Csv\Reader;
 
@@ -106,6 +107,9 @@ class UpdateReferences extends Command
         });
 
         $bar->finish();
+
+        // Clear the response cache
+        Artisan::call('responsecache:clear');
 
         return 0;
     }
