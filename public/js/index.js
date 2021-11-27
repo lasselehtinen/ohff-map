@@ -58,6 +58,9 @@ function initMap() {
 
     contentString += '</p>'
 
+    // Add link to create github issue
+    // contentString += '<p><a href="https://github.com/lasselehtinen/ohff-map/issues/new?assignees=lasselehtinen&labels=reference&template=reporting-issue-with-reference-information.md&title=Problem%20with%20' + event.feature.getProperty("reference") + '">Report issue</a></p>'
+
     infowindow.setContent(contentString); // show the html variable in the infowindow
     
     if (event.feature.getGeometry().getType() == 'Point') {
