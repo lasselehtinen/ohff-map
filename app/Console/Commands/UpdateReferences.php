@@ -82,7 +82,7 @@ class UpdateReferences extends Command
                 return ($value === "" || $value === '-') ? null : $value;
             }, $sourceReference);
 
-            $reference = Reference::firstOrCreate(['reference' => $sourceReference['reference']], [
+            $reference = Reference::updateOrCreate(['reference' => $sourceReference['reference']], [
                 'name' => $sourceReference['name'],
                 'status' => $sourceReference['status'],
                 'iota_reference' => $sourceReference['iota'],
