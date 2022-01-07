@@ -1,1 +1,4 @@
 - Implement activation date and validation
+- Find my location
+- Mobile optimisation
+- Multiple coordinates per reference
