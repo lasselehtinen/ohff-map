@@ -123,6 +123,11 @@ class GeoJsonController extends Controller
         return sprintf('https://maps.google.com/intl/en_us/mapfiles/ms/micons/%s.png', $iconColor);
     }
 
+    /**
+     * Get link for Kansalaisen karttapaikka
+     * @param  Reference $reference
+     * @return string
+     */
     public function getKansalaisenKarttaPaikkaLink($reference)
     {
         // Converting from WGS 84 to ETRS89
