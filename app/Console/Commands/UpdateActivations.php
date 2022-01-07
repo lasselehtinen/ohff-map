@@ -76,7 +76,7 @@ class UpdateActivations extends Command
                 
                 // Prevent duplicates
                 $activationExists = $user->with('activations')->whereHas('activations', function ($query) use ($reference, $activation) {
-                    $query->where('reference_id', $reference->id)->where('activation_date', $activation['date']);
+                    $query->where('reference_id', $reference->id)->where('activation_date', $activation['date']->format('Y-m-d'));
                 })->exists();
 
                 if ($activationExists === false) {
