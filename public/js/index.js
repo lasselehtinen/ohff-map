@@ -1,4 +1,4 @@
-let map;
+let map, InfoWindow;
 
 function initMap() {
   // Load map and GeoJSON
@@ -6,6 +6,37 @@ function initMap() {
     zoom: 5,
     center: { lat: 64.95122, lng: 27.41089 },
     mapTypeId: google.maps.MapTypeId.TERRAIN
+  });
+
+  infoWindow = new google.maps.InfoWindow();
+
+  const locationButton = document.createElement("button");
+
+  locationButton.textContent = "Pan to Current Location";
+  locationButton.classList.add("custom-map-control-button");
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(locationButton);
+
+  locationButton.addEventListener("click", () => {
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+
+          map.setZoom(12);
+          map.setCenter(pos);
+        },
+        () => {
+          handleLocationError(true, infoWindow, map.getCenter());
+        }
+      );
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
   });
 
   const queryString = window.location.search;
@@ -38,13 +69,6 @@ function initMap() {
   var infowindow = new google.maps.InfoWindow();
 
   map.data.addListener('click', function(event) {
-
-    /*
-    let html = '<strong>' + reference + ' - ' + name + '</strong>';
-    html =+ '<p>Latest activation: ' + event.feature.getProperty("latest_activation_date") + ' by ' + event.feature.getProperty("latest_activator")  + '</p>';
-    html =+ '<p><a href="' + event.feature.getProperty("karttapaikka_link") + '">Kansalaisen karttapaikka</a></p>';
-*/
-
     contentString =
     '<h1>'+ event.feature.getProperty("reference") +'</h1>' +
     '<h2>'+ event.feature.getProperty("name") +'</h2>' +
