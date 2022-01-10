@@ -7,6 +7,7 @@ use App\Models\User;
 use DateTime;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -47,8 +48,13 @@ class UpdateActivations extends Command
     {
         $references = Reference::all();
 
+        // Create progress bar
+        $bar = $this->output->createProgressBar($references->count());
+        $bar->setFormat('very_verbose');
+        $bar->start();
+
         // Update activation dates and activations
-        $references->each(function ($reference, $key) {
+        $references->each(function ($reference, $key) use ($bar) {
             $response = Http::get('https://wwff.co/directory/?showRef=' . $reference['reference']);
             $crawler = new Crawler($response->body());
 
@@ -86,7 +92,13 @@ class UpdateActivations extends Command
 
             // Wait a bit not to hammer the WWFF site
             sleep(2);
+            $bar->advance();
         });
+
+        $bar->finish();
+
+        // Clear the response cache
+        Artisan::call('responsecache:clear');
 
         return 0;
     }
