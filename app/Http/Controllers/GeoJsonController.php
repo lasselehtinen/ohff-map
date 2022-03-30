@@ -40,6 +40,7 @@ class GeoJsonController extends Controller
             ->allowedFilters([
                 AllowedFilter::scope('activated'),
                 AllowedFilter::scope('not_activated'),
+                AllowedFilter::scope('suggested'),
                 AllowedFilter::custom('activated_by', new FiltersReferencesActivatedByCallsign),
                 AllowedFilter::custom('not_activated_by', new FiltersReferencesNotActivatedByCallsign),
                 AllowedFilter::callback('within', function (Builder $query, $boundaries) {
@@ -90,10 +91,14 @@ class GeoJsonController extends Controller
      */
     public function getIcon($reference)
     {
+        if ($reference->suggested) {
+            return 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/hiker.png';
+        }
+
         if (is_null($reference->first_activation_date)) {
             return 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/tree.png';
         }
-
+        
         // Calculate years from latest activation
         $currentDate = new DateTime();
         $latestActivation = new DateTime($reference->latest_activation_date);

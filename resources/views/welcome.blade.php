@@ -20,6 +20,9 @@
         <label for="not_activated">Not activated by anyone</label>
         <input type="checkbox" id="not_activated" name="filter[not_activated]">
 
+        <label for="suggested">Suggested</label>
+        <input type="checkbox" id="suggested" name="filter[suggested]">
+
         <input type="submit" id="submit"/>
     </form>
 
