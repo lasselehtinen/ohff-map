@@ -40,7 +40,6 @@ class GeoJsonController extends Controller
             ->allowedFilters([
                 AllowedFilter::scope('activated'),
                 AllowedFilter::scope('not_activated'),
-                AllowedFilter::scope('suggested'),
                 AllowedFilter::custom('activated_by', new FiltersReferencesActivatedByCallsign),
                 AllowedFilter::custom('not_activated_by', new FiltersReferencesNotActivatedByCallsign),
                 AllowedFilter::callback('within', function (Builder $query, $boundaries) {
@@ -49,6 +48,7 @@ class GeoJsonController extends Controller
                     $query->within('location', $boundPolygon);
                 }),
                 'reference',
+                'suggested',
             ])
 
             ->where('status', '!=', 'deleted')->with('activators')->get();
