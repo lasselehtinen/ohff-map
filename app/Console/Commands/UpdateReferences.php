@@ -10,6 +10,7 @@ use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Http;
 use League\Csv\Reader;
 
 class UpdateReferences extends Command
@@ -113,6 +114,10 @@ class UpdateReferences extends Command
 
         // Clear the response cache
         Artisan::call('responsecache:clear');
+
+        // Warm up cache
+        Http::get('https://kartta.ohff.fi/geojson');
+        Http::get('https://kartta.ohff.fi/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=');
 
         return 0;
     }
