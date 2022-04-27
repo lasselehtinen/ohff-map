@@ -10,7 +10,6 @@ use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Http;
 use League\Csv\Reader;
 
 class UpdateReferences extends Command
