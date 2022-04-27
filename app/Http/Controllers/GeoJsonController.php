@@ -168,7 +168,7 @@ class GeoJsonController extends Controller
         $northLimit = preg_replace($regExp, '$1', $northEastBounds);
         $eastLimit = preg_replace($regExp, '$2', $northEastBounds);
             
-        // We around startig from SW and going around clockwise and connecting to start
+        // We go around starting from SW and going around clockwise and connecting to start
         $polygon = new SpatialPolygon([new SpatialLineString([
             new SpatialPoint($southLimit, $westLimit),
             new SpatialPoint($northLimit, $westLimit),
