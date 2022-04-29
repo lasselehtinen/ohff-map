@@ -23,7 +23,7 @@ class Reference extends Model
      *
      * @var array
      */
-    protected $fillable = ['reference', 'status', 'name', 'iota_reference', 'location', 'suggested'];
+    protected $fillable = ['reference', 'status', 'name', 'iota_reference', 'location', 'suggested', 'wdpa_id'];
 
     /**
      * The attributes that are spatial

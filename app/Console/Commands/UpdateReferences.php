@@ -10,6 +10,7 @@ use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use League\Csv\Reader;
 
 class UpdateReferences extends Command
@@ -83,11 +84,21 @@ class UpdateReferences extends Command
                 return ($value === "" || $value === '-') ? null : $value;
             }, $sourceReference);
 
+            // Check if we can parse Protected Planet ID from website
+            if (Str::contains($sourceReference['website'], 'protectedplanet')) {
+                $chunks = explode('/', $sourceReference['website']);
+                $lastPart = end($chunks);
+                $protectedPlanetId = (is_numeric($lastPart)) ? $lastPart : null;
+            } else {
+                $protectedPlanetId = null;
+            }
+
             // Create or update reference
             $reference = Reference::updateOrCreate(['reference' => $sourceReference['reference']], [
                 'name' => $sourceReference['name'],
                 'status' => $sourceReference['status'],
                 'iota_reference' => $sourceReference['iota'],
+                'wdpa_id' => $protectedPlanetId,
             ]);
 
             // Set or update location if changed. This is so that the model does not appear dirty unnecessarily.
