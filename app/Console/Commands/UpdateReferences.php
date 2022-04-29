@@ -85,12 +85,12 @@ class UpdateReferences extends Command
             }, $sourceReference);
 
             // Check if we can parse Protected Planet ID from website
+            $protectedPlanetId = null;
+            
             if (Str::contains($sourceReference['website'], 'protectedplanet')) {
                 $chunks = explode('/', $sourceReference['website']);
                 $lastPart = end($chunks);
                 $protectedPlanetId = (is_numeric($lastPart)) ? $lastPart : null;
-            } else {
-                $protectedPlanetId = null;
             }
 
             // Create or update reference
