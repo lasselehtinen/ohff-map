@@ -72,9 +72,13 @@ function initMap() {
     contentString =
     '<h1>'+ event.feature.getProperty("reference") +'</h1>' +
     '<h2>'+ event.feature.getProperty("name") +'</h2>' +
-    '<div id="bodyContent">' +
-    '<p>Latest activation: ' + event.feature.getProperty("latest_activation_date") + ' by ' + event.feature.getProperty("latest_activator") + '</p>' +
-    '<p><a href='+ event.feature.getProperty("karttapaikka_link") + '" target="_new">Kansalaisen karttapaikka</a><br/>';
+    '<div id="bodyContent">';
+
+    if (event.feature.getProperty("latest_activation_date")) {
+      $contentString += '<p>Latest activation: ' + event.feature.getProperty("latest_activation_date") + ' by ' + event.feature.getProperty("latest_activator") + '</p>';
+    }
+    
+    contentString += '<p><a href='+ event.feature.getProperty("karttapaikka_link") + '" target="_new">Kansalaisen karttapaikka</a><br/>';
 
     if (event.feature.getProperty("wdpa_id")) {
       contentString += '<a href="https://www.protectedplanet.net/'+ event.feature.getProperty("wdpa_id") + '" target="_new">Protected Planet</a><br/>';
