@@ -77,7 +77,7 @@ function initMap() {
     '<p><a href='+ event.feature.getProperty("karttapaikka_link") + '" target="_new">Kansalaisen karttapaikka</a><br/>';
 
     if (event.feature.getProperty("wdpa_id")) {
-      contentString += '<a href=https://www.protectedplanet.net/'+ event.feature.getProperty("wdpa_id") + '" target="_new">Protected Planet</a><br/>';
+      contentString += '<a href="https://www.protectedplanet.net/'+ event.feature.getProperty("wdpa_id") + '" target="_new">Protected Planet</a><br/>';
     }
 
     // Add link to create github issue
