@@ -75,7 +75,7 @@ function initMap() {
     '<div id="bodyContent">';
 
     if (event.feature.getProperty("latest_activation_date")) {
-      $contentString += '<p>Latest activation: ' + event.feature.getProperty("latest_activation_date") + ' by ' + event.feature.getProperty("latest_activator") + '</p>';
+      contentString += '<p>Latest activation: ' + event.feature.getProperty("latest_activation_date") + ' by ' + event.feature.getProperty("latest_activator") + '</p>';
     }
     
     contentString += '<p><a href='+ event.feature.getProperty("karttapaikka_link") + '" target="_new">Kansalaisen karttapaikka</a><br/>';
