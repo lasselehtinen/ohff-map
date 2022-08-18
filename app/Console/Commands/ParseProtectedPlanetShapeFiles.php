@@ -78,6 +78,13 @@ class ParseProtectedPlanetShapeFiles extends Command
                     $geometryData = $geometry->getArray();
                     $area = Geometry::fromJson($geometry->getGeoJSON());
                     
+                    // Set boolean if area is Natura 2000 area
+                    if (in_array($shapeData['DESIG_ENG'], ['Special Areas of Conservation (Habitats Directive)', 'Special Protection Area (Birds Directive)'])) {
+                        $reference->natura_2000_area = true;
+                        $reference->save();
+                    }
+                    
+                    // Set area
                     if ($area instanceof Polygon || $area instanceof MultiPolygon) {
                         $reference->area = $area;
                         $reference->save();
