@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('reference', function (Blueprint $table) {
+        Schema::table('references', function (Blueprint $table) {
             $table->boolean('natura_2000_area')->default(false);
         });
     }
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('reference', function (Blueprint $table) {
+        Schema::table('references', function (Blueprint $table) {
             $table->dropColumn('natura_2000_area');
         });
     }
