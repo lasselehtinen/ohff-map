@@ -178,9 +178,9 @@ class GeoJsonController extends Controller
             return null;
         }
 
-        return 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord=' . $to->getEasting() . '_'. $to->getNorthing() .'&mapLayers=802+100+default,1629+100+default,1627+100+default,1628+100+default&markers=2|1|ffde00|' . $to->getEasting() . '_'. $to->getNorthing() .'|' . $reference->reference . '%20-%20' . $reference->name .'&noSavedState=true&showIntro=false';
+        return 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord=' . $to->getEasting() . '_'. $to->getNorthing() .'&mapLayers=802+100+default,1629+100+default,1627+100+default,1628+100+default&markers=2|1|ffde00|' . $to->getEasting() . '_'. $to->getNorthing() .'|' . $reference->reference . '%20-%20' . urlencode($reference->name) .'&noSavedState=true&showIntro=false';
     }
-    
+
     /**
      * Get the rectable polygon for the bound
      * @param  string $southWestBounds
