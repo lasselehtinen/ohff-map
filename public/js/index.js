@@ -79,7 +79,7 @@ function initMap() {
     }
     
     if (event.feature.getProperty("is_natura_2000_area")) {
-      contentString += '<a href="https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord=227870.58857662836_6733745.010583287&mapLayers=802+100+default,1629+100+default,1627+100+default,1628+100+default&markers=2|1|ffde00|226984.08857662836_6733735.510583287|OHFF-0837%20-%20Kallavuori&uuid=90246d84-3958-fd8c-cb2c-2510cccca1d3&noSavedState=true&showIntro=false" target="_new">Paikkatietoikkuna</a></br>';
+      contentString += '<a href='+ event.feature.getProperty("paikkatietoikkuna_link") + '" target="_new">Paikkatietoikkuna</a><br/>';
       contentString += '<a href="http://syke.maps.arcgis.com/apps/webappviewer/index.html?id=831ac3d0ac444b78baf0eb1b68076e1a" target="_new">Suomen ympäristökeskuksen karttapalvelu</a></br>';
     }
 
