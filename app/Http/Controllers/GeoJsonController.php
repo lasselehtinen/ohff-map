@@ -67,6 +67,8 @@ class GeoJsonController extends Controller
                 'icon' => $this->getIcon($reference),
                 'wdpa_id' => $reference->wdpa_id,
                 'karttapaikka_link' => $this->getKansalaisenKarttaPaikkaLink($reference),
+                'paikkatietoikkuna_link' => $this->getPaikkatietoLink($reference),
+                'is_natura_2000_area' => (bool) $reference->natura_2000_area,
             ];
 
             $feature = new Feature($reference->location->jsonSerialize(), $properties);
@@ -153,6 +155,32 @@ class GeoJsonController extends Controller
         return 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n=' . $to->getNorthing() . '&e=' . $to->getEasting() .'&title=' . $reference->reference . '&desc=' . urlencode($reference->name) . '&zoom=8';
     }
 
+    /**
+     * Get link for Paikkatieto
+     * @param  Reference $reference
+     * @return string
+     */
+    public function getPaikkatietoLink($reference)
+    {
+        // Converting from WGS 84 to ETRS89
+        $from = GeographicPoint::create(
+            Geographic2D::fromSRID(Geographic2D::EPSG_WGS_84),
+            new Degree($reference->location->getLat()),
+            new Degree($reference->location->getLng()),
+            null
+        );
+
+        $toCRS = Projected::fromSRID(Projected::EPSG_ETRS89_TM35FIN_N_E);
+        
+        try {
+            $to = $from->convert($toCRS); // $to instanceof ProjectedPoint
+        } catch (\PHPCoord\Exception\UnknownConversionException $e) {
+            return null;
+        }
+
+        return 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord=' . $to->getEasting() . '_'. $to->getNorthing() .'&mapLayers=802+100+default,1629+100+default,1627+100+default,1628+100+default&markers=2|1|ffde00|' . $to->getEasting() . '_'. $to->getNorthing() .'|' . $reference->reference . '%20-%20' . $reference->name .'&noSavedState=true&showIntro=false';
+    }
+    
     /**
      * Get the rectable polygon for the bound
      * @param  string $southWestBounds

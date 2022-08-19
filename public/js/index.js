@@ -78,17 +78,24 @@ function initMap() {
       contentString += '<p>Latest activation: ' + event.feature.getProperty("latest_activation_date") + ' by ' + event.feature.getProperty("latest_activator") + '</p>';
     }
     
-    contentString += '<p><a href='+ event.feature.getProperty("karttapaikka_link") + '" target="_new">Kansalaisen karttapaikka</a><br/>';
+    if (event.feature.getProperty("is_natura_2000_area")) {
+      contentString += '<a href="https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord=227870.58857662836_6733745.010583287&mapLayers=802+100+default,1629+100+default,1627+100+default,1628+100+default&markers=2|1|ffde00|226984.08857662836_6733735.510583287|OHFF-0837%20-%20Kallavuori&uuid=90246d84-3958-fd8c-cb2c-2510cccca1d3&noSavedState=true&showIntro=false" target="_new">Paikkatietoikkuna</a></br>';
+      contentString += '<a href="http://syke.maps.arcgis.com/apps/webappviewer/index.html?id=831ac3d0ac444b78baf0eb1b68076e1a" target="_new">Suomen ympäristökeskuksen karttapalvelu</a></br>';
+    }
 
     if (event.feature.getProperty("wdpa_id")) {
       contentString += '<a href="https://www.protectedplanet.net/'+ event.feature.getProperty("wdpa_id") + '" target="_new">Protected Planet</a><br/>';
     }
 
-    // Add link to create github issue
-    contentString += '<a href="https://github.com/lasselehtinen/ohff-map/issues/new?template=reporting-issue-with-reference-information.md&title=&title=Problem%20with%20' + event.feature.getProperty("reference") + '">Report issue</a></br>'
+    contentString += '<a href='+ event.feature.getProperty("karttapaikka_link") + '" target="_new">Kansalaisen karttapaikka</a><br/>';
 
-    contentString += '</p>'
+    // Add link to create github issue
+    contentString += '<a href="https://github.com/lasselehtinen/ohff-map/issues/new?template=reporting-issue-with-reference-information.md&title=&title=Problem%20with%20' + event.feature.getProperty("reference") + '">Report issue</a></br></p>'
   
+    // Add extra notification if the area is a Natura 2000 area
+    if (event.feature.getProperty("is_natura_2000_area")) {
+      contentString += '<p>⚠️ The area is a Natura 2000 area.<p/><p>Check the area from Paikkatietoikkuna or Suomen ympäristökeskuksen karttapalvelu.</p>';
+    }
 
     infowindow.setContent(contentString); // show the html variable in the infowindow
     
