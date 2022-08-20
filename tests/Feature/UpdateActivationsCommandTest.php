@@ -38,7 +38,7 @@ class UpdateActivationsCommandTest extends TestCase
         $firstActivation = $user->activations->where('reference', 'OHFF-1079')->sortBy('pivot.activation_date')->first();
         $latestActivation = $user->activations->where('reference', 'OHFF-1079')->sortByDesc('pivot.activation_date')->first();
         $this->assertSame('2021-03-07', date('Y-m-d', strtotime($firstActivation->pivot->activation_date)));
-        $this->assertSame('2021-06-13', date('Y-m-d', strtotime($latestActivation->pivot->activation_date)));
+        $this->assertSame('2022-08-14', date('Y-m-d', strtotime($latestActivation->pivot->activation_date)));
 
         // OH2NOS should have one activation
         $user = User::where('callsign', 'OH2NOS')->with('activations')->first();
