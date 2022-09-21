@@ -19,7 +19,7 @@
 
         <label for="not_activated">Not activated by anyone</label>
         <input type="checkbox" id="not_activated" name="filter[not_activated]">
-        
+
         <label for="approval_status">Approval status</label>
         <select id="approval_status" name="filter[approval_status]">
           <option value="received">Received</option>
@@ -37,6 +37,7 @@
       Activated 2 years ago: <img src="http://maps.google.com/intl/en_us/mapfiles/ms/micons/yellow.png" width="16" height="16">
       Activated 3 years ago: <img src="http://maps.google.com/intl/en_us/mapfiles/ms/micons/orange.png" width="16" height="16">
       Activated 4++ years ago: <img src="http://maps.google.com/intl/en_us/mapfiles/ms/micons/red.png" width="16" height="16">
+      Suggested: <img src="http://maps.google.com/intl/en_us/mapfiles/ms/micons/purple.png" width="16" height="16">
     </div>
 
     <div id="map"></div>
