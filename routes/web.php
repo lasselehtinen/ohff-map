@@ -22,7 +22,7 @@ Route::get('/', function (Request $request) {
 
 Route::get('/geojson', [GeoJsonController::class, 'index']);
 
-Route::get('suggest', [ReferenceController::class, 'create']);
-Route::post('store-reference', [ReferenceController::class, 'store']);
+Route::get('suggest', ['middleware' => 'doNotCacheResponse', ReferenceController::class, 'create']);
+Route::post('store-reference', ['middleware' => 'doNotCacheResponse', ReferenceController::class, 'store']);
 
 require __DIR__.'/auth.php';
