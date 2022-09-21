@@ -22,6 +22,7 @@
 
         <label for="approval_status">Approval status</label>
         <select id="approval_status" name="filter[approval_status]">
+          <option value=""></option>
           <option value="received">Received</option>
           <option value="approved">Approved</option>
           <option value="saved">Saved</option>
