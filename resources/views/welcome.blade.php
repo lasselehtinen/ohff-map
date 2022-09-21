@@ -20,10 +20,12 @@
         <label for="not_activated">Not activated by anyone</label>
         <input type="checkbox" id="not_activated" name="filter[not_activated]">
 
-        <!--
-        <label for="suggested">Suggested</label>
-        <input type="checkbox" id="suggested" name="filter[suggested]" value="true">
-        -->
+        <label for="approval_status">Approval status</label>
+        <select id="approval_status" name="filter[approval_status]">
+          <option value="received">Received</option>
+          <option value="approved">Approved</option>
+          <option value="saved">Saved</option>
+        </select>
 
         <input type="submit" id="submit"/>
     </form>

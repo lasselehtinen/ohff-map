@@ -7,7 +7,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/ForkUntilDie/laravel-mysql-spatial"
+            "url": "https://github.com/laravel-shift/laravel-mysql-spatial.git"
         }
     ],
     "require": {
@@ -16,7 +16,7 @@
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "gasparesganga/php-shapefile": "^3.4",
-        "grimzy/laravel-mysql-spatial": "master",
+        "grimzy/laravel-mysql-spatial": "dev-l9-compatibility",
         "guzzlehttp/guzzle": "^7.3",
         "jmikola/geojson": "~1.0",
         "laravel/framework": "^9.0",
@@ -24,6 +24,7 @@
         "laravel/scout": "^9.3",
         "laravel/tinker": "^2.5",
         "league/csv": "^9.7",
+        "mattkingshott/axiom": "^3.2",
         "php-coord/datapack-europe": "^1.2",
         "php-coord/php-coord": "^5.0",
         "spatie/laravel-query-builder": "^5.0",

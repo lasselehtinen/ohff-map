@@ -48,7 +48,7 @@ class GeoJsonController extends Controller
                     $query->within('location', $boundPolygon);
                 }),
                 'reference',
-                'suggested',
+                'approval_status',
             ])
 
             ->where('status', '!=', 'deleted')->with('activators')->get();

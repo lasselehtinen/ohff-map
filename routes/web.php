@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ReferenceWebController;
+use App\Http\Controllers\ReferenceController;
 use App\Http\Controllers\GeoJsonController;
 use Illuminate\Http\Request;
 
@@ -21,5 +21,8 @@ Route::get('/', function (Request $request) {
 });
 
 Route::get('/geojson', [GeoJsonController::class, 'index']);
+
+Route::get('suggest', [ReferenceController::class, 'create']);
+Route::post('store-reference', [ReferenceController::class, 'store']);
 
 require __DIR__.'/auth.php';
