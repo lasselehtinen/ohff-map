@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
-use App\Models\User;
 use App\Models\Reference;
+use App\Models\User;
 use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -23,7 +23,7 @@ class UserController extends Controller
             'name' => 'required',
             'callsign' => 'required|unique:users',
             'email' => 'required|email|unique:users',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -39,7 +39,7 @@ class UserController extends Controller
             return response()->json([
                 'errors' => [
                     $errors->values()->toArray(),
-                ]
+                ],
             ], 400);
         }
 

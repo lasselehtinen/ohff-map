@@ -7,7 +7,6 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Shapefile\Shapefile;
-use Shapefile\ShapefileException;
 use Shapefile\ShapefileReader;
 
 class CheckReferenceNames extends Command
@@ -41,6 +40,7 @@ class CheckReferenceNames extends Command
         // Get total count
         $totalCount = $shapeFiles->sum(function ($shapeFile) {
             $shapeFile = new ShapefileReader(Storage::disk('resources')->path($shapeFile));
+
             return $shapeFile->getTotRecords();
         });
 
@@ -53,15 +53,15 @@ class CheckReferenceNames extends Command
         foreach ($shapeFiles as $shapeFile) {
             // Open Shapefile
             $shapeFile = new ShapefileReader(Storage::disk('resources')->path($shapeFile));
-            
+
             // Read all the records
             while ($geometry = $shapeFile->fetchRecord()) {
                 $shapeData = $geometry->getDataArray();
 
                 // Search if we have reference with that World Database on Protected Areas ID
                 $reference = Reference::where('wdpa_id', $shapeData['WDPA_PID'])->first();
-                
-                if (!is_null($reference)) {
+
+                if (! is_null($reference)) {
                     $this->info($reference->reference.';'.$reference->name.';'.$shapeData['NAME'].';'.$shapeData['ORIG_NAME'].';'.levenshtein($shapeData['NAME'], $reference->name));
                 }
 
@@ -70,7 +70,7 @@ class CheckReferenceNames extends Command
         }
 
         //$bar->finish();
-        
+
         return 0;
     }
 }

@@ -47,8 +47,8 @@ class CheckCoordinates extends Command
             if ($reference->area instanceof Polygon || $reference->area instanceof MultiPolygon) {
                 $results = Reference::within('location', $reference->area)->get();
 
-                if ($results->count() <> 1) {
-                    $this->info($reference->reference . ' ' . $results->count() . ' ' . implode(',', $results->pluck('reference')->toArray()));
+                if ($results->count() != 1) {
+                    $this->info($reference->reference.' '.$results->count().' '.implode(',', $results->pluck('reference')->toArray()));
                 }
             }
         }

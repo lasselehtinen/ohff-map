@@ -18,7 +18,7 @@ class LoginController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -42,7 +42,7 @@ class LoginController extends Controller
         // Remove existing tokens and create new one
         $request->user()->tokens()->delete();
         $token = $request->user()->createToken('auth_token');
-        
+
         return response()->json(['token' => $token->plainTextToken]);
     }
 
@@ -56,7 +56,7 @@ class LoginController extends Controller
     {
         // Remove existing tokens
         $request->user()->tokens()->delete();
-        
+
         return response()->json(['message' => 'Logged out.']);
     }
 }

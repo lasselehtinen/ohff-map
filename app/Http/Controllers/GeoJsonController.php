@@ -5,11 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Filters\FiltersReferencesActivatedByCallsign;
 use App\Http\Filters\FiltersReferencesNotActivatedByCallsign;
 use App\Models\Reference;
-use App\Models\User;
 use DateTime;
 use GeoJson\Feature\Feature;
 use GeoJson\Feature\FeatureCollection;
-use GeoJson\Geometry\Point;
 use GeoJson\Geometry\Polygon;
 use Grimzy\LaravelMysqlSpatial\Types\LineString as SpatialLineString;
 use Grimzy\LaravelMysqlSpatial\Types\Point as SpatialPoint;
@@ -59,7 +57,7 @@ class GeoJsonController extends Controller
             // Define properties
             $properties = [
                 'reference' => $reference->reference,
-                'is_activated' => !empty($reference->first_activation_date),
+                'is_activated' => ! empty($reference->first_activation_date),
                 'first_activation_date' => $reference->first_activation_date,
                 'latest_activation_date' => $reference->latest_activation_date,
                 'latest_activator' => $reference->activators->sortByDesc('pivot.activation_date')->pluck('callsign')->first(),
@@ -75,7 +73,7 @@ class GeoJsonController extends Controller
             $features->push($feature);
 
             // Add geometry as a feature if zoom level is high enough
-            if ($request->input('zoom', 5) > 7 && !is_null($reference->area)) {
+            if ($request->input('zoom', 5) > 7 && ! is_null($reference->area)) {
                 $feature = new Feature($reference->area->jsonSerialize(), $properties);
                 $features->push($feature);
             }
@@ -88,7 +86,8 @@ class GeoJsonController extends Controller
 
     /**
      * Returns the icon URL for the given reference
-     * @param  \Illuminate\Database\Eloquent\Model $reference
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $reference
      * @return string
      */
     public function getIcon($reference)
@@ -100,7 +99,7 @@ class GeoJsonController extends Controller
         if (is_null($reference->first_activation_date)) {
             return 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/tree.png';
         }
-        
+
         // Calculate years from latest activation
         $currentDate = new DateTime();
         $latestActivation = new DateTime($reference->latest_activation_date);
@@ -132,7 +131,8 @@ class GeoJsonController extends Controller
 
     /**
      * Get link for Kansalaisen karttapaikka
-     * @param  Reference $reference
+     *
+     * @param  Reference  $reference
      * @return string
      */
     public function getKansalaisenKarttaPaikkaLink($reference)
@@ -145,19 +145,20 @@ class GeoJsonController extends Controller
             null
         );
         $toCRS = Projected::fromSRID(Projected::EPSG_ETRS89_TM35FIN_N_E);
-        
+
         try {
             $to = $from->convert($toCRS); // $to instanceof ProjectedPoint
         } catch (\PHPCoord\Exception\UnknownConversionException $e) {
             return null;
         }
 
-        return 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n=' . $to->getNorthing() . '&e=' . $to->getEasting() .'&title=' . $reference->reference . '&desc=' . urlencode($reference->name) . '&zoom=8';
+        return 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n='.$to->getNorthing().'&e='.$to->getEasting().'&title='.$reference->reference.'&desc='.urlencode($reference->name).'&zoom=8';
     }
 
     /**
      * Get link for Paikkatieto
-     * @param  Reference $reference
+     *
+     * @param  Reference  $reference
      * @return string
      */
     public function getPaikkatietoLink($reference)
@@ -171,20 +172,21 @@ class GeoJsonController extends Controller
         );
 
         $toCRS = Projected::fromSRID(Projected::EPSG_ETRS89_TM35FIN_N_E);
-        
+
         try {
             $to = $from->convert($toCRS); // $to instanceof ProjectedPoint
         } catch (\PHPCoord\Exception\UnknownConversionException $e) {
             return null;
         }
 
-        return 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord=' . $to->getEasting() . '_'. $to->getNorthing() .'&mapLayers=802+100+default,1629+100+default,1627+100+default,1628+100+default&markers=2|1|ffde00|' . $to->getEasting() . '_'. $to->getNorthing() .'|' . $reference->reference . '%20-%20' . urlencode($reference->name) .'&noSavedState=true&showIntro=false';
+        return 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord='.$to->getEasting().'_'.$to->getNorthing().'&mapLayers=802+100+default,1629+100+default,1627+100+default,1628+100+default&markers=2|1|ffde00|'.$to->getEasting().'_'.$to->getNorthing().'|'.$reference->reference.'%20-%20'.urlencode($reference->name).'&noSavedState=true&showIntro=false';
     }
 
     /**
      * Get the rectable polygon for the bound
-     * @param  string $southWestBounds
-     * @param  string $northEastBounds
+     *
+     * @param  string  $southWestBounds
+     * @param  string  $northEastBounds
      * @return \Grimzy\LaravelMysqlSpatial\Types\Polygon
      */
     public function getBoundPolygon($southWestBounds, $northEastBounds)
@@ -195,7 +197,7 @@ class GeoJsonController extends Controller
         $westLimit = preg_replace($regExp, '$2', $southWestBounds);
         $northLimit = preg_replace($regExp, '$1', $northEastBounds);
         $eastLimit = preg_replace($regExp, '$2', $northEastBounds);
-            
+
         // We go around starting from SW and going around clockwise and connecting to start
         $polygon = new SpatialPolygon([new SpatialLineString([
             new SpatialPoint($southLimit, $westLimit),

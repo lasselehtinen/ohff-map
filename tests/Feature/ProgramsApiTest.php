@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Program;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
@@ -30,7 +29,7 @@ class ProgramsApiTest extends TestCase
                     [
                         'id' => $program->id,
                         'name' => $program->name,
-                    ]
+                    ],
                 ],
             ]);
     }
@@ -44,7 +43,7 @@ class ProgramsApiTest extends TestCase
     {
         $program = Program::factory()->create();
 
-        $response = $this->get('/api/programs/' . $program->id);
+        $response = $this->get('/api/programs/'.$program->id);
 
         $response
             ->assertStatus(200)
@@ -76,14 +75,13 @@ class ProgramsApiTest extends TestCase
                     [
                         'id' => $program->id,
                         'name' => $program->name,
-                    ]
+                    ],
                 ],
             ]);
 
         // No matches should be found
         $response = $this->get('/api/programs?filter[name]=foobar');
 
-        $response->assertJson(fn (AssertableJson $json) =>
-            $json->has('data', 0)->etc());
+        $response->assertJson(fn (AssertableJson $json) => $json->has('data', 0)->etc());
     }
 }

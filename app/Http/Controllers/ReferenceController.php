@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Filters\FiltersNearest;
 use App\Http\Resources\ReferenceResource;
 use App\Models\Continent;
 use App\Models\Dxcc;
 use App\Models\Program;
 use App\Models\Reference;
+use Axiom\Rules\LocationCoordinates;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
-use Axiom\Rules\LocationCoordinates;
 
 class ReferenceController extends Controller
 {
@@ -28,14 +27,14 @@ class ReferenceController extends Controller
         $references = QueryBuilder::for(Reference::class)
         ->allowedFilters([
             AllowedFilter::callback('nearest', function ($query, $coordinates) {
-                    $point = new Point($coordinates[0], $coordinates[1]);
-                    $query->orderByDistance('location', $point);
+                $point = new Point($coordinates[0], $coordinates[1]);
+                $query->orderByDistance('location', $point);
             }),
             AllowedFilter::callback('activated_by_me', function ($query, $value) use ($request) {
                 if ($value === false) {
                     $query->whereNotIn('id', $request->user()->activations->pluck('id')->unique());
                 }
-                
+
                 $query->whereIn('id', $request->user()->activations->pluck('id')->unique());
             }),
             'name',
@@ -79,7 +78,7 @@ class ReferenceController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:references',
             'coordinates' => ['required', new LocationCoordinates],
-            'protected_planet_link' => 'required|url|regex:/https?:\/\/www.protectedplanet.net\/\d+/'
+            'protected_planet_link' => 'required|url|regex:/https?:\/\/www.protectedplanet.net\/\d+/',
         ]);
 
         // Check that WDPA id is not already used
@@ -104,7 +103,7 @@ class ReferenceController extends Controller
         $reference->name = $request->name;
         $reference->status = 'proposed';
         $reference->suggested = true;
-        list($latitude, $longitude) = explode(',', $request->coordinates);
+        [$latitude, $longitude] = explode(',', $request->coordinates);
         $reference->location = new Point($latitude, $longitude);
         $reference->wdpa_id = $wdpaId;
 
@@ -120,7 +119,6 @@ class ReferenceController extends Controller
 
         $reference->save();
 
-        return redirect('suggest')->with('status', 'Suggested reference '. $reference->reference .' saved. It will be checked and approved soon as possible.');
+        return redirect('suggest')->with('status', 'Suggested reference '.$reference->reference.' saved. It will be checked and approved soon as possible.');
     }
-    
 }

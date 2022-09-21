@@ -35,7 +35,7 @@ class ListNonApprovedReferences extends Command
                 'latitude' => $reference->location->getLat(),
                 'longitude' => $reference->location->getLng(),
                 'link' => 'https://www.protectedplanet.net/'.$reference->wdpa_id,
-            ];       
+            ];
         });
 
         $this->table(

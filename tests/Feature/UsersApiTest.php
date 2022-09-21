@@ -2,13 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Models\Continent;
+use App\Models\Dxcc;
+use App\Models\Program;
 use App\Models\Reference;
 use App\Models\User;
-use App\Models\Program;
-use App\Models\Dxcc;
-use App\Models\Continent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -28,10 +27,10 @@ class UsersApiTest extends TestCase
         $user = User::factory()->make();
 
         $response = $this->post('/api/users', [
-           'name' => $user->name,
-           'callsign' => $user->callsign,
-           'email' => $user->email,
-           'password' => $user->password,
+            'name' => $user->name,
+            'callsign' => $user->callsign,
+            'email' => $user->email,
+            'password' => $user->password,
         ]);
 
         $response
@@ -42,8 +41,8 @@ class UsersApiTest extends TestCase
                     'callsign' => $user->callsign,
                     'name' => $user->name,
                     'email' => $user->email,
-                    'activations' => []
-                ]
+                    'activations' => [],
+                ],
             ]);
 
         $this->assertDatabaseHas('users', [
@@ -63,14 +62,13 @@ class UsersApiTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->post('/api/login', [
-           'email' => $user->email,
-           'password' => 'password',
+            'email' => $user->email,
+            'password' => 'password',
         ]);
 
         $response
             ->assertStatus(200)
-            ->assertJson(fn (AssertableJson $json) =>
-                $json->whereType('token', 'string'));
+            ->assertJson(fn (AssertableJson $json) => $json->whereType('token', 'string'));
     }
 
     /**
@@ -99,8 +97,8 @@ class UsersApiTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->post('/api/login', [
-           'email' => $user->email,
-           'password' => 'foopassword',
+            'email' => $user->email,
+            'password' => 'foopassword',
         ]);
 
         $response
@@ -127,7 +125,7 @@ class UsersApiTest extends TestCase
         // Create two users
         $userOne = User::factory()->create();
         $userTwo = User::factory()->create();
-        
+
         Sanctum::actingAs($userOne, ['*']);
 
         // User should be able to view their own info
@@ -141,7 +139,7 @@ class UsersApiTest extends TestCase
                     'callsign' => $userOne->callsign,
                     'name' => $userOne->name,
                     'email' => $userOne->email,
-                    "activations" => [],
+                    'activations' => [],
                 ],
             ]);
 
@@ -172,7 +170,7 @@ class UsersApiTest extends TestCase
         // Create two users
         $userOne = User::factory()->create();
         $userTwo = User::factory()->create();
-        
+
         Sanctum::actingAs($userOne, ['*']);
 
         // User should be able to edit their own info
@@ -188,7 +186,7 @@ class UsersApiTest extends TestCase
                     'callsign' => $userOne->callsign,
                     'name' => $userOne->name,
                     'email' => 'newemail@domain.com',
-                    "activations" => [],
+                    'activations' => [],
                 ],
             ]);
 
@@ -219,7 +217,7 @@ class UsersApiTest extends TestCase
     public function testUserCanMarkReferenceAsActivated()
     {
         $user = User::factory()->create();
-        
+
         $reference = Reference::factory()
             ->for(Program::factory())
             ->for(Dxcc::factory())
@@ -295,7 +293,7 @@ class UsersApiTest extends TestCase
                                     'id' => $user->id,
                                     'callsign' => $user->callsign,
                                     'activation_date' => '2021-01-01',
-                                ]
+                                ],
                             ],
                         ],
                     ],
@@ -313,7 +311,7 @@ class UsersApiTest extends TestCase
         // Create two users
         $userOne = User::factory()->create();
         $userTwo = User::factory()->create();
-        
+
         $reference = Reference::factory()
             ->for(Program::factory())
             ->for(Dxcc::factory())

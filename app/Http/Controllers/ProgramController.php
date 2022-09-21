@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ProgramResource;
 use App\Models\Program;
 use Illuminate\Http\Request;
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ProgramController extends Controller
@@ -22,7 +21,7 @@ class ProgramController extends Controller
         ->allowedFilters(['name'])
         ->paginate()
         ->appends(request()->query());
-        
+
         return ProgramResource::collection($programs);
     }
 

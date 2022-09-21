@@ -28,7 +28,7 @@ class CreateReferencesTable extends Migration
             $table->unsignedBigInteger('dxcc_id')->nullable();
             $table->foreign('dxcc_id')->references('id')->on('dxccs');
             $table->unsignedBigInteger('continent_id')->nullable();
-            $table->foreign('continent_id')->references('id')->on('dxccs');            
+            $table->foreign('continent_id')->references('id')->on('dxccs');
         });
     }
 

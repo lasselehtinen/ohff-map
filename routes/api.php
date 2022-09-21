@@ -1,10 +1,9 @@
 <?php
 
-use App\Http\Controllers\ReferenceController;
-use App\Http\Controllers\ProgramController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\ReferenceController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*

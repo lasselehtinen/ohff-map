@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use Grimzy\LaravelMysqlSpatial\Eloquent\SpatialTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Searchable;
 
 /**
  * App\Models\Reference.
+ *
  * @property string $first_activation_date
  * @property string $latest_activation_date
  */

@@ -4,14 +4,12 @@ namespace App\Console\Commands;
 
 use App\Models\Reference;
 use Grimzy\LaravelMysqlSpatial\Types\Geometry;
-use Grimzy\LaravelMysqlSpatial\Types\Point;
-use Grimzy\LaravelMysqlSpatial\Types\Polygon;
 use Grimzy\LaravelMysqlSpatial\Types\MultiPolygon;
+use Grimzy\LaravelMysqlSpatial\Types\Polygon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Shapefile\Shapefile;
-use Shapefile\ShapefileException;
 use Shapefile\ShapefileReader;
 
 class ParseProtectedPlanetShapeFiles extends Command
@@ -55,6 +53,7 @@ class ParseProtectedPlanetShapeFiles extends Command
         // Get total count
         $totalCount = $shapeFiles->sum(function ($shapeFile) {
             $shapeFile = new ShapefileReader(Storage::disk('resources')->path($shapeFile));
+
             return $shapeFile->getTotRecords();
         });
 
@@ -66,24 +65,24 @@ class ParseProtectedPlanetShapeFiles extends Command
         foreach ($shapeFiles as $shapeFile) {
             // Open Shapefile
             $shapeFile = new ShapefileReader(Storage::disk('resources')->path($shapeFile));
-            
+
             // Read all the records
             while ($geometry = $shapeFile->fetchRecord()) {
                 $shapeData = $geometry->getDataArray();
 
                 // Search if we have reference with that World Database on Protected Areas ID
                 $reference = Reference::where('wdpa_id', $shapeData['WDPA_PID'])->first();
-                
-                if (!is_null($reference)) {
+
+                if (! is_null($reference)) {
                     $geometryData = $geometry->getArray();
                     $area = Geometry::fromJson($geometry->getGeoJSON());
-                    
+
                     // Set boolean if area is Natura 2000 area
                     if (in_array($shapeData['DESIG_ENG'], ['Special Areas of Conservation (Habitats Directive)', 'Special Protection Area (Birds Directive)'])) {
                         $reference->natura_2000_area = true;
                         $reference->save();
                     }
-                    
+
                     // Set area
                     if ($area instanceof Polygon || $area instanceof MultiPolygon) {
                         $reference->area = $area;
@@ -96,7 +95,7 @@ class ParseProtectedPlanetShapeFiles extends Command
         }
 
         $bar->finish();
-        
+
         return Command::SUCCESS;
     }
 }

@@ -81,12 +81,12 @@ class UpdateReferences extends Command
         $references->each(function ($sourceReference) use ($bar) {
             // Replace empty and '-' values with null
             $sourceReference = array_map(function ($value) {
-                return ($value === "" || $value === '-') ? null : $value;
+                return ($value === '' || $value === '-') ? null : $value;
             }, $sourceReference);
 
             // Check if we can parse Protected Planet ID from website
             $protectedPlanetId = null;
-            
+
             if (Str::contains($sourceReference['website'], 'protectedplanet')) {
                 $chunks = explode('/', $sourceReference['website']);
                 $lastPart = end($chunks);

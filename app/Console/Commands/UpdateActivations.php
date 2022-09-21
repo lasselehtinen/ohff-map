@@ -55,7 +55,7 @@ class UpdateActivations extends Command
 
         // Update activation dates and activations
         $references->each(function ($reference, $key) use ($bar) {
-            $response = Http::get('https://wwff.co/directory/?showRef=' . $reference['reference']);
+            $response = Http::get('https://wwff.co/directory/?showRef='.$reference['reference']);
             $crawler = new Crawler($response->body());
 
             $table = $crawler->filterXPath('//*[@id="logsearch"]/form/table')->filter('tr')->each(function ($tr, $i) {
@@ -79,7 +79,7 @@ class UpdateActivations extends Command
             $activations->each(function ($activation, $key) use ($reference) {
                 // Create / fetch user exists
                 $user = User::firstOrCreate(['callsign' => strtok($activation['callsign'], '/')], ['password' => Hash::make(Str::random(8))]);
-                
+
                 // Prevent duplicates
                 $activationExists = $user->with('activations')->whereHas('activations', function ($query) use ($reference, $activation) {
                     $query->where('reference_id', $reference->id)->where('activation_date', $activation['date']->format('Y-m-d'));
