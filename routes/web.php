@@ -21,8 +21,7 @@ Route::get('/', function (Request $request) {
 });
 
 Route::get('/geojson', [GeoJsonController::class, 'index']);
-
-Route::get('suggest', ['middleware' => 'doNotCacheResponse', ReferenceController::class, 'create']);
-Route::post('store-reference', ['middleware' => 'doNotCacheResponse', ReferenceController::class, 'store']);
+Route::get('suggest', ['middleware' => 'doNotCacheResponse', 'uses' => 'ReferenceController@create']);
+Route::post('store-reference', ['middleware' => 'doNotCacheResponse', 'uses' => 'ReferenceController@store']);
 
 require __DIR__.'/auth.php';
