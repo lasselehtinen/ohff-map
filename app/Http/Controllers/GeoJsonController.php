@@ -92,7 +92,7 @@ class GeoJsonController extends Controller
      */
     public function getIcon($reference)
     {
-        if ($reference->suggested) {
+        if (in_array($reference->approval_status, ['received', 'saved'])) {
             return 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/purple.png';
         }
 
