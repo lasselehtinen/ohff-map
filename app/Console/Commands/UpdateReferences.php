@@ -116,6 +116,11 @@ class UpdateReferences extends Command
             $continent = Continent::where('name', $sourceReference['continent'])->first();
             $reference->continent()->associate($continent);
 
+            // Check if new reference has been approved
+            if ($sourceReference['status'] === 'active' && $reference->approval_status === 'approved') {
+                $reference->approval_status === 'saved';
+            }
+
             $reference->save();
             $bar->advance();
         });
