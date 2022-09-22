@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('references', function (Blueprint $table) {
-            $table->enum('approval_status', ['received', 'approved', 'saved'])->default('received');
+            $table->enum('approval_status', ['received', 'declined', 'approved', 'saved'])->default('received');
         });
     }
 
