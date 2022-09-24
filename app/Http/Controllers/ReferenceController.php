@@ -87,7 +87,8 @@ class ReferenceController extends Controller
         $validator->after(function ($validator) use ($wdpaId) {
             if (Reference::where('wdpa_id', $wdpaId)->count() > 0) {
                 $validator->errors()->add(
-                    'protected_planet_link', 'Area with the same Protected Planet / WDPA ID already exists'
+                    'protected_planet_link',
+                    'Area with the same Protected Planet / WDPA ID already exists'
                 );
             }
         });
