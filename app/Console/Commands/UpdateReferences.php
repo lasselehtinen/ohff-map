@@ -118,7 +118,7 @@ class UpdateReferences extends Command
 
             // Check if new reference has been approved
             if ($sourceReference['status'] === 'active' && $reference->approval_status === 'approved') {
-                $reference->approval_status === 'saved';
+                $reference->approval_status = 'saved';
             }
 
             $reference->save();
