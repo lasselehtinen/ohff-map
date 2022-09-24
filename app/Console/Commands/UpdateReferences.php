@@ -131,8 +131,8 @@ class UpdateReferences extends Command
         Artisan::call('responsecache:clear');
 
         // Warm up cache
-        Http::get('https://kartta.ohff.fi/geojson');
-        Http::get('https://kartta.ohff.fi/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=');
+        Http::timeout(600)->get('https://kartta.ohff.fi/geojson');
+        Http::timeout(600)->get('https://kartta.ohff.fi/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bapproval_status%5D=');
 
         return 0;
     }
