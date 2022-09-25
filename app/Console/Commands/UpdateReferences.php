@@ -9,7 +9,6 @@ use App\Models\Reference;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use League\Csv\Reader;
 
@@ -127,12 +126,8 @@ class UpdateReferences extends Command
 
         $bar->finish();
 
-        // Clear the response cache
-        Artisan::call('responsecache:clear');
-
-        // Warm up cache
-        Http::timeout(600)->get('https://kartta.ohff.fi/geojson');
-        Http::timeout(600)->get('https://kartta.ohff.fi/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bapproval_status%5D=');
+        // Clear and warmup the cache
+        Artisan::call('cache:warmup');
 
         return 0;
     }

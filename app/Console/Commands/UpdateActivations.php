@@ -98,7 +98,7 @@ class UpdateActivations extends Command
         $bar->finish();
 
         // Clear the response cache
-        Artisan::call('responsecache:clear');
+        Artisan::call('cache:warmup');
 
         return 0;
     }
