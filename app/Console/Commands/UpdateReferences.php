@@ -9,6 +9,7 @@ use App\Models\Reference;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use League\Csv\Reader;
 
