@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('users', UserController::class)->only(['show', 'update', 'destroy'])->middleware('auth:sanctum');
+Route::resource('users', UserController::class)->only(['show', 'update'])->middleware('auth:sanctum');
 Route::resource('users', UserController::class)->only(['store']);
 Route::put('/users/{user}/activations/{reference}', [UserController::class, 'userActivation'])->middleware('auth:sanctum');
 Route::resource('references', ReferenceController::class)->only(['index', 'show'])->middleware('auth:sanctum');

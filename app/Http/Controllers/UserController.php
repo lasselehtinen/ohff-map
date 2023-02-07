@@ -108,17 +108,6 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function destroy(User $user)
-    {
-        return 'user deleted';
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
      * @param  \App\Models\Reference  $reference

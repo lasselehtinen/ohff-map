@@ -8,12 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 
-/**
- * App\Models\Reference.
- *
- * @property string $first_activation_date
- * @property string $latest_activation_date
- */
 class Reference extends Model
 {
     use HasFactory, SpatialTrait, Searchable;
@@ -21,7 +15,7 @@ class Reference extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $fillable = ['reference', 'status', 'name', 'iota_reference', 'location', 'suggested', 'wdpa_id'];
 

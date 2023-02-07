@@ -29,7 +29,7 @@ class CheckProtectedPlanetLinks extends Command
      */
     public function handle()
     {
-        $references = Reference::whereNotNull('wdpa_id')->get();
+        $references = Reference::whereNotNull('wdpa_id')->get(); /** @phpstan-ignore-line */
 
         // Create progress bar
         $bar = $this->output->createProgressBar($references->count());
