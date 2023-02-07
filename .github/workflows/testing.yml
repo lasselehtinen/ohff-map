@@ -39,8 +39,11 @@ jobs:
       - name: Perform syntax check
         run: vendor/bin/grumphp run --testsuite=syntax
 
+      - name: Perform static check
+        run: vendor/bin/grumphp run --testsuite=static
+
       - name: Perform style tests
-        run: vendor/bin/grumphp run --testsuite=style
+        run: vendor/bin/pint --test
 
       - name: Execute tests (Unit and Feature tests) via PHPUnit
         run: vendor/bin/phpunit --coverage-text
