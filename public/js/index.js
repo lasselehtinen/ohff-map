@@ -98,7 +98,7 @@ function initMap() {
     }
 
     if (event.feature.getProperty("notes")) {
-      contentString += '<p>⚠️ The area consist of multiple different areas. Also check the following Protected Planet links:</p>';
+      contentString += '<p>⚠️ The area consists of multiple different areas. Also check the following Protected Planet links:</p>';
       var wdpaIds = event.feature.getProperty("notes").split(",");
       console.log(wdpaIds);
 
