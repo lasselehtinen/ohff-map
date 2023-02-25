@@ -97,6 +97,17 @@ function initMap() {
       contentString += '<p>⚠️ The area is a Natura 2000 area.<p/><p>Check the area from Paikkatietoikkuna or Suomen ympäristökeskuksen karttapalvelu.</p>';
     }
 
+    if (event.feature.getProperty("notes")) {
+      contentString += '<p>⚠️ The area consist of multiple different areas. Also check the following Protected Planet links:</p>';
+      var wdpaIds = event.feature.getProperty("notes").split(",");
+      console.log(wdpaIds);
+
+      for (let i = 0; i < wdpaIds.length; i++) {
+        contentString += '<a href="https://www.protectedplanet.net/'+ wdpaIds[i] + '" target="_new">Protected Planet</a><br/>';
+        console.log(contentString);
+      }
+    }
+
     infowindow.setContent(contentString); // show the html variable in the infowindow
     
     if (event.feature.getGeometry().getType() == 'Point') {

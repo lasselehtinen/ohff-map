@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Reference extends Model
 {
@@ -17,7 +19,7 @@ class Reference extends Model
      *
      * @var array<string>
      */
-    protected $fillable = ['reference', 'status', 'name', 'iota_reference', 'location', 'suggested', 'wdpa_id'];
+    protected $fillable = ['reference', 'status', 'name', 'iota_reference', 'location', 'suggested', 'wdpa_id', 'notes'];
 
     /**
      * The attributes that are spatial
@@ -40,7 +42,7 @@ class Reference extends Model
     /**
      * Get the program that owns the reference.
      */
-    public function program()
+    public function program(): BelongsTo
     {
         return $this->belongsTo(Program::class);
     }
@@ -48,7 +50,7 @@ class Reference extends Model
     /**
      * Get the dxcc that owns the reference.
      */
-    public function dxcc()
+    public function dxcc(): BelongsTo
     {
         return $this->belongsTo(Dxcc::class);
     }
@@ -56,7 +58,7 @@ class Reference extends Model
     /**
      * Get the continent that owns the reference.
      */
-    public function continent()
+    public function continent(): BelongsTo
     {
         return $this->belongsTo(Continent::class);
     }
@@ -64,7 +66,7 @@ class Reference extends Model
     /**
      * The users that have activated the reference
      */
-    public function activators()
+    public function activators(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_activations')->withPivot('activation_date');
     }
