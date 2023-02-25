@@ -67,6 +67,7 @@ class GeoJsonController extends Controller
                 'karttapaikka_link' => $this->getKansalaisenKarttaPaikkaLink($reference),
                 'paikkatietoikkuna_link' => $this->getPaikkatietoLink($reference),
                 'is_natura_2000_area' => (bool) $reference->natura_2000_area,
+                'notes' => $reference->notes,
             ];
 
             $feature = new Feature($reference->location->jsonSerialize(), $properties);
@@ -87,7 +88,7 @@ class GeoJsonController extends Controller
     /**
      * Returns the icon URL for the given reference
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $reference
+     * @param  \App\Models\Reference  $reference
      * @return string
      */
     public function getIcon($reference)
@@ -132,8 +133,8 @@ class GeoJsonController extends Controller
     /**
      * Get link for Kansalaisen karttapaikka
      *
-     * @param  Reference  $reference
-     * @return string
+     * @param  \Illuminate\Database\Eloquent\Model  $reference
+     * @return string|null
      */
     public function getKansalaisenKarttaPaikkaLink($reference)
     {
@@ -152,14 +153,15 @@ class GeoJsonController extends Controller
             return null;
         }
 
+        /* @phpstan-ignore-next-line */
         return 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n='.$to->getNorthing().'&e='.$to->getEasting().'&title='.$reference->reference.'&desc='.urlencode($reference->name).'&zoom=8';
     }
 
     /**
      * Get link for Paikkatieto
      *
-     * @param  Reference  $reference
-     * @return string
+     * @param  \Illuminate\Database\Eloquent\Model  $reference
+     * @return string|null
      */
     public function getPaikkatietoLink($reference)
     {
@@ -179,6 +181,7 @@ class GeoJsonController extends Controller
             return null;
         }
 
+        /* @phpstan-ignore-next-line */
         return 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord='.$to->getEasting().'_'.$to->getNorthing().'&mapLayers=802+100+default,1629+100+default,1627+100+default,1628+100+default&markers=2|1|ffde00|'.$to->getEasting().'_'.$to->getNorthing().'|'.$reference->reference.'%20-%20'.urlencode($reference->name).'&noSavedState=true&showIntro=false';
     }
 
