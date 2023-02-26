@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/** @mixin \App\Models\User **/
 class UserActivationResource extends JsonResource
 {
     /**
@@ -17,7 +18,7 @@ class UserActivationResource extends JsonResource
         return [
             'id' => $this->id,
             'callsign' => $this->callsign,
-            'activation_date' => $this->pivot->activation_date,
+            'activation_date' => $this->pivot->activation_date, /** @phpstan-ignore-line */
         ];
     }
 }

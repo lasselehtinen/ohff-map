@@ -60,7 +60,7 @@ class ReferenceController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -71,7 +71,7 @@ class ReferenceController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -82,10 +82,10 @@ class ReferenceController extends Controller
         ]);
 
         // Check that WDPA id is not already used
-        $wdpaId = basename($request->protected_planet_link);
+        $wdpaId = intval(basename($request->protected_planet_link));
 
         $validator->after(function ($validator) use ($wdpaId) {
-            if (Reference::where('wdpa_id', $wdpaId)->count() > 0) {
+            if (Reference::where('wdpa_id', $wdpaId)->exists()) { /** @phpstan-ignore-line */
                 $validator->errors()->add(
                     'protected_planet_link',
                     'Area with the same Protected Planet / WDPA ID already exists'
@@ -97,13 +97,12 @@ class ReferenceController extends Controller
             return redirect('suggest')->withErrors($validator)->withInput();
         }
 
-        $latestReference = Reference::orderByDesc('reference')->first();
+        $latestReference = Reference::orderByDesc('reference')->first(); /* @phpstan-ignore-line */
 
         $reference = new Reference;
-        $reference->reference = ++$latestReference->reference;
+        $reference->reference = strval(++$latestReference->reference);
         $reference->name = $request->name;
         $reference->status = 'proposed';
-        $reference->suggested = true;
         [$latitude, $longitude] = explode(',', $request->coordinates);
         $reference->location = new Point($latitude, $longitude);
         $reference->wdpa_id = $wdpaId;

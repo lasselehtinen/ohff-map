@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Continent extends Model
 {
@@ -19,7 +20,7 @@ class Continent extends Model
     /**
      * Get the references for the continent.
      */
-    public function references()
+    public function references(): HasMany
     {
         return $this->hasMany(Reference::class);
     }

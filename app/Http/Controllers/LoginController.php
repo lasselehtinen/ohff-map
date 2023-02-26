@@ -22,7 +22,16 @@ class LoginController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return 'missing email and password';
+            return response()->json([
+                'errors' => [
+                    [
+                        'status' => '400',
+                        'source' => ['pointer' => $request->url()],
+                        'title' => 'Email and password are required',
+                        'detail' => 'Check the email and password.',
+                    ],
+                ],
+            ], 400);
         }
 
         // Try to login

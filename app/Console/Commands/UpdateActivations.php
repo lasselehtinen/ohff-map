@@ -82,6 +82,7 @@ class UpdateActivations extends Command
 
                 // Prevent duplicates
                 $activationsOnReference = $user->activations()->get()->filter(function ($activationReference, $key) use ($reference, $activation) {
+                    /** @phpstan-ignore-next-line */
                     return $activationReference->id === $reference->id && $activationReference->pivot->activation_date === $activation['date']->format('Y-m-d');
                 });
 

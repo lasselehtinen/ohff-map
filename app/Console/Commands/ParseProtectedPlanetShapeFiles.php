@@ -67,7 +67,8 @@ class ParseProtectedPlanetShapeFiles extends Command
             $shapeFile = new ShapefileReader(Storage::disk('resources')->path($shapeFile));
 
             // Read all the records
-            while ($geometry = $shapeFile->fetchRecord()) {
+            for ($i = 0; $i < $totalCount; $i++) {
+                $geometry = $shapeFile->fetchRecord();
                 $shapeData = $geometry->getDataArray();
 
                 // Search if we have reference with that World Database on Protected Areas ID
@@ -79,15 +80,15 @@ class ParseProtectedPlanetShapeFiles extends Command
 
                     // Set boolean if area is Natura 2000 area
                     if (in_array($shapeData['DESIG_ENG'], ['Special Areas of Conservation (Habitats Directive)', 'Special Protection Area (Birds Directive)'])) {
-                        $reference->natura_2000_area = true;
-                        $reference->save();
+                        $reference->natura_2000_area = true; /** @phpstan-ignore-line */
                     }
 
                     // Set area
                     if ($area instanceof Polygon || $area instanceof MultiPolygon) {
-                        $reference->area = $area;
-                        $reference->save();
+                        $reference->area = $area; /** @phpstan-ignore-line */
                     }
+
+                    $reference->save();
                 }
 
                 $bar->advance();

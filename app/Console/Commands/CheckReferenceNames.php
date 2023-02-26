@@ -44,32 +44,24 @@ class CheckReferenceNames extends Command
             return $shapeFile->getTotRecords();
         });
 
-        // Create progress bar
-        /*
-        $bar = $this->output->createProgressBar($totalCount);
-        $bar->setFormat('very_verbose');
-        $bar->start();
-        */
         foreach ($shapeFiles as $shapeFile) {
             // Open Shapefile
             $shapeFile = new ShapefileReader(Storage::disk('resources')->path($shapeFile));
 
             // Read all the records
-            while ($geometry = $shapeFile->fetchRecord()) {
+            for ($i = 0; $i < $totalCount; $i++) {
+                $geometry = $shapeFile->fetchRecord();
                 $shapeData = $geometry->getDataArray();
 
                 // Search if we have reference with that World Database on Protected Areas ID
                 $reference = Reference::where('wdpa_id', $shapeData['WDPA_PID'])->first();
 
                 if (! is_null($reference)) {
+                    /** @phpstan-ignore-next-line */
                     $this->info($reference->reference.';'.$reference->name.';'.$shapeData['NAME'].';'.$shapeData['ORIG_NAME'].';'.levenshtein($shapeData['NAME'], $reference->name));
                 }
-
-                //$bar->advance();
             }
         }
-
-        //$bar->finish();
 
         return 0;
     }

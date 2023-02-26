@@ -28,7 +28,9 @@ class ListNonApprovedReferences extends Command
      */
     public function handle()
     {
-        $references = Reference::where('approval_status', 'received')->get()->sortBy('reference')->map(function ($reference, $key) {
+        $references = Reference::all()->filter(function ($reference, $key) {
+            return $reference->approval_status === 'received';
+        })->sortBy('reference')->map(function ($reference, $key) {
             return [
                 'reference' => $reference->reference,
                 'name' => $reference->name,

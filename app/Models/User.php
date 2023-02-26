@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -78,7 +79,7 @@ class User extends Authenticatable
     /**
      * Get the activated references for the user.
      */
-    public function activations()
+    public function activations(): BelongsToMany
     {
         return $this->belongsToMany(Reference::class, 'user_activations', 'user_id', 'reference_id')->withPivot('activation_date');
     }

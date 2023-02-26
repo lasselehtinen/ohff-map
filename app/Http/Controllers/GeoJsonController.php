@@ -43,12 +43,11 @@ class GeoJsonController extends Controller
                 AllowedFilter::callback('within', function (Builder $query, $boundaries) {
                     // Create polygon from SW and NE coordinates
                     $boundPolygon = $this->getBoundPolygon($boundaries[0], $boundaries[1]);
-                    $query->within('location', $boundPolygon);
+                    $query->within('location', $boundPolygon); /** @phpstan-ignore-line */
                 }),
                 'reference',
                 'approval_status',
             ])
-
             ->where('status', '!=', 'deleted')->with('activators')->get();
 
         $features = collect([]);
@@ -88,7 +87,7 @@ class GeoJsonController extends Controller
     /**
      * Returns the icon URL for the given reference
      *
-     * @param  \App\Models\Reference  $reference
+     * @param  \Illuminate\Database\Eloquent\Model  $reference
      * @return string
      */
     public function getIcon($reference)

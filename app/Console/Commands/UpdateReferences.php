@@ -93,8 +93,14 @@ class UpdateReferences extends Command
                 $protectedPlanetId = (is_numeric($lastPart)) ? $lastPart : null;
             }
 
-            // Create or update reference
-            $reference = Reference::updateOrCreate(['reference' => $sourceReference['reference']], [
+            // Update attributes
+            $reference = Reference::where('reference', $sourceReference['reference'])->first();
+
+            if (is_null($reference)) {
+                $reference = Reference::create(['reference' => $sourceReference['reference']]);
+            }
+
+            $reference->update([
                 'name' => $sourceReference['name'],
                 'status' => $sourceReference['status'],
                 'iota_reference' => $sourceReference['iota'],
@@ -106,7 +112,7 @@ class UpdateReferences extends Command
             $filteredWdpaIds = array_filter($wdpaIds, 'ctype_digit');
 
             if (count($filteredWdpaIds) > 0) {
-                $reference->notes = $sourceReference['notes'];
+                $reference->notes = $sourceReference['notes']; /** @phpstan-ignore-line */
             }
 
             // Set or update location if changed. This is so that the model does not appear dirty unnecessarily.
@@ -116,17 +122,15 @@ class UpdateReferences extends Command
 
             // Add relations
             $program = Program::where('name', $sourceReference['program'])->firstOrFail();
-            $reference->program()->associate($program);
-
+            $reference->program()->associate($program); /** @phpstan-ignore-line */
             $dxcc = Dxcc::where('name', $sourceReference['dxcc'])->first();
-            $reference->dxcc()->associate($dxcc);
-
+            $reference->dxcc()->associate($dxcc); /** @phpstan-ignore-line */
             $continent = Continent::where('name', $sourceReference['continent'])->first();
-            $reference->continent()->associate($continent);
+            $reference->continent()->associate($continent); /** @phpstan-ignore-line */
 
             // Check if new reference has been approved
-            if ($sourceReference['status'] === 'active' && $reference->approval_status === 'approved') {
-                $reference->approval_status = 'saved';
+            if ($sourceReference['status'] === 'active' && $reference->approval_status === 'approved') { /** @phpstan-ignore-line */
+                $reference->approval_status = 'saved'; 
             }
 
             $reference->save();

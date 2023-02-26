@@ -32,7 +32,6 @@
         "symfony/dom-crawler": "^5.3"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "^2.13",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.2",
         "laravel/sail": "^1.6",
