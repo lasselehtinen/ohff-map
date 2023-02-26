@@ -47,3 +47,9 @@ jobs:
 
       - name: Execute tests (Unit and Feature tests) via PHPUnit
         run: vendor/bin/phpunit --coverage-text
+
+      - name: Deploy from Forge
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{ secrets.FORGE_DEPLOY_URL }}
+          method: 'POST'
