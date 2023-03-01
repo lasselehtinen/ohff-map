@@ -105,6 +105,7 @@ class UpdateReferences extends Command
                 'status' => $sourceReference['status'],
                 'iota_reference' => $sourceReference['iota'],
                 'wdpa_id' => $protectedPlanetId,
+                'latest_activation_date' => $sourceReference['lastAct'],
             ]);
 
             // Update notes that have extra WDPA ID's

@@ -46,7 +46,8 @@ class UpdateActivations extends Command
      */
     public function handle()
     {
-        $references = Reference::all();
+        // Get references that are activated in the past two months
+        $references = Reference::where('latest_activation_date', '>=', now()->subDays(60)->startOfDay()->toDateTimeString())->get();
 
         // Create progress bar
         $bar = $this->output->createProgressBar($references->count());
@@ -69,7 +70,6 @@ class UpdateActivations extends Command
 
             if (is_array($dates)) {
                 $reference->first_activation_date = $dates[0];
-                $reference->latest_activation_date = $dates[1];
                 $reference->save();
             }
 
