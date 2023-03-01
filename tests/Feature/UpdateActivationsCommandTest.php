@@ -23,7 +23,7 @@ class UpdateActivationsCommandTest extends TestCase
     public function testActivationIsParsedCorrectlyFromWwffSite()
     {
         // Create one known reference
-        $reference = Reference::factory(['reference' => 'OHFF-1079'])
+        $reference = Reference::factory(['reference' => 'OHFF-1079', 'latest_activation_date' => now()])
             ->for(Program::factory())
             ->for(Dxcc::factory())
             ->for(Continent::factory())
