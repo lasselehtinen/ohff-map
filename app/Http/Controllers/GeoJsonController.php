@@ -104,7 +104,7 @@ class GeoJsonController extends Controller
 
         // Calculate years from latest activation
         $currentDate = new DateTime();
-        $latestActivation = new DateTime($reference->latest_activation_date); 
+        $latestActivation = new DateTime($reference->latest_activation_date);
         $diff = $currentDate->diff($latestActivation);
 
         switch ($diff->y) {
