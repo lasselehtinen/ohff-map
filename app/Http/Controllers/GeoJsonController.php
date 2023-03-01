@@ -97,13 +97,14 @@ class GeoJsonController extends Controller
             return 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/purple.png';
         }
 
-        if (is_null($reference->first_activation_date)) { /** @phpstan-ignore-line */
+        /* @phpstan-ignore-next-line */
+        if (is_null($reference->latest_activation_date)) {
             return 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/tree.png';
         }
 
         // Calculate years from latest activation
         $currentDate = new DateTime();
-        $latestActivation = new DateTime($reference->latest_activation_date); /** @phpstan-ignore-line */
+        $latestActivation = new DateTime($reference->latest_activation_date); 
         $diff = $currentDate->diff($latestActivation);
 
         switch ($diff->y) {
