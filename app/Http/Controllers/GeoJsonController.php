@@ -66,7 +66,6 @@ class GeoJsonController extends Controller
                 'karttapaikka_link' => $this->getKansalaisenKarttaPaikkaLink($reference),
                 'paikkatietoikkuna_link' => $this->getPaikkatietoLink($reference),
                 'is_natura_2000_area' => (bool) $reference->natura_2000_area, /** @phpstan-ignore-line */
-                'notes' => $reference->notes, /** @phpstan-ignore-line */
             ];
 
             $feature = new Feature($reference->location->jsonSerialize(), $properties); /** @phpstan-ignore-line */

@@ -108,14 +108,6 @@ class UpdateReferences extends Command
                 'latest_activation_date' => $sourceReference['lastAct'],
             ]);
 
-            // Update notes that have extra WDPA ID's
-            $wdpaIds = explode(',', $sourceReference['notes']);
-            $filteredWdpaIds = array_filter($wdpaIds, 'ctype_digit');
-
-            if (count($filteredWdpaIds) > 0) {
-                $reference->notes = $sourceReference['notes']; /** @phpstan-ignore-line */
-            }
-
             // Set or update location if changed. This is so that the model does not appear dirty unnecessarily.
             if (is_null($reference->location) || ($reference->location->getLat() !== floatval($sourceReference['latitude']) || $reference->location->getLng() !== floatval($sourceReference['longitude']))) { /** @phpstan-ignore-line */
                 $reference->location = new Point($sourceReference['latitude'], $sourceReference['longitude']); /** @phpstan-ignore-line */

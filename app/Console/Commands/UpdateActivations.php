@@ -92,8 +92,6 @@ class UpdateActivations extends Command
                 }
             });
 
-            // Wait a bit not to hammer the WWFF site
-            sleep(2);
             $bar->advance();
         });
 
