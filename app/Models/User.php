@@ -81,6 +81,6 @@ class User extends Authenticatable
      */
     public function activations(): BelongsToMany
     {
-        return $this->belongsToMany(Reference::class, 'user_activations', 'user_id', 'reference_id')->withPivot('activation_date');
+        return $this->belongsToMany(Reference::class, 'user_activations', 'user_id', 'reference_id')->withPivot('activation_date', 'qso_count', 'chaser_count');
     }
 }

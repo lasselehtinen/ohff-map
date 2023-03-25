@@ -88,7 +88,11 @@ class UpdateActivations extends Command
                 });
 
                 if ($activationsOnReference->count() === 0) {
-                    $user->activations()->attach($reference, ['activation_date' => $activation['date']]);
+                    $user->activations()->attach($reference, [
+                        'activation_date' => $activation['date'],
+                        'qso_count' => $activation['qso_count'],
+                        'chaser_count' => $activation['chaser_count'],
+                    ]);
                 }
             });
 
@@ -138,6 +142,8 @@ class UpdateActivations extends Command
             return [
                 'date' => ($activationDate !== false) ? $activationDate : null,
                 'callsign' => strtok($activation[1], ' '),
+                'qso_count' => intval($activation[2]),
+                'chaser_count' => intval($activation[3]),
             ];
         });
 
