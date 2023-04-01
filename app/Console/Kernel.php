@@ -34,6 +34,12 @@ class Kernel extends ConsoleKernel
          ->pingBefore('https://hc-ping.com/f005c83b-60b6-4433-af16-d6a738b9da1c/start')
          ->pingOnSuccess('https://hc-ping.com/f005c83b-60b6-4433-af16-d6a738b9da1c')
          ->pingOnFailure('https://hc-ping.com/f005c83b-60b6-4433-af16-d6a738b9da1c/fail');
+
+        $schedule->command('generate:csv')
+         ->daily()
+         ->pingBefore('https://hc-ping.com/24bc9e2a-6a24-496f-adb5-f662c4399870/start')
+         ->pingOnSuccess('https://hc-ping.com/24bc9e2a-6a24-496f-adb5-f662c4399870')
+         ->pingOnFailure('https://hc-ping.com/24bc9e2a-6a24-496f-adb5-f662c4399870/fail');
     }
 
     /**
