@@ -36,19 +36,17 @@ class GenerateCsv extends Command
         $csv->setDelimiter(';');
         $csv->insertOne(['Reference', 'Callsign', 'Activation date', 'QSO count', 'Chaser count']);
 
-        User::with('activations')->chunk(100, function (Collection $users) use ($csv) {
-            foreach ($users as $user) {
-                foreach ($user->activations as $activation) {
-                    $csv->insertOne([
-                        $activation->reference,
-                        $user->callsign,
-                        Carbon::parse($activation->pivot->activation_date)->format('Y-m-d'), /* @phpstan-ignore-line */
-                        $activation->pivot->qso_count, /* @phpstan-ignore-line */
-                        $activation->pivot->chaser_count, /* @phpstan-ignore-line */
-                    ]);
-                }
+        foreach (User::cursor() as $user) {
+            foreach ($user->activations as $activation) {
+                $csv->insertOne([
+                    $activation->reference,
+                    $user->callsign,
+                    Carbon::parse($activation->pivot->activation_date)->format('Y-m-d'), /* @phpstan-ignore-line */
+                    $activation->pivot->qso_count, /* @phpstan-ignore-line */
+                    $activation->pivot->chaser_count, /* @phpstan-ignore-line */
+                ]);
             }
-        });
+        }
 
         Storage::disk('public')->put('csv/activations.csv', $csv->getContent());
 
