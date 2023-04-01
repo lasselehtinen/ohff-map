@@ -1,4 +1,4 @@
-[![Running CI/CD tests](https://github.com/lasselehtinen/ohff-map/actions/workflows/testing.yml/badge.svg)](https://github.com/lasselehtinen/ohff-map/actions/workflows/testing.yml)
+[![Running CI/CD tests](https://github.com/lasselehtinen/ohff-map/actions/workflows/testing.yml/badge.svg?branch=master)](https://github.com/lasselehtinen/ohff-map/actions/workflows/testing.yml)
 
 # OHFF map
 
