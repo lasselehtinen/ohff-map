@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
          ->pingOnFailure('https://hc-ping.com/36f355c2-6e24-4fc5-8a0d-5cf361666d57/fail');
 
         $schedule->command('update:activations')
-         ->weekly()
+         ->daily()
          ->pingBefore('https://hc-ping.com/f005c83b-60b6-4433-af16-d6a738b9da1c/start')
          ->pingOnSuccess('https://hc-ping.com/f005c83b-60b6-4433-af16-d6a738b9da1c')
          ->pingOnFailure('https://hc-ping.com/f005c83b-60b6-4433-af16-d6a738b9da1c/fail');
