@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
 use League\Csv\Writer;
 
@@ -41,9 +40,9 @@ class GenerateCsv extends Command
                 $csv->insertOne([
                     $activation->reference,
                     $user->callsign,
-                    Carbon::parse($activation->pivot->activation_date)->format('Y-m-d'), /* @phpstan-ignore-line */
-                    $activation->pivot->qso_count, /* @phpstan-ignore-line */
-                    $activation->pivot->chaser_count, /* @phpstan-ignore-line */
+                    Carbon::parse($activation->pivot->activation_date)->format('Y-m-d'),
+                    $activation->pivot->qso_count,
+                    $activation->pivot->chaser_count,
                 ]);
             }
         }
