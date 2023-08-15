@@ -38,7 +38,6 @@ class CheckProtectedPlanetLinks extends Command
 
         foreach ($references as $reference) {
             $response = Http::get('https://www.protectedplanet.net/'.$reference->wdpa_id); /** @phpstan-ignore-line */
-
             if ($response->status() === 500) {
                 $this->info($reference->reference); /** @phpstan-ignore-line */
             }

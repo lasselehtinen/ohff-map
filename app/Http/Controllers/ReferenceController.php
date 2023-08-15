@@ -24,23 +24,23 @@ class ReferenceController extends Controller
     public function index(Request $request)
     {
         $references = QueryBuilder::for(Reference::class)
-        ->allowedFilters([
-            AllowedFilter::callback('nearest', function ($query, $coordinates) {
-                $point = new Point($coordinates[0], $coordinates[1]);
-                $query->orderByDistance('location', $point);
-            }),
-            AllowedFilter::callback('activated_by_me', function ($query, $value) use ($request) {
-                if ($value === false) {
-                    $query->whereNotIn('id', $request->user()->activations->pluck('id')->unique());
-                }
+            ->allowedFilters([
+                AllowedFilter::callback('nearest', function ($query, $coordinates) {
+                    $point = new Point($coordinates[0], $coordinates[1]);
+                    $query->orderByDistance('location', $point);
+                }),
+                AllowedFilter::callback('activated_by_me', function ($query, $value) use ($request) {
+                    if ($value === false) {
+                        $query->whereNotIn('id', $request->user()->activations->pluck('id')->unique());
+                    }
 
-                $query->whereIn('id', $request->user()->activations->pluck('id')->unique());
-            }),
-            'name',
-            'allowed_status',
-        ])
-        ->paginate()
-        ->appends(request()->query());
+                    $query->whereIn('id', $request->user()->activations->pluck('id')->unique());
+                }),
+                'name',
+                'allowed_status',
+            ])
+            ->paginate()
+            ->appends(request()->query());
 
         return ReferenceResource::collection($references);
     }

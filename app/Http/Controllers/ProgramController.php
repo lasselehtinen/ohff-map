@@ -17,9 +17,9 @@ class ProgramController extends Controller
     public function index(Request $request)
     {
         $programs = QueryBuilder::for(Program::class)
-        ->allowedFilters(['name'])
-        ->paginate()
-        ->appends(request()->query());
+            ->allowedFilters(['name'])
+            ->paginate()
+            ->appends(request()->query());
 
         return ProgramResource::collection($programs);
     }
