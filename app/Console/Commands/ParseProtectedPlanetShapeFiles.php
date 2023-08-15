@@ -70,25 +70,26 @@ class ParseProtectedPlanetShapeFiles extends Command
             for ($i = 0; $i < $totalCount; $i++) {
                 $geometry = $shapeFile->fetchRecord();
                 $shapeData = $geometry->getDataArray();
+                
+                if (!is_bool($shapeData)) {
+                    // Search if we have reference with that World Database on Protected Areas ID
+                    $reference = Reference::where('wdpa_id', $shapeData['WDPA_PID'])->first();
 
-                // Search if we have reference with that World Database on Protected Areas ID
-                $reference = Reference::where('wdpa_id', $shapeData['WDPA_PID'])->first();
+                    if (! is_null($reference)) {
+                        $area = Geometry::fromJson($geometry->getGeoJSON());
 
-                if (! is_null($reference)) {
-                    $geometryData = $geometry->getArray();
-                    $area = Geometry::fromJson($geometry->getGeoJSON());
+                        // Set boolean if area is Natura 2000 area
+                        if (in_array($shapeData['DESIG_ENG'], ['Special Areas of Conservation (Habitats Directive)', 'Special Protection Area (Birds Directive)'])) {
+                            $reference->natura_2000_area = true; /** @phpstan-ignore-line */
+                        }
 
-                    // Set boolean if area is Natura 2000 area
-                    if (in_array($shapeData['DESIG_ENG'], ['Special Areas of Conservation (Habitats Directive)', 'Special Protection Area (Birds Directive)'])) {
-                        $reference->natura_2000_area = true; /** @phpstan-ignore-line */
+                        // Set area
+                        if ($area instanceof Polygon || $area instanceof MultiPolygon) {
+                            $reference->area = $area; /** @phpstan-ignore-line */
+                        }
+
+                        $reference->save();
                     }
-
-                    // Set area
-                    if ($area instanceof Polygon || $area instanceof MultiPolygon) {
-                        $reference->area = $area; /** @phpstan-ignore-line */
-                    }
-
-                    $reference->save();
                 }
 
                 $bar->advance();
