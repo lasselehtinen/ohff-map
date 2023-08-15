@@ -71,7 +71,7 @@ class ParseProtectedPlanetShapeFiles extends Command
                 $geometry = $shapeFile->fetchRecord();
                 $shapeData = $geometry->getDataArray();
                 
-                if (!is_bool($shapeData)) {
+                if (!is_bool($shapeData)) { /** @phpstan-ignore-line */
                     // Search if we have reference with that World Database on Protected Areas ID
                     $reference = Reference::where('wdpa_id', $shapeData['WDPA_PID'])->first();
 

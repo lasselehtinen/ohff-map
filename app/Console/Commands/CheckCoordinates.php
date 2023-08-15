@@ -41,12 +41,12 @@ class CheckCoordinates extends Command
     public function handle()
     {
         // We can only check references which have Protected Planet area/polygon
-        $references = Reference::whereNotNull('area')->get(); /** @phpstan-ignore-line */
+        $references = Reference::whereNotNull('area')->get();
         foreach ($references as $reference) {
-            if ($reference->area instanceof Polygon || $reference->area instanceof MultiPolygon) {
+            if ($reference->area instanceof Polygon || $reference->area instanceof MultiPolygon) { /** @phpstan-ignore-line */
                 $results = Reference::within('location', $reference->area)->get(); /** @phpstan-ignore-line */
                 if ($results->count() != 1) {
-                    $this->info($reference->reference.' '.$results->count().' '.implode(',', $results->pluck('reference')->toArray()));
+                    $this->info($reference->reference.' '.$results->count().' '.implode(',', $results->pluck('reference')->toArray())); /** @phpstan-ignore-line */
                 }
             }
         }

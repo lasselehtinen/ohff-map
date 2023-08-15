@@ -83,7 +83,7 @@ class ReferenceController extends Controller
         $wdpaId = intval(basename($request->protected_planet_link));
 
         $validator->after(function ($validator) use ($wdpaId) {
-            if (Reference::where('wdpa_id', $wdpaId)->exists()) { /** @phpstan-ignore-line */
+            if (Reference::where('wdpa_id', $wdpaId)->exists()) {
                 $validator->errors()->add(
                     'protected_planet_link',
                     'Area with the same Protected Planet / WDPA ID already exists'
@@ -95,10 +95,10 @@ class ReferenceController extends Controller
             return redirect('suggest')->withErrors($validator)->withInput();
         }
 
-        $latestReference = Reference::orderByDesc('reference')->first(); /* @phpstan-ignore-line */
+        $latestReference = Reference::orderByDesc('reference')->first();
 
         $reference = new Reference;
-        $reference->reference = strval(++$latestReference->reference);
+        $reference->reference = strval(++$latestReference->reference); /** @phpstan-ignore-line */
         $reference->name = $request->name;
         $reference->status = 'proposed';
         [$latitude, $longitude] = explode(',', $request->coordinates);
