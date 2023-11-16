@@ -79,7 +79,7 @@ class UpdateActivations extends Command
             // Add user activations to reference
             $activations->each(function ($activation, $key) use ($reference) {
                 // Create / fetch user exists
-                $user = User::firstOrCreate(['callsign' => $activation['callsign'], '/'], ['password' => Hash::make(Str::random(8))]);
+                $user = User::firstOrCreate(['callsign' => $activation['callsign']], ['password' => Hash::make(Str::random(8))]);
 
                 // Prevent duplicates
                 $activationsOnReference = $user->activations()->get()->filter(function ($activationReference, $key) use ($reference, $activation) {
