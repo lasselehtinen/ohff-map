@@ -33,8 +33,8 @@ class GenerateCsvTest extends TestCase
         Artisan::call('update:activations');
 
         // OH2BAV should have four activations
-        $user = User::where('callsign', 'OH2BAV')->with('activations')->first();
-        $this->assertSame(4, $user->activations->where('reference', 'OHFF-1079')->count());
+        $user = User::where('callsign', 'OH2BAV/P')->with('activations')->first();
+        $this->assertSame(1, $user->activations->where('reference', 'OHFF-1079')->count());
 
         // Generate and validate CSV
         Storage::fake('public');
@@ -44,6 +44,6 @@ class GenerateCsvTest extends TestCase
 
         $contents = Storage::disk('public')->get('csv/activations.csv');
         $this->assertStringContainsString('Reference;Callsign;"Activation date";"QSO count";"Chaser count"', $contents);
-        $this->assertStringContainsString('OHFF-1079;OH2BAV;2022-08-14;93;82', $contents);
+        $this->assertStringContainsString('OHFF-1079;OH2BAV/P;2022-08-14;93;82', $contents);
     }
 }
