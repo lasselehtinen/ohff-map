@@ -8,11 +8,6 @@ use App\Models\Reference;
 use DateTime;
 use GeoJson\Feature\Feature;
 use GeoJson\Feature\FeatureCollection;
-use GeoJson\Geometry\Polygon;
-use Grimzy\LaravelMysqlSpatial\Types\LineString as SpatialLineString;
-use Grimzy\LaravelMysqlSpatial\Types\Point as SpatialPoint;
-use Grimzy\LaravelMysqlSpatial\Types\Polygon as SpatialPolygon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use PHPCoord\CoordinateReferenceSystem\Geographic2D;
 use PHPCoord\CoordinateReferenceSystem\Projected;
@@ -40,11 +35,6 @@ class GeoJsonController extends Controller
                 AllowedFilter::scope('not_activated'),
                 AllowedFilter::custom('activated_by', new FiltersReferencesActivatedByCallsign),
                 AllowedFilter::custom('not_activated_by', new FiltersReferencesNotActivatedByCallsign),
-                AllowedFilter::callback('within', function (Builder $query, $boundaries) {
-                    // Create polygon from SW and NE coordinates
-                    $boundPolygon = $this->getBoundPolygon($boundaries[0], $boundaries[1]);
-                    $query->within('location', $boundPolygon); /** @phpstan-ignore-line */
-                }),
                 'reference',
                 'approval_status',
             ])
@@ -70,12 +60,6 @@ class GeoJsonController extends Controller
 
             $feature = new Feature($reference->location->jsonSerialize(), $properties); /** @phpstan-ignore-line */
             $features->push($feature);
-
-            // Add geometry as a feature if zoom level is high enough
-            if ($request->input('zoom', 5) > 7 && ! is_null($reference->area)) { /** @phpstan-ignore-line */
-                $feature = new Feature($reference->area->jsonSerialize(), $properties);
-                $features->push($feature);
-            }
         }
 
         $featureCollection = new FeatureCollection($features->toArray());
@@ -183,33 +167,5 @@ class GeoJsonController extends Controller
 
         /* @phpstan-ignore-next-line */
         return 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord='.$to->getEasting().'_'.$to->getNorthing().'&mapLayers=802+100+default,1629+100+default,1627+100+default,1628+100+default&markers=2|1|ffde00|'.$to->getEasting().'_'.$to->getNorthing().'|'.$reference->reference.'%20-%20'.urlencode($reference->name).'&noSavedState=true&showIntro=false';
-    }
-
-    /**
-     * Get the rectable polygon for the bound
-     *
-     * @param  string  $southWestBounds
-     * @param  string  $northEastBounds
-     * @return \Grimzy\LaravelMysqlSpatial\Types\Polygon
-     */
-    public function getBoundPolygon($southWestBounds, $northEastBounds)
-    {
-        $regExp = '/\((\d+.\d+), (\d+.\d+)\)/';
-
-        $southLimit = preg_replace($regExp, '$1', $southWestBounds);
-        $westLimit = preg_replace($regExp, '$2', $southWestBounds);
-        $northLimit = preg_replace($regExp, '$1', $northEastBounds);
-        $eastLimit = preg_replace($regExp, '$2', $northEastBounds);
-
-        // We go around starting from SW and going around clockwise and connecting to start
-        $polygon = new SpatialPolygon([new SpatialLineString([
-            new SpatialPoint($southLimit, $westLimit),
-            new SpatialPoint($northLimit, $westLimit),
-            new SpatialPoint($northLimit, $eastLimit),
-            new SpatialPoint($southLimit, $eastLimit),
-            new SpatialPoint($southLimit, $westLimit),
-        ])]);
-
-        return $polygon;
     }
 }

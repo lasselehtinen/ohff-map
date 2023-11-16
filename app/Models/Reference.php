@@ -26,7 +26,6 @@ class Reference extends Model
      */
     protected $spatialFields = [
         'location',
-        'area',
     ];
 
     /**

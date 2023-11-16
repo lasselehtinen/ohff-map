@@ -41,19 +41,6 @@ function initMap() {
 
   const queryString = window.location.search;
 
-  map.addListener("idle", function() {
-    if (map.getZoom() > 7) {
-      // Remove all existing polygons
-      map.data.forEach(function(feature) {
-          if (feature.getGeometry().getType() == 'Polygon' || feature.getGeometry().getType() == 'MultiPolygon') {
-            map.data.remove(feature);
-          }
-      });
-
-      map.data.loadGeoJson("/geojson?zoom=" + map.getZoom() + "&filter[within]=" + map.getBounds().getSouthWest()+ ";" + map.getBounds().getNorthEast() + queryString);
-    }
-  });
-
   map.data.loadGeoJson("/geojson" + queryString);
 
   // Read icon from property
