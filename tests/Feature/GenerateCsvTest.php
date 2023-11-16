@@ -34,7 +34,7 @@ class GenerateCsvTest extends TestCase
 
         // OH2BAV should have four activations
         $user = User::where('callsign', 'OH2BAV/P')->with('activations')->first();
-        $this->assertSame(1, $user->activations->where('reference', 'OHFF-1079')->count());
+        $this->assertSame(4, $user->activations->where('reference', 'OHFF-1079')->count());
 
         // Generate and validate CSV
         Storage::fake('public');
