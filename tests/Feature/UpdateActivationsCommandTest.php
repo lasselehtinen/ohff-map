@@ -16,7 +16,7 @@ class UpdateActivationsCommandTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * A basic feature test example.
+     * Test that activation is parsed correctly
      *
      * @return void
      */
@@ -45,5 +45,26 @@ class UpdateActivationsCommandTest extends TestCase
         // OH2NOS should have one activation
         $user = User::where('callsign', 'OH2NOS')->with('activations')->first();
         $this->assertSame(1, $user->activations->where('reference', 'OHFF-1079')->count());
+    }
+
+    /**
+     * Test that activation with more complex callsign is parsed correctly
+     *
+     * @return void
+     */
+    public function testGettingActivationsWithSpecialCallSign()
+    {
+        // Create one known reference
+        $reference = Reference::factory(['reference' => 'OHFF-0112', 'latest_activation_date' => now()])
+            ->for(Program::factory())
+            ->for(Dxcc::factory())
+            ->for(Continent::factory())
+            ->create();
+
+        Artisan::call('update:activations');
+
+        // 	OH/LA1TPA/P should have one activation
+        $user = User::where('callsign', 'OH/LA1TPA/P')->with('activations')->first();
+        $this->assertSame(1, $user->activations->where('reference', 'OHFF-0112')->count());
     }
 }
