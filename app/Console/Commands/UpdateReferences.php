@@ -122,7 +122,7 @@ class UpdateReferences extends Command
             $reference->continent()->associate($continent); /** @phpstan-ignore-line */
 
             // Check if new reference has been approved or already active
-            if ($sourceReference['status'] === 'active') { /** @phpstan-ignore-line */
+            if ($sourceReference['status'] === 'active') {
                 $reference->approval_status = 'saved'; /** @phpstan-ignore-line */
             }
 
