@@ -7,19 +7,17 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/laravel-shift/laravel-mysql-spatial.git"
+            "url": "https://github.com/joshbaumann/laravel-mysql-spatial.git"
         }
     ],
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^8.1",
         "algolia/algoliasearch-client-php": "^3.1",
-        "fideloper/proxy": "^4.4",
-        "gasparesganga/php-shapefile": "^3.4",
-        "grimzy/laravel-mysql-spatial": "dev-l9-compatibility",
+        "grimzy/laravel-mysql-spatial": "dev-l10-compatibility",
         "guzzlehttp/guzzle": "^7.3",
         "jmikola/geojson": "~1.0",
-        "laravel/framework": "^9.0",
-        "laravel/sanctum": "^2.11",
+        "laravel/framework": "^10.0",
+        "laravel/sanctum": "^3.2",
         "laravel/scout": "^9.3",
         "laravel/tinker": "^2.5",
         "league/csv": "^9.7",
@@ -37,9 +35,9 @@
         "laravel/telescope": "^4.6",
         "lasselehtinen/laravel-conventions-checker": "^4.0",
         "mockery/mockery": "^1.4.2",
-        "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.3.3",
-        "spatie/laravel-ignition": "^1.0"
+        "nunomaduro/collision": "^7.0",
+        "phpunit/phpunit": "^10.0",
+        "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -83,6 +81,6 @@
             "phpro/grumphp": true
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
