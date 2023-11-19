@@ -13,6 +13,8 @@
     "require": {
         "php": "^8.1",
         "algolia/algoliasearch-client-php": "^3.1",
+        "caneara/axiom": "^3.2",
+        "filament/filament": "^3.0-stable",
         "grimzy/laravel-mysql-spatial": "dev-l10-compatibility",
         "guzzlehttp/guzzle": "^7.3",
         "jmikola/geojson": "~1.0",
@@ -21,7 +23,6 @@
         "laravel/scout": "^9.3",
         "laravel/tinker": "^2.5",
         "league/csv": "^9.7",
-        "caneara/axiom": "^3.2",
         "php-coord/datapack-europe": "^1.2",
         "php-coord/php-coord": "^5.0",
         "spatie/laravel-query-builder": "^5.0",
@@ -54,7 +55,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""

@@ -121,8 +121,8 @@ class UpdateReferences extends Command
             $continent = Continent::where('name', $sourceReference['continent'])->first();
             $reference->continent()->associate($continent); /** @phpstan-ignore-line */
 
-            // Check if new reference has been approved or already active
-            if ($sourceReference['status'] === 'active') {
+            // Check if new reference has been approved or already active/deleted
+            if ($sourceReference['status'] !== 'proposed') {
                 $reference->approval_status = 'saved'; /** @phpstan-ignore-line */
             }
 
