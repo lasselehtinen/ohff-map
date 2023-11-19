@@ -65,6 +65,8 @@ function initMap() {
       contentString += '<p>Latest activation: ' + event.feature.getProperty("latest_activation_date") + ' by ' + event.feature.getProperty("latest_activator") + '</p>';
     }
     
+    contentString += '<a href="https://wwff.co/directory/?showRef='+ event.feature.getProperty("reference") + '" target="_new">WWFF</a><br/>';
+
     if (event.feature.getProperty("wdpa_id")) {
       contentString += '<a href="https://www.protectedplanet.net/'+ event.feature.getProperty("wdpa_id") + '" target="_new">Protected Planet</a><br/>';
     }
