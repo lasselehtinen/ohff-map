@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('references', function (Blueprint $table) {
-            $table->dropColumn('area');
-        });
+        if (DB::getDriverName() !== 'sqlite') {
+            Schema::table('references', function (Blueprint $table) {
+                $table->dropColumn('area');
+            });
+        }
     }
 
     /**
@@ -25,8 +27,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('references', function (Blueprint $table) {
-            $table->geometry('area')->nullable();
-        });
+        if (DB::getDriverName() !== 'sqlite') {
+            Schema::table('references', function (Blueprint $table) {
+                $table->geometry('area')->nullable();
+            });
+        }
     }
 };
