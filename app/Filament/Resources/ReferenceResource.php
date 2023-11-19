@@ -34,7 +34,7 @@ class ReferenceResource extends Resource
                 TextColumn::make('name'),
                 TextColumn::make('status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) { /** @phpstan-ignore-line */
                         'active' => 'success',
                         'national' => 'success',
                         'deleted' => 'danger',
