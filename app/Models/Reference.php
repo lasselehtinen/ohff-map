@@ -12,7 +12,7 @@ use Laravel\Scout\Searchable;
 
 class Reference extends Model
 {
-    use HasFactory, SpatialTrait, Searchable;
+    use HasFactory, Searchable, SpatialTrait;
 
     /**
      * The attributes that are mass assignable.
