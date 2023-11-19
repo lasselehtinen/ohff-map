@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Filters\FiltersReferencesActivatedByCallsign;
+use App\Http\Filters\FiltersReferencesActivatedThisYear;
 use App\Http\Filters\FiltersReferencesNotActivatedByCallsign;
 use App\Models\Reference;
 use DateTime;
@@ -36,6 +37,7 @@ class GeoJsonController extends Controller
                 AllowedFilter::scope('not_activated'),
                 AllowedFilter::custom('activated_by', new FiltersReferencesActivatedByCallsign),
                 AllowedFilter::custom('not_activated_by', new FiltersReferencesNotActivatedByCallsign),
+                AllowedFilter::custom('activited_this_year', new FiltersReferencesActivatedThisYear),
                 'reference',
                 'approval_status',
             ])

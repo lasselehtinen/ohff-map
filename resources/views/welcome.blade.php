@@ -20,6 +20,9 @@
         <label for="not_activated">Not activated by anyone</label>
         <input type="checkbox" id="not_activated" name="filter[not_activated]">
 
+        <label for="activited_this_year">Activated this year</label>
+        <input type="checkbox" id="activited_this_year" name="filter[activited_this_year]">
+
         <label for="approval_status">Approval status</label>
         <select id="approval_status" name="filter[approval_status]">
           <option value=""></option>
