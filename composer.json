@@ -15,6 +15,7 @@
         "algolia/algoliasearch-client-php": "^3.1",
         "caneara/axiom": "^3.2",
         "filament/filament": "^3.0-stable",
+        "gasparesganga/php-shapefile": "^3.4",
         "grimzy/laravel-mysql-spatial": "dev-l10-compatibility",
         "guzzlehttp/guzzle": "^7.3",
         "jmikola/geojson": "~1.0",
