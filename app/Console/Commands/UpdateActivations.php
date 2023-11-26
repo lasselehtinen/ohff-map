@@ -20,7 +20,7 @@ class UpdateActivations extends Command
      *
      * @var string
      */
-    protected $signature = 'update:activations';
+    protected $signature = 'update:activations {--all}';
 
     /**
      * The console command description.
@@ -47,7 +47,11 @@ class UpdateActivations extends Command
     public function handle()
     {
         // Get references that are activated in the past two months
-        $references = Reference::where('latest_activation_date', '>=', now()->subDays(60)->startOfDay()->toDateTimeString())->get();
+        if ($this->option('all')) {
+            $references = Reference::all();
+        } else {
+            $references = Reference::where('latest_activation_date', '>=', now()->subDays(60)->startOfDay()->toDateTimeString())->get();
+        }
 
         // Create progress bar
         $bar = $this->output->createProgressBar($references->count());
