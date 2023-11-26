@@ -73,8 +73,8 @@ class UpdateActivations extends Command
             $dates = $this->getActivationDates($table);
 
             if (is_array($dates)) {
-                $reference->first_activation_date = $dates[0]; /** @phpstan-ignore-line */
-                $reference->latest_activation_date = $dates[1]; /** @phpstan-ignore-line */
+                $reference->first_activation_date = $dates[0];
+                $reference->latest_activation_date = $dates[1];
                 $reference->save();
             }
 
