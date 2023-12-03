@@ -105,6 +105,7 @@ class UpdateReferences extends Command
                 'status' => $sourceReference['status'],
                 'iota_reference' => $sourceReference['iota'],
                 'wdpa_id' => $protectedPlanetId,
+                'valid_from' => ($sourceReference['validFrom'] === '0000-00-00') ? null : $sourceReference['validFrom'],
                 'latest_activation_date' => $sourceReference['lastAct'],
             ]);
 
