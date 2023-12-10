@@ -40,6 +40,12 @@ class Kernel extends ConsoleKernel
             ->pingBefore('https://hc-ping.com/24bc9e2a-6a24-496f-adb5-f662c4399870/start')
             ->pingOnSuccess('https://hc-ping.com/24bc9e2a-6a24-496f-adb5-f662c4399870')
             ->pingOnFailure('https://hc-ping.com/24bc9e2a-6a24-496f-adb5-f662c4399870/fail');
+
+        $schedule->command('backup:run --only-db')
+            ->everySixHours()
+            ->pingBefore('https://hc-ping.com/7a294d83-319d-49d0-b58f-cfddd3aed84f/start')
+            ->pingOnSuccess('https://hc-ping.com/7a294d83-319d-49d0-b58f-cfddd3aed84f')
+            ->pingOnFailure('https://hc-ping.com/7a294d83-319d-49d0-b58f-cfddd3aed84f/fail');
     }
 
     /**
