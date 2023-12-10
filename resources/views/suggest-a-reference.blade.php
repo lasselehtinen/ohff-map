@@ -14,11 +14,14 @@
   @endif
   @if($countForThisYear >= $limit)
   <div class="alert alert-danger" role="alert">
-  The limit ({{ $limit }}) for suggestions for the year {{ $currentYear }} has been reached. Try again next year!
+  The limit ({{ $limit }}) for suggestions for the year {{ $currentYear }} has been reached. New suggestions will not be approved until the beginning of next year!
   </div>
-  @else
+
   <div class="alert alert-dark" role="alert">
   {{ $countForThisYear }} out of {{ $limit }} has been suggested for year {{ $currentYear }}.
+  @if($countForThisYear >= $limit)
+  The overdue will be handled during the next year.
+  @endif
   </div>
   
   <div class="card">
