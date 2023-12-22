@@ -49,23 +49,25 @@ class GeoJsonController extends Controller
             // Get ETRS89 coordinates/point for Karttapaikka and Paikkatietoikkuna
             $point = $this->getETRS89Coordinates($reference);
 
-            // Define properties
-            $properties = [
-                'reference' => $reference->reference, /** @phpstan-ignore-line */
-                'is_activated' => ! empty($reference->first_activation_date),
-                'first_activation_date' => $reference->first_activation_date, /** @phpstan-ignore-line */
-                'latest_activation_date' => $reference->latest_activation_date, /** @phpstan-ignore-line */
-                'latest_activator' => $reference->activators->sortByDesc('pivot.activation_date')->pluck('callsign')->first(), /** @phpstan-ignore-line */
-                'name' => $reference->name, /** @phpstan-ignore-line */
-                'icon' => $this->getIcon($reference),
-                'wdpa_id' => $reference->wdpa_id, /** @phpstan-ignore-line */
-                'karttapaikka_link' => 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n='.$point->getNorthing().'&e='.$point->getEasting().'&title='.$reference->reference.'&desc='.urlencode($reference->name).'&zoom=8', /** @phpstan-ignore-line */
-                'paikkatietoikkuna_link' => 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord='.$point->getEasting().'_'.$point->getNorthing().'&mapLayers=802+100+default,1629+100+default,1627+70+default,1628+70+default&markers=2|1|ffde00|'.$point->getEasting().'_'.$point->getNorthing().'|'.$reference->reference.'%20-%20'.urlencode($reference->name).'&noSavedState=true&showIntro=false', /** @phpstan-ignore-line */
-                'is_natura_2000_area' => (bool) $reference->natura_2000_area, /** @phpstan-ignore-line */
-            ];
+            if (! is_null($point)) {
+                // Define properties
+                $properties = [
+                    'reference' => $reference->reference, /** @phpstan-ignore-line */
+                    'is_activated' => ! empty($reference->first_activation_date),
+                    'first_activation_date' => $reference->first_activation_date, /** @phpstan-ignore-line */
+                    'latest_activation_date' => $reference->latest_activation_date, /** @phpstan-ignore-line */
+                    'latest_activator' => $reference->activators->sortByDesc('pivot.activation_date')->pluck('callsign')->first(), /** @phpstan-ignore-line */
+                    'name' => $reference->name, /** @phpstan-ignore-line */
+                    'icon' => $this->getIcon($reference),
+                    'wdpa_id' => $reference->wdpa_id, /** @phpstan-ignore-line */
+                    'karttapaikka_link' => 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n='.$point->getNorthing().'&e='.$point->getEasting().'&title='.$reference->reference.'&desc='.urlencode($reference->name).'&zoom=8', /** @phpstan-ignore-line */
+                    'paikkatietoikkuna_link' => 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord='.$point->getEasting().'_'.$point->getNorthing().'&mapLayers=802+100+default,1629+100+default,1627+70+default,1628+70+default&markers=2|1|ffde00|'.$point->getEasting().'_'.$point->getNorthing().'|'.$reference->reference.'%20-%20'.urlencode($reference->name).'&noSavedState=true&showIntro=false', /** @phpstan-ignore-line */
+                    'is_natura_2000_area' => (bool) $reference->natura_2000_area, /** @phpstan-ignore-line */
+                ];
 
-            $feature = new Feature($reference->location->jsonSerialize(), $properties); /** @phpstan-ignore-line */
-            $features->push($feature);
+                $feature = new Feature($reference->location->jsonSerialize(), $properties); /** @phpstan-ignore-line */
+                $features->push($feature);
+            }
         }
 
         $featureCollection = new FeatureCollection($features->toArray());
