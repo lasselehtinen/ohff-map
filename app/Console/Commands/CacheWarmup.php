@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 
@@ -34,17 +35,19 @@ class CacheWarmup extends Command
 
         // Warm up cache
         $urls = [
-            'https://kartta.ohff.fi/geojson',
-            'https://kartta.ohff.fi/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bapproval_status%5D=',
-            'https://kartta.ohff.fi/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bnot_activated%5D=on&filter%5Bapproval_status%5D=',
-            'https://kartta.ohff.fi/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bactivited_this_year%5D=on&filter%5Bapproval_status%5D=',
-            'https://kartta.ohff.fi/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bapproval_status%5D=received',
-            'https://kartta.ohff.fi/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bapproval_status%5D=approved',
-            'https://kartta.ohff.fi/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bapproval_status%5D=saved',
+            url('/geojson'),
+            url('/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bapproval_status%5D='),
+            url('/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bnot_activated%5D=on&filter%5Bapproval_status%5D='),
+            url('/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bactivited_this_year%5D=on&filter%5Bapproval_status%5D='),
+            url('/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bapproval_status%5D=received'),
+            url('/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bapproval_status%5D=approved'),
+            url('/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bapproval_status%5D=saved'),
         ];
 
-        foreach ($urls as $url) {
-            Http::timeout(600)->get($url);
+        if (App::environment('production')) {
+            foreach ($urls as $url) {
+                Http::timeout(600)->get($url);
+            }
         }
 
         return 0;

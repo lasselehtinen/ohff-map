@@ -152,6 +152,5 @@ class GeoJsonController extends Controller
         });
 
         return $point;
-
     }
 }
