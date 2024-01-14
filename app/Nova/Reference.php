@@ -48,7 +48,7 @@ class Reference extends Resource
      */
     public function title()
     {
-        return $this->reference;
+        return $this->reference; /** @phpstan-ignore-line */
     }
 
     /**
@@ -58,7 +58,7 @@ class Reference extends Resource
      */
     public function subtitle()
     {
-        return $this->name;
+        return $this->name; /** @phpstan-ignore-line */
     }
 
     public static function authorizedToCreate(Request $request)
@@ -99,14 +99,14 @@ class Reference extends Resource
                 'saved' => 'warning',
             ])->required(),
 
-            Number::make('Latitude', fn () => $this->location->getLat()),
-            Number::make('Longitude', fn () => $this->location->getLng()),
+            Number::make('Latitude', fn () => $this->location->getLat()), /** @phpstan-ignore-line */
+            Number::make('Longitude', fn () => $this->location->getLng()), /** @phpstan-ignore-line */
             Boolean::make('Natura 2000 area', 'natura_2000_area'),
-            URL::make('Protected Planet', fn () => 'https://www.protectedplanet.net/'.$this->wdpa_id)->displayUsing(fn () => 'Link'),
-            URL::make('WWFF', fn () => 'https://wwff.co/directory/?showRef='.$this->reference)->displayUsing(fn () => 'Link'),
+            URL::make('Protected Planet', fn () => 'https://www.protectedplanet.net/'.$this->wdpa_id)->displayUsing(fn () => 'Link'), /** @phpstan-ignore-line */
+            URL::make('WWFF', fn () => 'https://wwff.co/directory/?showRef='.$this->reference)->displayUsing(fn () => 'Link'), /** @phpstan-ignore-line */
 
             new Panel('Map', [
-                GHMap::make('Map')->latitude(optional($this->location)->getLat())->longitude(optional($this->location)->getLng())->hideFromIndex(),
+                GHMap::make('Map')->latitude(optional($this->location)->getLat())->longitude(optional($this->location)->getLng())->hideFromIndex(), /** @phpstan-ignore-line */
             ]),
         ];
     }
