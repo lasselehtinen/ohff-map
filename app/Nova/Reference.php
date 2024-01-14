@@ -104,7 +104,6 @@ class Reference extends Resource
             Boolean::make('Natura 2000 area', 'natura_2000_area'),
             URL::make('Protected Planet', fn () => 'https://www.protectedplanet.net/'.$this->wdpa_id)->displayUsing(fn () => 'Link'), /** @phpstan-ignore-line */
             URL::make('WWFF', fn () => 'https://wwff.co/directory/?showRef='.$this->reference)->displayUsing(fn () => 'Link'), /** @phpstan-ignore-line */
-
             new Panel('Map', [
                 GHMap::make('Map')->latitude(optional($this->location)->getLat())->longitude(optional($this->location)->getLng())->hideFromIndex(), /** @phpstan-ignore-line */
             ]),
