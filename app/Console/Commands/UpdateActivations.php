@@ -142,7 +142,7 @@ class UpdateActivations extends Command
         })->map(function ($activation, $key) {
             // Remap and remove the (op: OHXXXX) from callsigns
             $activationDate = DateTime::createFromFormat('Y-m-d', strtok($activation[0], ' '));
-            $callsignParts = explode('/', $activation[1]);
+            $callsignParts = explode('/', strtok($activation[1], ' '));
             $callsign = $this->findLongestStringFromArray($callsignParts);
 
             return [
