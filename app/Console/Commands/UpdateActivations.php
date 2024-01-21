@@ -142,15 +142,32 @@ class UpdateActivations extends Command
         })->map(function ($activation, $key) {
             // Remap and remove the (op: OHXXXX) from callsigns
             $activationDate = DateTime::createFromFormat('Y-m-d', strtok($activation[0], ' '));
+            $callsignParts = explode('/', $activation[1]);
+            $callsign = $this->findLongestStringFromArray($callsignParts);
 
             return [
                 'date' => ($activationDate !== false) ? $activationDate : null,
-                'callsign' => strtok($activation[1], ' '),
+                'callsign' => $callsign,
                 'qso_count' => intval($activation[2]),
                 'chaser_count' => intval($activation[3]),
             ];
         });
 
         return $activations;
+    }
+
+    /**
+     * Find the longest string in array
+     *
+     * @param  array  $array
+     * @return string
+     */
+    public function findLongestStringFromArray($array)
+    {
+        $lengths = array_map('strlen', $array);
+        $maxLength = max($lengths);
+        $key = array_search($maxLength, $lengths);
+
+        return $array[$key];
     }
 }
