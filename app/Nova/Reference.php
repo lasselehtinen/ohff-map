@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\MarkReferenceSaved;
 use Ghanem\GoogleMap\GHMap;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
@@ -160,7 +161,9 @@ class Reference extends Resource
      */
     public function lenses(NovaRequest $request)
     {
-        return [];
+        return [
+            new Lenses\NonApprovedReferences,
+        ];
     }
 
     /**
@@ -170,6 +173,8 @@ class Reference extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            new MarkReferenceSaved,
+        ];
     }
 }
