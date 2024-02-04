@@ -100,8 +100,8 @@ class Reference extends Resource
                 'saved' => 'warning',
             ])->required(),
 
-            Number::make('Latitude', fn () => $this->location->getLat()), /** @phpstan-ignore-line */
-            Number::make('Longitude', fn () => $this->location->getLng()), /** @phpstan-ignore-line */
+            Number::make('Latitude', fn () => $this->location->getLat())->copyable(), /** @phpstan-ignore-line */
+            Number::make('Longitude', fn () => $this->location->getLng())->copyable(), /** @phpstan-ignore-line */
             Boolean::make('Natura 2000 area', 'natura_2000_area'),
             URL::make('Protected Planet', fn () => 'https://www.protectedplanet.net/'.$this->wdpa_id)->displayUsing(fn () => 'Link'), /** @phpstan-ignore-line */
             URL::make('WWFF', fn () => 'https://wwff.co/directory/?showRef='.$this->reference)->displayUsing(fn () => 'Link'), /** @phpstan-ignore-line */

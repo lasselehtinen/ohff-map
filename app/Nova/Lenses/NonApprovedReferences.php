@@ -57,8 +57,8 @@ class NonApprovedReferences extends Lens
                 'saved' => 'warning',
             ])->required(),
 
-            Number::make('Latitude', fn () => $this->location->getLat()), /** @phpstan-ignore-line */
-            Number::make('Longitude', fn () => $this->location->getLng()), /** @phpstan-ignore-line */
+            Number::make('Latitude', fn () => $this->location->getLat())->copyable(), /** @phpstan-ignore-line */
+            Number::make('Longitude', fn () => $this->location->getLng())->copyable(), /** @phpstan-ignore-line */
             URL::make('Protected Planet', fn () => 'https://www.protectedplanet.net/'.$this->wdpa_id)->displayUsing(fn () => 'Link'), /** @phpstan-ignore-line */
         ];
     }
