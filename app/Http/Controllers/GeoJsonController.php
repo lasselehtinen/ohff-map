@@ -10,11 +10,6 @@ use DateTime;
 use GeoJson\Feature\Feature;
 use GeoJson\Feature\FeatureCollection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use PHPCoord\CoordinateReferenceSystem\Geographic2D;
-use PHPCoord\CoordinateReferenceSystem\Projected;
-use PHPCoord\GeographicPoint;
-use PHPCoord\UnitOfMeasure\Angle\Degree;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\QueryBuilderRequest;
@@ -47,7 +42,7 @@ class GeoJsonController extends Controller
 
         foreach ($references as $reference) {
             // Get ETRS89 coordinates/point for Karttapaikka and Paikkatietoikkuna
-            $point = $this->getETRS89Coordinates($reference);
+            $point = $reference->getETRS89Coordinates(); /* @phpstan-ignore-line */
 
             if (! is_null($point)) {
                 // Define properties
@@ -120,37 +115,5 @@ class GeoJsonController extends Controller
         }
 
         return sprintf('https://maps.google.com/intl/en_us/mapfiles/ms/micons/%s.png', $iconColor);
-    }
-
-    /**
-     * Return ETRS89 coordinates for the given reference
-     *
-     * @param  \Illuminate\Database\Eloquent\Model  $reference
-     * @return \PHPCoord\Point\ProjectedPoint|null
-     */
-    public function getETRS89Coordinates($reference)
-    {
-        /** @phpstan-ignore-next-line */
-        $point = Cache::rememberForever('etrs98-'.$reference->name, function () use ($reference) {
-            // Converting from WGS 84 to ETRS89
-            $from = GeographicPoint::create(
-                Geographic2D::fromSRID(Geographic2D::EPSG_WGS_84),
-                new Degree($reference->location->getLat()), /** @phpstan-ignore-line */
-                new Degree($reference->location->getLng()), /** @phpstan-ignore-line */
-                null
-            );
-
-            $toCRS = Projected::fromSRID(Projected::EPSG_ETRS89_TM35FIN_N_E);
-
-            try {
-                $point = $from->convert($toCRS); // $to instanceof ProjectedPoint
-            } catch (\PHPCoord\Exception\UnknownConversionException $e) {
-                return null;
-            }
-
-            return $point;
-        });
-
-        return $point;
     }
 }

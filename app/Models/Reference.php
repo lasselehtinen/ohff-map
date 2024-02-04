@@ -9,7 +9,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Scout\Searchable;
+use PHPCoord\CoordinateReferenceSystem\Geographic2D;
+use PHPCoord\CoordinateReferenceSystem\Projected;
+use PHPCoord\Point\GeographicPoint;
+use PHPCoord\UnitOfMeasure\Angle\Degree;
 
 class Reference extends Model
 {
@@ -93,5 +98,35 @@ class Reference extends Model
     public function scopeNotActivated(Builder $query): Builder
     {
         return $query->whereNull('first_activation_date');
+    }
+
+    /**
+     * Return ETRS89 coordinates for the given reference
+     *
+     * @return \PHPCoord\Point\ProjectedPoint|null
+     */
+    public function getETRS89Coordinates()
+    {
+        $point = Cache::rememberForever('etrs98-'.$this->name, function () {
+            // Converting from WGS 84 to ETRS89
+            $from = GeographicPoint::create(
+                Geographic2D::fromSRID(Geographic2D::EPSG_WGS_84),
+                new Degree($this->location->getLat()),
+                new Degree($this->location->getLng()),
+                null
+            );
+
+            $toCRS = Projected::fromSRID(Projected::EPSG_ETRS89_TM35FIN_N_E);
+
+            try {
+                $point = $from->convert($toCRS); // $to instanceof ProjectedPoint
+            } catch (\PHPCoord\Exception\UnknownConversionException $e) {
+                return null;
+            }
+
+            return $point;
+        });
+
+        return $point;
     }
 }
