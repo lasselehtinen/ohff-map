@@ -5,12 +5,13 @@ namespace App\Nova\Lenses;
 use App\Nova\Actions\MarkReferenceSaved;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\LensRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Lenses\Lens;
+use SimpleSquid\Nova\Fields\AdvancedNumber\AdvancedNumber;
 
 class NonApprovedReferences extends Lens
 {
@@ -57,9 +58,14 @@ class NonApprovedReferences extends Lens
                 'saved' => 'warning',
             ])->required(),
 
-            Number::make('Latitude', fn () => $this->location->getLat())->copyable(), /** @phpstan-ignore-line */
-            Number::make('Longitude', fn () => $this->location->getLng())->copyable(), /** @phpstan-ignore-line */
-            URL::make('Protected Planet', fn () => 'https://www.protectedplanet.net/'.$this->wdpa_id)->displayUsing(fn () => 'Link'), /** @phpstan-ignore-line */
+            AdvancedNumber::make('Latitude', fn () => $this->location->getLat())->decimals(5)->copyable(), /** @phpstan-ignore-line */
+            AdvancedNumber::make('Longitude', fn () => $this->location->getLng())->decimals(5)->copyable(), /** @phpstan-ignore-line */
+            Stack::make('Links', [
+                URL::make('Protected Planet', fn () => 'https://www.protectedplanet.net/'.$this->wdpa_id), /** @phpstan-ignore-line */
+                URL::make('WWFF', fn () => 'https://wwff.co/directory/?showRef='.$this->reference), /** @phpstan-ignore-line */
+                URL::make('Kansalaisen karttapaikka', fn () => 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n='.$this->getETRS89Coordinates()->getNorthing().'&e='.$this->getETRS89Coordinates()->getEasting().'&title='.$this->reference.'&desc='.urlencode($this->name).'&zoom=8'), /** @phpstan-ignore-line */
+                URL::make('Paikkatietoikkuna', fn () => 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord='.$this->getETRS89Coordinates()->getEasting().'_'.$this->getETRS89Coordinates()->getNorthing().'&mapLayers=802+100+default,1629+100+default,1627+70+default,1628+70+default&markers=2|1|ffde00|'.$this->getETRS89Coordinates()->getEasting().'_'.$this->getETRS89Coordinates()->getNorthing().'|'.$this->reference.'%20-%20'.urlencode($this->name).'&noSavedState=true&showIntro=false'), /** @phpstan-ignore-line */
+            ]),
         ];
     }
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4572bc81dd08af4ca47553865d4a1be",
+    "content-hash": "5a0f6a879ead7b5ecfca095b883e5f36",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -6587,6 +6587,71 @@
                 }
             ],
             "time": "2023-02-14T16:54:54+00:00"
+        },
+        {
+            "name": "simplesquid/nova-advanced-number-field",
+            "version": "v3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/simplesquid/nova-advanced-number-field.git",
+                "reference": "7f674d64f24b372063212c08c1cb3aaed3a3da27"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/simplesquid/nova-advanced-number-field/zipball/7f674d64f24b372063212c08c1cb3aaed3a3da27",
+                "reference": "7f674d64f24b372063212c08c1cb3aaed3a3da27",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^9.0|^10.0",
+                "laravel/nova": "^4.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.2",
+                "nunomaduro/collision": "^6.1|^7.0",
+                "orchestra/testbench": "^7.0|^8.0",
+                "phpunit/phpunit": "^9.5.10",
+                "symfony/var-dumper": "^6.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": []
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SimpleSquid\\Nova\\Fields\\AdvancedNumber\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthew Poulter",
+                    "email": "matthew.poulter@simplesquid.co.za",
+                    "homepage": "https://simplesquid.co.za/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A Laravel Nova field which adds additional functionality to the default Number field.",
+            "homepage": "https://github.com/simplesquid/nova-advanced-number-field",
+            "keywords": [
+                "field",
+                "laravel",
+                "nova",
+                "nova-advanced-number-field",
+                "number",
+                "simplesquid"
+            ],
+            "support": {
+                "issues": "https://github.com/simplesquid/nova-advanced-number-field/issues",
+                "source": "https://github.com/simplesquid/nova-advanced-number-field/tree/v3.1.0"
+            },
+            "time": "2023-02-15T18:01:28+00:00"
         },
         {
             "name": "spatie/color",

@@ -36,6 +36,7 @@
         "league/flysystem-aws-s3-v3": "^3.22",
         "php-coord/datapack-europe": "^1.2",
         "php-coord/php-coord": "^5.0",
+        "simplesquid/nova-advanced-number-field": "^3.1",
         "spatie/laravel-backup": "^8.4",
         "spatie/laravel-query-builder": "^5.0",
         "spatie/laravel-responsecache": "^7.1",

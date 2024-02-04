@@ -8,12 +8,13 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use SimpleSquid\Nova\Fields\AdvancedNumber\AdvancedNumber;
 
 class Reference extends Resource
 {
@@ -100,11 +101,16 @@ class Reference extends Resource
                 'saved' => 'warning',
             ])->required(),
 
-            Number::make('Latitude', fn () => $this->location->getLat())->copyable(), /** @phpstan-ignore-line */
-            Number::make('Longitude', fn () => $this->location->getLng())->copyable(), /** @phpstan-ignore-line */
-            Boolean::make('Natura 2000 area', 'natura_2000_area'),
-            URL::make('Protected Planet', fn () => 'https://www.protectedplanet.net/'.$this->wdpa_id)->displayUsing(fn () => 'Link'), /** @phpstan-ignore-line */
-            URL::make('WWFF', fn () => 'https://wwff.co/directory/?showRef='.$this->reference)->displayUsing(fn () => 'Link'), /** @phpstan-ignore-line */
+            AdvancedNumber::make('Latitude', fn () => $this->location->getLat())->decimals(5)->copyable(), /** @phpstan-ignore-line */
+            AdvancedNumber::make('Longitude', fn () => $this->location->getLng())->decimals(5)->copyable(), /** @phpstan-ignore-line */
+            Boolean::make('Natura 2000', 'natura_2000_area'),
+            Stack::make('Links', [
+                URL::make('Protected Planet', fn () => 'https://www.protectedplanet.net/'.$this->wdpa_id), /** @phpstan-ignore-line */
+                URL::make('WWFF', fn () => 'https://wwff.co/directory/?showRef='.$this->reference), /** @phpstan-ignore-line */
+                URL::make('Kansalaisen karttapaikka', fn () => 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n='.$this->getETRS89Coordinates()->getNorthing().'&e='.$this->getETRS89Coordinates()->getEasting().'&title='.$this->reference.'&desc='.urlencode($this->name).'&zoom=8'), /** @phpstan-ignore-line */
+                URL::make('Paikkatietoikkuna', fn () => 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord='.$this->getETRS89Coordinates()->getEasting().'_'.$this->getETRS89Coordinates()->getNorthing().'&mapLayers=802+100+default,1629+100+default,1627+70+default,1628+70+default&markers=2|1|ffde00|'.$this->getETRS89Coordinates()->getEasting().'_'.$this->getETRS89Coordinates()->getNorthing().'|'.$this->reference.'%20-%20'.urlencode($this->name).'&noSavedState=true&showIntro=false'), /** @phpstan-ignore-line */
+            ]),
+
             new Panel('Map', [
                 GHMap::make('Map')->latitude(optional($this->location)->getLat())->longitude(optional($this->location)->getLng())->hideFromIndex(), /** @phpstan-ignore-line */
             ]),
