@@ -15,12 +15,12 @@
 
   @if($countForThisYear >= $limit)
   <div class="alert alert-danger" role="alert">
-  The limit ({{ $limit }}) for suggestions for the year {{ $currentYear }} has been reached. New suggestions will not be approved until the beginning of next year!
+  The limit for suggestions for the year {{ $currentYear }} has been reached. New suggestions will not be approved until the beginning of next year!
   </div>
   @endif
 
   <div class="alert alert-dark" role="alert">
-  {{ $countForThisYear }} out of {{ $limit }} has been suggested for year {{ $currentYear }}.
+  {{ $countForThisYear }} has been suggested for year {{ $currentYear }}.
   @if($countForThisYear >= $limit)
   The overdue will be handled during the next year.
   @endif
