@@ -134,6 +134,7 @@ class UpdateReferences extends Command
         $bar->finish();
 
         // Clear and warmup the cache
+        Artisan::call('cache:clear');
         Artisan::call('cache:warmup');
 
         return 0;
