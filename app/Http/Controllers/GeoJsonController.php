@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use DateTime;
 use App\Models\Reference;
-use GeoJson\Geometry\Point;
+use DateTime;
 use GeoJson\Feature\Feature;
-use Illuminate\Http\Request;
 use GeoJson\Feature\FeatureCollection;
+use GeoJson\Geometry\Point;
 
 class GeoJsonController extends Controller
 {
@@ -20,24 +19,24 @@ class GeoJsonController extends Controller
         $features = collect([]);
 
         foreach ($references as $reference) {
-                // Define properties
-                $properties = [
-                    'reference' => $reference->reference,
-                    'is_activated' => ! empty($reference->first_activation_date),
-                    'first_activation_date' => $reference->first_activation_date,
-                    'latest_activation_date' => $reference->latest_activation_date,
-                    //'latest_activator' => $reference->activators->sortByDesc('pivot.activation_date')->pluck('callsign')->first(),
-                    'name' => $reference->name,
-                    'icon' => $this->getIcon($reference),
-                    'wdpa_id' => $reference->wdpa_id,
-                    //'karttapaikka_link' => 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n='.$point->getNorthing().'&e='.$point->getEasting().'&title='.$reference->reference.'&desc='.urlencode($reference->name).'&zoom=8',
-                    //'paikkatietoikkuna_link' => 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord='.$point->getEasting().'_'.$point->getNorthing().'&mapLayers=802+100+default,1629+100+default,1627+70+default,1628+70+default&markers=2|1|ffde00|'.$point->getEasting().'_'.$point->getNorthing().'|'.$reference->reference.'%20-%20'.urlencode($reference->name).'&noSavedState=true&showIntro=false',
-                    'is_natura_2000_area' => (bool) $reference->natura_2000_area,
-                ];
+            // Define properties
+            $properties = [
+                'reference' => $reference->reference,
+                'is_activated' => ! empty($reference->first_activation_date),
+                'first_activation_date' => $reference->first_activation_date,
+                'latest_activation_date' => $reference->latest_activation_date,
+                //'latest_activator' => $reference->activators->sortByDesc('pivot.activation_date')->pluck('callsign')->first(),
+                'name' => $reference->name,
+                'icon' => $this->getIcon($reference),
+                'wdpa_id' => $reference->wdpa_id,
+                //'karttapaikka_link' => 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n='.$point->getNorthing().'&e='.$point->getEasting().'&title='.$reference->reference.'&desc='.urlencode($reference->name).'&zoom=8',
+                //'paikkatietoikkuna_link' => 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord='.$point->getEasting().'_'.$point->getNorthing().'&mapLayers=802+100+default,1629+100+default,1627+70+default,1628+70+default&markers=2|1|ffde00|'.$point->getEasting().'_'.$point->getNorthing().'|'.$reference->reference.'%20-%20'.urlencode($reference->name).'&noSavedState=true&showIntro=false',
+                'is_natura_2000_area' => (bool) $reference->natura_2000_area,
+            ];
 
-                $feature = new Feature(new Point([$reference->location->getLongitude(), $reference->location->getLatitude()]), $properties);
-                $features->push($feature);
-            
+            $feature = new Feature(new Point([$reference->location->getLongitude(), $reference->location->getLatitude()]), $properties);
+            $features->push($feature);
+
         }
 
         return response(new FeatureCollection($features->toArray()), 200, ['Content-Type => application/json']);

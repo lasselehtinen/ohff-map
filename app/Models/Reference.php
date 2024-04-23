@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Clickbar\Magellan\Database\Eloquent\HasPostgisColumns;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Reference extends Model
 {
@@ -12,8 +12,6 @@ class Reference extends Model
 
     /**
      * List of PostGIS columns and their definitions
-     *
-     * @var array
      */
     protected array $postgisColumns = [
         'location' => [
@@ -21,7 +19,7 @@ class Reference extends Model
             'srid' => 4326,
         ],
     ];
-    
+
     /**
      * The attributes that aren't mass assignable.
      *
