@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Reference;
+use Clickbar\Magellan\Data\Geometries\Point;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -38,10 +39,6 @@ class UpdateReferences extends Command
             ->process($reader);
         $references = collect($records->getRecords());
 
-        /*$references = $references->filter(function ($reference, $key) {
-            return $reference['program'] === 'OHFF';
-        });*/
-
         // Create progress bar
         $bar = $this->output->createProgressBar($references->count());
         $bar->setFormat('very_verbose');
@@ -69,8 +66,7 @@ class UpdateReferences extends Command
             $reference->fill([
                 'name' => $sourceReference['name'],
                 'status' => $sourceReference['status'],
-                'latitude' => $sourceReference['latitude'],
-                'longitude' => $sourceReference['longitude'],
+                'location' => Point::make($sourceReference['longitude'], $sourceReference['latitude']),
                 'iota_reference' => $sourceReference['iota'],
                 'wdpa_id' => $protectedPlanetId,
                 'valid_from' => ($sourceReference['validFrom'] === '0000-00-00') ? null : $sourceReference['validFrom'],
@@ -87,10 +83,5 @@ class UpdateReferences extends Command
         });
 
         $bar->finish();
-    }
-
-    public function filterOnlyOhff($row)
-    {
-        dd($row);
     }
 }

@@ -12,6 +12,7 @@ return new class() extends Migration
 
     public function down(): void
     {
-        MagellanSchema::disablePostgisIfExists($this->connection);
+        //MagellanSchema::disablePostgisIfExists($this->connection);
+        DB::statement('DROP EXTENSION IF EXISTS postgis CASCADE;');
     }
 };

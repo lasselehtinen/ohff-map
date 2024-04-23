@@ -31,14 +31,16 @@ class GeoJsonController extends Controller
                 'wdpa_id' => $reference->wdpa_id,
                 //'karttapaikka_link' => 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n='.$point->getNorthing().'&e='.$point->getEasting().'&title='.$reference->reference.'&desc='.urlencode($reference->name).'&zoom=8',
                 //'paikkatietoikkuna_link' => 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord='.$point->getEasting().'_'.$point->getNorthing().'&mapLayers=802+100+default,1629+100+default,1627+70+default,1628+70+default&markers=2|1|ffde00|'.$point->getEasting().'_'.$point->getNorthing().'|'.$reference->reference.'%20-%20'.urlencode($reference->name).'&noSavedState=true&showIntro=false',
-                'is_natura_2000_area' => (bool) $reference->natura_2000_area,
+                'natura_2000_area' => (bool) $reference->natura_2000_area,
             ];
 
             $feature = new Feature(new Point([$reference->location->getLongitude(), $reference->location->getLatitude()]), $properties);
             $features->push($feature);
         }
 
-        return response(new FeatureCollection($features->toArray()), 200, ['Content-Type => application/json']);
+        $featureCollection = (new FeatureCollection($features->toArray()))->jsonSerialize();
+
+        return response()->json($featureCollection);
     }
 
     /**
@@ -83,5 +85,7 @@ class GeoJsonController extends Controller
                 $iconColor = 'red';
                 break;
         }
+
+        return sprintf('https://maps.google.com/intl/en_us/mapfiles/ms/micons/%s.png', $iconColor);
     }
 }
