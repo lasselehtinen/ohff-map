@@ -36,7 +36,6 @@ class GeoJsonController extends Controller
 
             $feature = new Feature(new Point([$reference->location->getLongitude(), $reference->location->getLatitude()]), $properties);
             $features->push($feature);
-
         }
 
         return response(new FeatureCollection($features->toArray()), 200, ['Content-Type => application/json']);
