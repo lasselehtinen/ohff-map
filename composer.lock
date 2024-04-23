@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b9b4c3942323b2d94558564e262d299",
+    "content-hash": "4306e8dc461793d83a368bd627b4601b",
     "packages": [
         {
             "name": "brick/math",
@@ -129,6 +129,90 @@
                 }
             ],
             "time": "2024-02-09T16:56:22+00:00"
+        },
+        {
+            "name": "clickbar/laravel-magellan",
+            "version": "1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/clickbar/laravel-magellan.git",
+                "reference": "7336e573c56614a15b0b2165c5c296b018352ed8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/clickbar/laravel-magellan/zipball/7336e573c56614a15b0b2165c5c296b018352ed8",
+                "reference": "7336e573c56614a15b0b2165c5c296b018352ed8",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^9.0|^10.0|^11.0",
+                "illuminate/contracts": "^9.28|^10.0|^11.0",
+                "illuminate/database": "^9.0|^10.0|^11.0",
+                "illuminate/support": "^9.0|^10.0|^11.0",
+                "php": "^8.1",
+                "spatie/invade": "^2.0",
+                "spatie/laravel-package-tools": "^1.14.0"
+            },
+            "require-dev": {
+                "doctrine/dbal": "^3.5",
+                "larastan/larastan": "^2.6",
+                "laravel/pint": "^1.2.1",
+                "nunomaduro/collision": "^6.0|^v8.1",
+                "orchestra/testbench": "^7.15|^8.0|^9.0",
+                "pestphp/pest": "^1.22|^2.34",
+                "pestphp/pest-plugin-laravel": "^1.1|^2.3",
+                "phpstan/extension-installer": "^1.2",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.2",
+                "phpunit/phpunit": "^9.5|^10.5",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Clickbar\\Magellan\\MagellanServiceProvider"
+                    ],
+                    "aliases": {
+                        "Magellan": "Clickbar\\Magellan\\Facades\\Magellan"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Clickbar\\Magellan\\": "src",
+                    "Clickbar\\Magellan\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Adrian Hawlitschek",
+                    "email": "ah@clickbar.dev",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Tobias Kröll",
+                    "email": "tk@clickbar.dev",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This package provides functionality for working with the postgis extension in Laravel.",
+            "homepage": "https://github.com/clickbar/laravel-magellan",
+            "keywords": [
+                "clickbar",
+                "laravel",
+                "magellan",
+                "postgis"
+            ],
+            "support": {
+                "issues": "https://github.com/clickbar/laravel-magellan/issues",
+                "source": "https://github.com/clickbar/laravel-magellan/tree/1.6.0"
+            },
+            "time": "2024-03-17T19:31:49+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -1046,6 +1130,65 @@
             "time": "2023-12-03T19:50:20+00:00"
         },
         {
+            "name": "jmikola/geojson",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jmikola/geojson.git",
+                "reference": "e28f3855bb61a91aab32b74c176d76dd0b5658d7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jmikola/geojson/zipball/e28f3855bb61a91aab32b74c176d76dd0b5658d7",
+                "reference": "e28f3855bb61a91aab32b74c176d76dd0b5658d7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.4 || ^8.0",
+                "symfony/polyfill-php80": "^1.25"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5",
+                "scrutinizer/ocular": "^1.8.1",
+                "slevomat/coding-standard": "^8.0",
+                "squizlabs/php_codesniffer": "^3.6"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GeoJson\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeremy Mikola",
+                    "email": "jmikola@gmail.com"
+                }
+            ],
+            "description": "GeoJSON implementation for PHP",
+            "homepage": "https://github.com/jmikola/geojson",
+            "keywords": [
+                "geo",
+                "geojson",
+                "geospatial"
+            ],
+            "support": {
+                "issues": "https://github.com/jmikola/geojson/issues",
+                "source": "https://github.com/jmikola/geojson/tree/1.2.0"
+            },
+            "time": "2023-12-04T17:19:43+00:00"
+        },
+        {
             "name": "jpkleemans/attribute-events",
             "version": "1.5.0",
             "source": {
@@ -1368,6 +1511,70 @@
                 "source": "https://github.com/laravel/prompts/tree/v0.1.19"
             },
             "time": "2024-04-16T14:20:35+00:00"
+        },
+        {
+            "name": "laravel/sanctum",
+            "version": "v4.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/sanctum.git",
+                "reference": "9cfc0ce80cabad5334efff73ec856339e8ec1ac1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/sanctum/zipball/9cfc0ce80cabad5334efff73ec856339e8ec1ac1",
+                "reference": "9cfc0ce80cabad5334efff73ec856339e8ec1ac1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "illuminate/console": "^11.0",
+                "illuminate/contracts": "^11.0",
+                "illuminate/database": "^11.0",
+                "illuminate/support": "^11.0",
+                "php": "^8.2",
+                "symfony/console": "^7.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.6",
+                "orchestra/testbench": "^9.0",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^10.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Sanctum\\SanctumServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Sanctum\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Laravel Sanctum provides a featherweight authentication system for SPAs and simple APIs.",
+            "keywords": [
+                "auth",
+                "laravel",
+                "sanctum"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/sanctum/issues",
+                "source": "https://github.com/laravel/sanctum"
+            },
+            "time": "2024-04-10T19:39:58+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -3268,6 +3475,125 @@
                 }
             ],
             "time": "2023-11-08T05:53:05+00:00"
+        },
+        {
+            "name": "spatie/invade",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/invade.git",
+                "reference": "7b20a25486de69198e402da20dc924d8bcc8024a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/invade/zipball/7b20a25486de69198e402da20dc924d8bcc8024a",
+                "reference": "7b20a25486de69198e402da20dc924d8bcc8024a",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "pestphp/pest": "^1.20",
+                "phpstan/phpstan": "^1.4",
+                "spatie/ray": "^1.28"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "Spatie\\Invade\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A PHP function to work with private properties and methods",
+            "homepage": "https://github.com/spatie/invade",
+            "keywords": [
+                "invade",
+                "spatie"
+            ],
+            "support": {
+                "source": "https://github.com/spatie/invade/tree/2.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-07-19T18:55:36+00:00"
+        },
+        {
+            "name": "spatie/laravel-package-tools",
+            "version": "1.16.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-package-tools.git",
+                "reference": "ddf678e78d7f8b17e5cdd99c0c3413a4a6592e53"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-package-tools/zipball/ddf678e78d7f8b17e5cdd99c0c3413a4a6592e53",
+                "reference": "ddf678e78d7f8b17e5cdd99c0c3413a4a6592e53",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^9.28|^10.0|^11.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.5",
+                "orchestra/testbench": "^7.7|^8.0",
+                "pestphp/pest": "^1.22",
+                "phpunit/phpunit": "^9.5.24",
+                "spatie/pest-plugin-test-time": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\LaravelPackageTools\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Tools for creating Laravel packages",
+            "homepage": "https://github.com/spatie/laravel-package-tools",
+            "keywords": [
+                "laravel-package-tools",
+                "spatie"
+            ],
+            "support": {
+                "issues": "https://github.com/spatie/laravel-package-tools/issues",
+                "source": "https://github.com/spatie/laravel-package-tools/tree/1.16.4"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/spatie",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-03-20T07:29:11+00:00"
         },
         {
             "name": "symfony/clock",

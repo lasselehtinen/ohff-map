@@ -20,8 +20,9 @@ return new class extends Migration
             $table->date('valid_from')->nullable();
             $table->date('first_activation_date')->nullable();
             $table->date('latest_activation_date')->nullable();
-            $table->geometry('latitude', subtype: 'point', srid: 4326)->nullable();
-            $table->geometry('longitude', subtype: 'point', srid: 4326)->nullable();
+            $table->magellanPoint('location', 4326)->nullable();
+            //$table->geometry('latitude', subtype: 'point', srid: 4326)->nullable();
+            //$table->geometry('longitude', subtype: 'point', srid: 4326)->nullable();
             $table->string('iota_reference', 6)->nullable();
             /*
             $table->unsignedBigInteger('program_id')->nullable();

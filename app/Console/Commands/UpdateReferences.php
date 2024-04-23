@@ -79,7 +79,7 @@ class UpdateReferences extends Command
 
             // Check if new reference has been approved or already active/deleted
             if ($sourceReference['status'] !== 'proposed') {
-                $reference->approval_status = 'saved'; /** @phpstan-ignore-line */
+                $reference->approval_status = 'saved';
             }
 
             $reference->save();

@@ -2,9 +2,7 @@
 
 namespace App\Providers;
 
-use App\Events\CoordinatesChanged;
 use App\Models\Reference;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,9 +21,5 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Reference::preventSilentlyDiscardingAttributes($this->app->isLocal());
-
-        Event::listen(
-            CoordinatesChanged::class,
-        );
     }
 }

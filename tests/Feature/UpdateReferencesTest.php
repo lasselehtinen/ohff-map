@@ -19,7 +19,7 @@ class UpdateReferencesTest extends TestCase
     /**
      * Test that reference is updated to the database
      */
-    public function test_update_references_command_updates_database(): void
+    public function testUpdateReferencesCommandUpdatesDatabase(): void
     {
         $this->assertDatabaseHas('references', [
             'reference' => 'OHFF-0001',
@@ -36,7 +36,7 @@ class UpdateReferencesTest extends TestCase
     /**
      * Test that other than OHFF references are not updated
      */
-    public function test_update_references_command_does_not_include_other_than_ohff_references(): void
+    public function testUpdateReferencesCommandDoesNotIncludeOtherThanOhffReferences(): void
     {
         $this->assertDatabaseMissing('references', [
             'reference' => '3CFF-0011',
