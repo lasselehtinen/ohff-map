@@ -13,6 +13,8 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "league/csv": "^9.0",
+        "php-coord/datapack-europe": "^1.7",
+        "php-coord/php-coord": "^5.8",
         "spatie/laravel-query-builder": "^5.8"
     },
     "require-dev": {
