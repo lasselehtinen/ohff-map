@@ -12,7 +12,8 @@
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "league/csv": "^9.0"
+        "league/csv": "^9.0",
+        "spatie/laravel-query-builder": "^5.8"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

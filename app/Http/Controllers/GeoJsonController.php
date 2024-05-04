@@ -7,6 +7,8 @@ use DateTime;
 use GeoJson\Feature\Feature;
 use GeoJson\Feature\FeatureCollection;
 use GeoJson\Geometry\Point;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class GeoJsonController extends Controller
 {
@@ -15,26 +17,34 @@ class GeoJsonController extends Controller
      */
     public function index()
     {
-        $references = Reference::all();
+        $references = QueryBuilder::for(Reference::class)
+            ->allowedFilters([
+                'reference',
+                'approval_status',
+                AllowedFilter::scope('activated'),
+                AllowedFilter::scope('not_activated'),
+            ])
+            ->get();
+
         $features = collect([]);
 
         foreach ($references as $reference) {
             // Define properties
             $properties = [
-                'reference' => $reference->reference,
+                'reference' => $reference->reference, /** @phpstan-ignore-line */
                 'is_activated' => ! empty($reference->first_activation_date),
-                'first_activation_date' => $reference->first_activation_date,
-                'latest_activation_date' => $reference->latest_activation_date,
+                'first_activation_date' => $reference->first_activation_date, /** @phpstan-ignore-line */
+                'latest_activation_date' => $reference->latest_activation_date, /** @phpstan-ignore-line */
                 //'latest_activator' => $reference->activators->sortByDesc('pivot.activation_date')->pluck('callsign')->first(),
-                'name' => $reference->name,
+                'name' => $reference->name, /** @phpstan-ignore-line */
                 'icon' => $this->getIcon($reference),
-                'wdpa_id' => $reference->wdpa_id,
+                'wdpa_id' => $reference->wdpa_id, /** @phpstan-ignore-line */
                 //'karttapaikka_link' => 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n='.$point->getNorthing().'&e='.$point->getEasting().'&title='.$reference->reference.'&desc='.urlencode($reference->name).'&zoom=8',
                 //'paikkatietoikkuna_link' => 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord='.$point->getEasting().'_'.$point->getNorthing().'&mapLayers=802+100+default,1629+100+default,1627+70+default,1628+70+default&markers=2|1|ffde00|'.$point->getEasting().'_'.$point->getNorthing().'|'.$reference->reference.'%20-%20'.urlencode($reference->name).'&noSavedState=true&showIntro=false',
-                'natura_2000_area' => (bool) $reference->natura_2000_area,
+                'natura_2000_area' => (bool) $reference->natura_2000_area, /** @phpstan-ignore-line */
             ];
 
-            $feature = new Feature(new Point([$reference->location->getLongitude(), $reference->location->getLatitude()]), $properties);
+            $feature = new Feature(new Point([$reference->location->getLongitude(), $reference->location->getLatitude()]), $properties); /** @phpstan-ignore-line */
             $features->push($feature);
         }
 
