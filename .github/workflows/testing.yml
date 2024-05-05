@@ -7,7 +7,7 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     services:
       postgres:
-        image: postgres:latest
+        image: postgis/postgis:16-3.4
         env:
           POSTGRES_USER: ohffmap
           POSTGRES_PASSWORD: password
