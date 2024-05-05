@@ -55,6 +55,18 @@ class ReferenceFactory extends Factory
     }
 
     /**
+     * Indicate that the reference is recently activated.
+     */
+    public function activatedRecently(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'latest_activation_date' => now(),
+            ];
+        });
+    }
+
+    /**
      * Get random Finnish national park
      */
     public function getRandomNationalPark(): string

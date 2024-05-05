@@ -8,14 +8,14 @@
         "php": "^8.2",
         "clickbar/laravel-magellan": "^1.6",
         "jmikola/geojson": "^1.0",
-        "jpkleemans/attribute-events": "^1.5",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "league/csv": "^9.0",
         "php-coord/datapack-europe": "^1.7",
         "php-coord/php-coord": "^5.8",
-        "spatie/laravel-query-builder": "^5.8"
+        "spatie/laravel-query-builder": "^5.8",
+        "symfony/dom-crawler": "^7.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
