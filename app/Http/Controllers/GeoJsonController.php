@@ -62,7 +62,7 @@ class GeoJsonController extends Controller
             // Define properties
             $properties = [
                 'reference' => $reference->reference, /** @phpstan-ignore-line */
-                'is_activated' => ! empty($reference->first_activation_date->format('Y-m-d')),
+                'is_activated' => ! empty($reference->first_activation_date),
                 'first_activation_date' => $reference->first_activation_date->format('Y-m-d'), /** @phpstan-ignore-line */
                 'latest_activation_date' => $reference->latest_activation_date->format('Y-m-d'), /** @phpstan-ignore-line */
                 //'latest_activator' => $reference->activators->sortByDesc('pivot.activation_date')->pluck('callsign')->first(),
