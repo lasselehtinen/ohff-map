@@ -81,6 +81,7 @@ class GeoJsonTest extends TestCase
         // Non-activated reference should return tree
         $reference = Reference::factory()->create(['approval_status' => 'saved', 'latest_activation_date' => null]);
         $response = $this->getJson('/api/geojson');
+
         $response
             ->assertStatus(200)
             ->assertJsonPath('features.0.properties.icon', 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/tree.png');
