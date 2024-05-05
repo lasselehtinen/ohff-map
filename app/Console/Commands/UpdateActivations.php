@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use DateTime;
 use App\Models\Operator;
 use App\Models\Reference;
+use DateTime;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;

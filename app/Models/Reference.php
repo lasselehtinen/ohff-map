@@ -34,6 +34,22 @@ class Reference extends Model
     protected $guarded = [];
 
     /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'valid_from' => 'date',
+            'first_activation_date' => 'date',
+            'latest_activation_date' => 'date',
+            'wdpa_id' => 'int',
+            'natura_2000_area' => 'boolean',
+        ];
+    }
+
+    /**
      * Scope for the reference is activated
      */
     public function scopeActivated(Builder $query): Builder

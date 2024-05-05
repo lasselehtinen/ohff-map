@@ -108,6 +108,7 @@ class GeoJsonTest extends TestCase
         $response = $this->getJson('/api/geojson?filter[reference]=OHFF-0001');
 
         $response
+            ->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) => $json->has('type')
                 ->has('features', 1, fn (AssertableJson $json) => $json->where('type', 'Feature')
                     ->where('properties.reference', 'OHFF-0001')
@@ -142,6 +143,7 @@ class GeoJsonTest extends TestCase
         $response = $this->getJson('/api/geojson?filter[not_activated]=true');
 
         $response
+            ->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) => $json->has('type')
                 ->has('features', 1, fn (AssertableJson $json) => $json->where('type', 'Feature')
                     ->where('properties.reference', 'OHFF-0001')
@@ -150,9 +152,29 @@ class GeoJsonTest extends TestCase
         $response = $this->getJson('/api/geojson?filter[activated]=true');
 
         $response
+            ->assertStatus(200)
             ->assertJson(fn (AssertableJson $json) => $json->has('type')
                 ->has('features', 1, fn (AssertableJson $json) => $json->where('type', 'Feature')
                     ->where('properties.reference', 'OHFF-0002')
+                    ->etc()));
+    }
+
+    /**
+     * Test that references can be filtered by if they are activated this year or not
+     */
+    public function testReferencesCanBeFilteredByBeingActivatedThisYear(): void
+    {
+        Reference::factory()->create(['reference' => 'OHFF-0001', 'latest_activation_date' => now()]);
+        $this->travel(-5)->years();
+        Reference::factory()->create(['reference' => 'OHFF-0002', 'latest_activation_date' => now()]);
+
+        $response = $this->getJson('/api/geojson?filter[activated_this_year]=true');
+
+        $response
+            ->assertStatus(200)
+            ->assertJson(fn (AssertableJson $json) => $json->has('type')
+                ->has('features', 1, fn (AssertableJson $json) => $json->where('type', 'Feature')
+                    ->where('properties.reference', 'OHFF-0001')
                     ->etc()));
     }
 }
