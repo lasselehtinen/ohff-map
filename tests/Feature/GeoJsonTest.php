@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Operator;
 use App\Models\Reference;
 use Clickbar\Magellan\Data\Geometries\Point;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -175,6 +176,42 @@ class GeoJsonTest extends TestCase
             ->assertJson(fn (AssertableJson $json) => $json->has('type')
                 ->has('features', 1, fn (AssertableJson $json) => $json->where('type', 'Feature')
                     ->where('properties.reference', 'OHFF-0001')
+                    ->etc()));
+    }
+
+    /**
+     * Test that references can be filtered by callsign that has done the activation
+     */
+    public function testReferencesCanBeFilteredByCallsignThatHasDoneActivation(): void
+    {
+        $reference = Reference::factory()->create(['reference' => 'OHFF-0001']);
+        Reference::factory()->create(['reference' => 'OHFF-0002']);
+        $operator = Operator::factory()->create(['callsign' => 'OH2BAV']);
+
+        $operator->activations()->attach($reference, [
+            'activation_date' => fake()->date(),
+            'qso_count' => fake()->numberBetween(44, 200),
+            'chaser_count' => fake()->numberBetween(1, 100),
+        ]);
+
+        // Activated by OH2BAV should return one result, OHFF-0001
+        $response = $this->getJson('/api/geojson?filter[activated_by]=OH2BAV');
+
+        $response
+            ->assertStatus(200)
+            ->assertJson(fn (AssertableJson $json) => $json->has('type')
+                ->has('features', 1, fn (AssertableJson $json) => $json->where('type', 'Feature')
+                    ->where('properties.reference', 'OHFF-0001')
+                    ->etc()));
+
+        // Not activated by OH2BAV should return one result, OHFF-0001
+        $response = $this->getJson('/api/geojson?filter[not_activated_by]=OH2BAV');
+
+        $response
+            ->assertStatus(200)
+            ->assertJson(fn (AssertableJson $json) => $json->has('type')
+                ->has('features', 1, fn (AssertableJson $json) => $json->where('type', 'Feature')
+                    ->where('properties.reference', 'OHFF-0002')
                     ->etc()));
     }
 }

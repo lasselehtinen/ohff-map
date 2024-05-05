@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Operator;
 use App\Models\Reference;
 use DateTime;
 use GeoJson\Feature\Feature;
@@ -20,6 +21,7 @@ class GeoJsonController extends Controller
      * @queryParam filter[approval_status] Approval status of the reference. Enum: received, declined, approved, saved. Example: received
      * @queryParam filter[activated] Boolean for whether the reference is activated. Enum: true, false. Example: false
      * @queryParam filter[not_activated] Boolean for whether the reference is not activated. Enum: true, false. Example: false
+     * @queryParam filter[activated_this_year] Boolean for whether the reference is activated this year. Enum: true, false. Example: true
      *
      * @response {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[24.19893,61.19891]},"properties":{"reference":"OHFF-0665","is_activated":true,"first_activation_date":"1985-01-24","latest_activation_date":"2016-01-12","name":"Isoj\u00e4rvi","icon":"https:\/\/maps.google.com\/intl\/en_us\/mapfiles\/ms\/micons\/red.png","wdpa_id":90633,"karttapaikka_link":"https:\/\/asiointi.maanmittauslaitos.fi\/karttapaikka\/?lang=fi&share=customMarker&n=6788167.7013611&e=349481.49408152&title=OHFF-0665&desc=Isoj%C3%A4rvi&zoom=8","paikkatietoikkuna_link":"https:\/\/kartta.paikkatietoikkuna.fi\/?zoomLevel=10&coord=349481.49408152_6788167.7013611&mapLayers=802+100+default,1629+100+default,1627+70+default,1628+70+default&markers=2|1|ffde00|349481.49408152_6788167.7013611|OHFF-0665%20-%20Isoj%C3%A4rvi&noSavedState=true&showIntro=false","natura_2000_area":true}}]}
      */
@@ -33,6 +35,18 @@ class GeoJsonController extends Controller
                 AllowedFilter::scope('not_activated'),
                 AllowedFilter::callback('activated_this_year', function (Builder $query, $value) {
                     $query->whereYear('latest_activation_date', date('Y'))->get();
+                }),
+                AllowedFilter::callback('activated_by', function (Builder $query, $value) {
+                    $query->whereHas('activators', function (Builder $query) use ($value) {
+                        $query->whereIn('callsign', [$value]);
+                    });
+                }),
+                AllowedFilter::callback('not_activated_by', function (Builder $query, $value) {
+                    $user = Operator::where('callsign', $value)->first();
+
+                    if (! is_null($user)) {
+                        $query->whereNotIn('id', $user->activations->pluck('id')->unique());
+                    }
                 }),
                 //AllowedFilter::custom('not_activated_by', new FiltersReferencesNotActivatedByCallsign),
                 //AllowedFilter::custom('activited_this_year', new FiltersReferencesActivatedThisYear),

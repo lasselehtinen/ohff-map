@@ -120,7 +120,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/geojson?filter%5Breference%5D=OHFF-0001&amp;filter%5Bapproval_status%5D=received&amp;filter%5Bactivated%5D=false&amp;filter%5Bnot_activated%5D=false" \
+    --get "http://localhost/api/geojson?filter%5Breference%5D=OHFF-0001&amp;filter%5Bapproval_status%5D=received&amp;filter%5Bactivated%5D=false&amp;filter%5Bnot_activated%5D=false&amp;filter%5Bactivated_this_year%5D=true" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
@@ -135,6 +135,7 @@ const params = {
     "filter[approval_status]": "received",
     "filter[activated]": "false",
     "filter[not_activated]": "false",
+    "filter[activated_this_year]": "true",
 };
 Object.keys(params)
     .forEach(key =&gt; url.searchParams.append(key, params[key]));
@@ -303,6 +304,19 @@ Must be one of:
                data-component="query">
     <br>
 <p>Boolean for whether the reference is not activated. Example: <code>false</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>true</code></li> <li><code>false</code></li></ul>
+            </div>
+                                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>filter[activated_this_year]</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="filter[activated_this_year]"                data-endpoint="GETapi-geojson"
+               value="true"
+               data-component="query">
+    <br>
+<p>Boolean for whether the reference is activated this year. Example: <code>true</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>true</code></li> <li><code>false</code></li></ul>
             </div>

@@ -6,6 +6,7 @@ use Clickbar\Magellan\Database\Eloquent\HasPostgisColumns;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Cache;
 use PHPCoord\CoordinateReferenceSystem\Geographic2D;
 use PHPCoord\CoordinateReferenceSystem\Projected;
@@ -47,6 +48,14 @@ class Reference extends Model
             'wdpa_id' => 'int',
             'natura_2000_area' => 'boolean',
         ];
+    }
+
+    /**
+     * The operators that have activated the reference
+     */
+    public function activators(): BelongsToMany
+    {
+        return $this->belongsToMany(Operator::class, 'operator_activations')->withPivot('activation_date');
     }
 
     /**
