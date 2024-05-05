@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Clickbar\Magellan\Database\Eloquent\HasPostgisColumns;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -48,6 +49,14 @@ class Reference extends Model
             'wdpa_id' => 'int',
             'natura_2000_area' => 'boolean',
         ];
+    }
+
+    /**
+     * Prepare a date for array / JSON serialization.
+     */
+    protected function serializeDate(DateTimeInterface $date): string
+    {
+        return $date->format('Y-m-d');
     }
 
     /**

@@ -31,8 +31,8 @@ class GeoJsonTest extends TestCase
             ])
             ->assertJsonPath('features.0.properties.reference', $reference->reference)
             ->assertJsonPath('features.0.properties.is_activated', true)
-            ->assertJsonPath('features.0.properties.first_activation_date', $reference->first_activation_date)
-            ->assertJsonPath('features.0.properties.latest_activation_date', $reference->latest_activation_date)
+            ->assertJsonPath('features.0.properties.first_activation_date', $reference->first_activation_date->format('Y-m-d'))
+            ->assertJsonPath('features.0.properties.latest_activation_date', $reference->latest_activation_date->format('Y-m-d'))
             ->assertJsonPath('features.0.properties.name', $reference->name)
             ->assertJsonPath('features.0.properties.wdpa_id', $reference->wdpa_id)
             ->assertJsonPath('features.0.properties.natura_2000_area', $reference->natura_2000_area);
