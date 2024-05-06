@@ -17,6 +17,7 @@
         "laravel/framework": "^11.0",
         "laravel/nova": "^4.0",
         "laravel/sanctum": "^4.0",
+        "laravel/scout": "^10.8",
         "laravel/tinker": "^2.9",
         "league/csv": "^9.0",
         "php-coord/datapack-europe": "^1.7",
