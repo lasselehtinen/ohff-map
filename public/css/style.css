@@ -1,0 +1,54 @@
+#map {
+    height: 100%;
+  }
+  
+  html,
+  body {
+    font-family: Helvetica, sans-serif;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    display: flex;
+    flex-direction: column;
+    background: floralwhite;
+  }
+  
+  body > form {
+    display: flex;
+    /*justify-content:space-between;*/
+    align-items: center;
+    margin: 0.5rem 1rem;
+    gap: 0.5rem;
+  }
+  
+  .legend {
+    font-size: small;
+    margin: 0.5rem 1rem;
+  }
+  
+  input[type=text] {
+    padding: 5px 5px;
+  }
+  
+  input[type=submit] {
+    padding: 5px 12px;
+  }
+  
+  .custom-map-control-button {
+    background-color: #fff;
+    border: 0;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+    margin: 10px;
+    padding: 0 0.5em;
+    font: 400 18px Roboto, Arial, sans-serif;
+    overflow: hidden;
+    height: 40px;
+    cursor: pointer;
+  }
+  .custom-map-control-button:hover {
+    background: #ebebeb;
+  }

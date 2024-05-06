@@ -48,17 +48,12 @@ class GeoJsonController extends Controller
                         $query->whereNotIn('id', $user->activations->pluck('id')->unique());
                     }
                 }),
-                //AllowedFilter::custom('not_activated_by', new FiltersReferencesNotActivatedByCallsign),
-                //AllowedFilter::custom('activited_this_year', new FiltersReferencesActivatedThisYear),
             ])
             ->get();
 
         $features = collect([]);
 
         foreach ($references as $reference) {
-            // Get ETRS89 coordinates/point for Karttapaikka and Paikkatietoikkuna
-            $etrs89Coordinates = $reference->getETRS89Coordinates(); /* @phpstan-ignore-line */
-
             // Define properties
             $properties = [
                 'reference' => $reference->reference, /** @phpstan-ignore-line */
@@ -69,10 +64,16 @@ class GeoJsonController extends Controller
                 'name' => $reference->name, /** @phpstan-ignore-line */
                 'icon' => $this->getIcon($reference),
                 'wdpa_id' => $reference->wdpa_id, /** @phpstan-ignore-line */
-                'karttapaikka_link' => 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n='.$etrs89Coordinates->getNorthing().'&e='.$etrs89Coordinates->getEasting().'&title='.$reference->reference.'&desc='.urlencode($reference->name).'&zoom=8', /** @phpstan-ignore-line */
-                'paikkatietoikkuna_link' => 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord='.$etrs89Coordinates->getEasting().'_'.$etrs89Coordinates->getNorthing().'&mapLayers=802+100+default,1629+100+default,1627+70+default,1628+70+default&markers=2|1|ffde00|'.$etrs89Coordinates->getEasting().'_'.$etrs89Coordinates->getNorthing().'|'.$reference->reference.'%20-%20'.urlencode($reference->name).'&noSavedState=true&showIntro=false', /** @phpstan-ignore-line */
                 'natura_2000_area' => (bool) $reference->natura_2000_area, /** @phpstan-ignore-line */
             ];
+
+            // Get ETRS89 coordinates/point for Karttapaikka and Paikkatietoikkuna
+            $etrs89Coordinates = $reference->getETRS89Coordinates(); /* @phpstan-ignore-line */
+
+            if ($etrs89Coordinates instanceof \PHPCoord\Point\ProjectedPoint) {
+                $properties['karttapaikka_link'] = 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n='.$etrs89Coordinates->getNorthing().'&e='.$etrs89Coordinates->getEasting().'&title='.$reference->reference.'&desc='.urlencode($reference->name).'&zoom=8'; /** @phpstan-ignore-line */
+                $properties['paikkatietoikkuna_link'] = 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord='.$etrs89Coordinates->getEasting().'_'.$etrs89Coordinates->getNorthing().'&mapLayers=802+100+default,1629+100+default,1627+70+default,1628+70+default&markers=2|1|ffde00|'.$etrs89Coordinates->getEasting().'_'.$etrs89Coordinates->getNorthing().'|'.$reference->reference.'%20-%20'.urlencode($reference->name).'&noSavedState=true&showIntro=false'; /** @phpstan-ignore-line */
+            }
 
             $feature = new Feature(new Point([$reference->location->getLongitude(), $reference->location->getLatitude()]), $properties); /** @phpstan-ignore-line */
             $features->push($feature);
