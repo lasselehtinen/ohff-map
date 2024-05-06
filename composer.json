@@ -4,16 +4,24 @@
     "description": "The skeleton application for the Laravel framework.",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://nova.laravel.com"
+        }
+    ],
     "require": {
         "php": "^8.2",
         "clickbar/laravel-magellan": "^1.6",
         "jmikola/geojson": "^1.0",
         "laravel/framework": "^11.0",
+        "laravel/nova": "^4.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "league/csv": "^9.0",
         "php-coord/datapack-europe": "^1.7",
         "php-coord/php-coord": "^5.8",
+        "simplesquid/nova-advanced-number-field": "^1.0",
         "spatie/laravel-query-builder": "^5.8",
         "symfony/dom-crawler": "^7.0"
     },
