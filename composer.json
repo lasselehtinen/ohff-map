@@ -20,6 +20,7 @@
     "require": {
         "php": "^8.1",
         "algolia/algoliasearch-client-php": "^3.1",
+        "caneara/axiom": "^3.2",
         "gasparesganga/php-shapefile": "^3.4",
         "ghanem/google-map": "^1.0",
         "grimzy/laravel-mysql-spatial": "dev-l10-compatibility",

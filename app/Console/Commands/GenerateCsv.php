@@ -40,9 +40,9 @@ class GenerateCsv extends Command
                 $csv->insertOne([
                     $activation->reference,
                     $user->callsign,
-                    Carbon::parse($activation->pivot->activation_date)->format('Y-m-d'),
-                    $activation->pivot->qso_count,
-                    $activation->pivot->chaser_count,
+                    Carbon::parse($activation->pivot->activation_date)->format('Y-m-d'), // @phpstan-ignore-line
+                    $activation->pivot->qso_count, // @phpstan-ignore-line
+                    $activation->pivot->chaser_count, // @phpstan-ignore-line
                 ]);
             }
         }

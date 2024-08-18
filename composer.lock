@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "85318e91fc8ab81abdacf42fbe0b1683",
+    "content-hash": "6feccec70352061ae9f62b09fd0ea1f3",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -349,6 +349,53 @@
                 }
             ],
             "time": "2023-11-26T16:51:39+00:00"
+        },
+        {
+            "name": "caneara/axiom",
+            "version": "v3.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/caneara/axiom.git",
+                "reference": "c96c97fcd0913a9b64f47f0ed63adc21543dabd2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/caneara/axiom/zipball/c96c97fcd0913a9b64f47f0ed63adc21543dabd2",
+                "reference": "c96c97fcd0913a9b64f47f0ed63adc21543dabd2",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.0",
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Axiom\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A package that provides a library of reusable Laravel validation rules.",
+            "homepage": "https://github.com/mattkingshott/axiom",
+            "keywords": [
+                "axiom",
+                "laravel",
+                "php",
+                "rules",
+                "validation"
+            ],
+            "support": {
+                "issues": "https://github.com/caneara/axiom/issues",
+                "source": "https://github.com/caneara/axiom/tree/v3.2.1"
+            },
+            "abandoned": true,
+            "time": "2021-03-25T12:05:06+00:00"
         },
         {
             "name": "carbonphp/carbon-doctrine-types",

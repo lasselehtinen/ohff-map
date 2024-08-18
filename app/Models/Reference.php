@@ -23,7 +23,7 @@ class Reference extends Model
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<string>
+     * @var array<int, string>
      */
     protected $fillable = ['reference', 'status', 'name', 'iota_reference', 'location', 'suggested', 'wdpa_id', 'latest_activation_date', 'valid_from'];
 
