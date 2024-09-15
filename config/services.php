@@ -29,5 +29,10 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'wiki' => [
+        'endpoint' => env('MEDIAWIKI_API_ENDPOINT'),
+        'username' => env('MEDIAWIKI_BOT_USERNAME'),
+        'password' => env('MEDIAWIKI_BOT_PASSWORD'),
+    ],
 
 ];

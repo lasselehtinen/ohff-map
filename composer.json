@@ -15,6 +15,10 @@
         "0": {
             "type": "vcs",
             "url": "https://github.com/joshbaumann/laravel-mysql-spatial.git"
+        },
+        "1": {
+            "type": "vcs",
+            "url": "https://github.com/lasselehtinen/mediawiki-api-base.git"
         }
     },
     "require": {
@@ -39,7 +43,8 @@
         "spatie/laravel-backup": "^8.4",
         "spatie/laravel-query-builder": "^5.0",
         "spatie/laravel-responsecache": "^7.1",
-        "symfony/dom-crawler": "^5.3"
+        "symfony/dom-crawler": "^5.3",
+        "lasselehtinen/mediawiki-api-base": "dev-main"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -94,6 +99,6 @@
             "phpro/grumphp": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }
