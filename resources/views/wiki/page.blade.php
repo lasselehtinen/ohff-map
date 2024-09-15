@@ -31,9 +31,9 @@ Ei
 
 [https://www.protectedplanet.net/{{ $reference->wdpa_id }} Protected Planet]
 
-@if ($reference->natura_2000_area)
+@if ($reference->natura_2000_area && !is_null($point))
 [https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord={{ $point->getEasting() }}_{{ $point->getNorthing() }}&mapLayers=802+100+default,1629+100+default,1627+70+default,1628+70+default&markers=2|1|ffde00|{{ $point->getEasting() }}_{{ $point->getNorthing() }}|{{ $reference->reference}}%20-%20{{ urlencode($reference->name)}}&noSavedState=true&showIntro=false%22 Paikkatietoikkuna]
-@else
+@elseif (!is_null($point))
 [https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n={{ $point->getNorthing() }}&e={{ $point->getEasting() }}&title={{ $reference->reference}}&desc={{ $reference->name }}&zoom=8%22 Kansalaisen karttapaikka]
 @endif
 
