@@ -13,20 +13,22 @@
     </div>
   @endif
 
+  {{--
   @if($countForThisYear >= $limit)
   <div class="alert alert-danger" role="alert">
   The limit for suggestions for the year {{ $currentYear }} has been reached. New suggestions will not be approved until the beginning of next year!
   </div>
   @endif
+  --}}
 
   <div class="alert alert-dark" role="alert">
   {{ $countForThisYear }} has been suggested for year {{ $currentYear }}.
-  @if($countForThisYear >= $limit)
+  {{-- @if($countForThisYear >= $limit)
   The overdue will be handled during the next year.
-  @endif
+  @endif --}}
   </div>
   
-  @if($countForThisYear <= $limit)
+  {{-- @if($countForThisYear <= $limit) --}}
   <div class="card">
     <div class="card-header text-center font-weight-bold">
       Suggest an OHFF reference
@@ -71,7 +73,7 @@
       </form>
     </div>
   </div>
-@endif
+  {{-- @endif --}}
 
 </div>  
 </body>
