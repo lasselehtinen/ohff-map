@@ -63,12 +63,12 @@ class ReferenceController extends Controller
      */
     public function create()
     {
-        $countForThisYear = Reference::whereYear('valid_from', date('Y'))->count();
+        $countForThisYear = Reference::whereYear('valid_from', '2025')->count();
 
         return view('suggest-a-reference', [
             'countForThisYear' => $countForThisYear,
             'limit' => 150,
-            'currentYear' => date('Y'),
+            'currentYear' => '2025',
         ]);
     }
 
