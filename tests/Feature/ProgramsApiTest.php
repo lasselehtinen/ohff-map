@@ -16,7 +16,7 @@ class ProgramsApiTest extends TestCase
      *
      * @return void
      */
-    public function testListingPrograms()
+    public function test_listing_programs()
     {
         $program = Program::factory()->create();
 
@@ -39,7 +39,7 @@ class ProgramsApiTest extends TestCase
      *
      * @return void
      */
-    public function testGettingIndividualProgram()
+    public function test_getting_individual_program()
     {
         $program = Program::factory()->create();
 
@@ -61,7 +61,7 @@ class ProgramsApiTest extends TestCase
      *
      * @return void
      */
-    public function testFilteringProgramsByName()
+    public function test_filtering_programs_by_name()
     {
         $program = Program::factory()->create(['name' => 'OHFF']);
 

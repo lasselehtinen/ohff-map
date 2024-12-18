@@ -21,7 +21,7 @@ class GenerateCsvTest extends TestCase
      *
      * @return void
      */
-    public function testUserActivationsCsvIsGeneratedCorrectly()
+    public function test_user_activations_csv_is_generated_correctly()
     {
         // Create one known reference
         $reference = Reference::factory(['reference' => 'OHFF-1079', 'latest_activation_date' => now()])

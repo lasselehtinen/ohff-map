@@ -20,7 +20,7 @@ class UpdateActivationsCommandTest extends TestCase
      *
      * @return void
      */
-    public function testActivationIsParsedCorrectlyFromWwffSite()
+    public function test_activation_is_parsed_correctly_from_wwff_site()
     {
         // Create one known reference
         $reference = Reference::factory(['reference' => 'OHFF-1079', 'latest_activation_date' => now()])
@@ -52,7 +52,7 @@ class UpdateActivationsCommandTest extends TestCase
      *
      * @return void
      */
-    public function testGettingActivationsWithSpecialCallSign()
+    public function test_getting_activations_with_special_call_sign()
     {
         // Create one known reference
         $reference = Reference::factory(['reference' => 'OHFF-0112', 'latest_activation_date' => now()])

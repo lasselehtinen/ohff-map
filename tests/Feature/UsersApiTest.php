@@ -21,7 +21,7 @@ class UsersApiTest extends TestCase
      *
      * @return void
      */
-    public function testCreatingAnUser()
+    public function test_creating_an_user()
     {
         // Use factory to create faker data
         $user = User::factory()->make();
@@ -57,7 +57,7 @@ class UsersApiTest extends TestCase
      *
      * @return void
      */
-    public function testLoggingInAsAnUser()
+    public function test_logging_in_as_an_user()
     {
         $user = User::factory()->create();
 
@@ -76,7 +76,7 @@ class UsersApiTest extends TestCase
      *
      * @return void
      */
-    public function testLoggingOutAsAnUser()
+    public function test_logging_out_as_an_user()
     {
         $user = User::factory()->create();
         $user->createToken('*');
@@ -92,7 +92,7 @@ class UsersApiTest extends TestCase
      *
      * @return void
      */
-    public function testLoggingInWithIncorrectPasswordReturnsErrorMessage()
+    public function test_logging_in_with_incorrect_password_returns_error_message()
     {
         $user = User::factory()->create();
 
@@ -120,7 +120,7 @@ class UsersApiTest extends TestCase
      *
      * @return void
      */
-    public function testUserCanOnlyViewTheirOwnInformation()
+    public function test_user_can_only_view_their_own_information()
     {
         // Create two users
         $userOne = User::factory()->create();
@@ -165,7 +165,7 @@ class UsersApiTest extends TestCase
      *
      * @return void
      */
-    public function testUserCanOnlyEditTheirOwnInformation()
+    public function test_user_can_only_edit_their_own_information()
     {
         // Create two users
         $userOne = User::factory()->create();
@@ -214,7 +214,7 @@ class UsersApiTest extends TestCase
      *
      * @return void
      */
-    public function testUserCanMarkReferenceAsActivated()
+    public function test_user_can_mark_reference_as_activated()
     {
         $user = User::factory()->create();
 
@@ -306,7 +306,7 @@ class UsersApiTest extends TestCase
      *
      * @return void
      */
-    public function testUserCannotMarkReferenceAsActivatedForAnotherUser()
+    public function test_user_cannot_mark_reference_as_activated_for_another_user()
     {
         // Create two users
         $userOne = User::factory()->create();

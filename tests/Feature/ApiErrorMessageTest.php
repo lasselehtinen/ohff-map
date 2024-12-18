@@ -16,7 +16,7 @@ class ApiErrorMessageTest extends TestCase
      *
      * @return void
      */
-    public function testIllegalMethodReturnsCorrectErrorMessage()
+    public function test_illegal_method_returns_correct_error_message()
     {
         $response = $this->delete('/api/references');
 
@@ -39,7 +39,7 @@ class ApiErrorMessageTest extends TestCase
      *
      * @return void
      */
-    public function testNonExistingResourceReturnsCorrectErrorMessage()
+    public function test_non_existing_resource_returns_correct_error_message()
     {
         Sanctum::actingAs(
             User::factory()->create(),
@@ -65,7 +65,7 @@ class ApiErrorMessageTest extends TestCase
     /**
      * Test resource requiring authentication returns error message
      */
-    public function testResourceRequiringAuthenticationReturnsErrorMessage()
+    public function test_resource_requiring_authentication_returns_error_message()
     {
         $response = $this->get('/api/users/1');
 
