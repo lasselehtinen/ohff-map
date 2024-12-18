@@ -67,6 +67,23 @@
           @endif
         </div>
 
+        <div class="form-group">
+          <label for="county">County</label>
+          <select class="form-control @if ($errors->has('county')) is-invalid @endif" id="county" name="county" value="{{ old('county') }}">
+          @foreach ($counties as $countyCode => $countyName)
+              <option value="{{ $countyCode }}" @selected(old('county') == $countyCode)>
+                  {{ $countyName }} ({{ $countyCode }})
+              </option>
+          @endforeach
+          </select>
+
+        @if ($errors->has('county'))
+          <div class="invalid-feedback">
+            {{ $errors->first('county') }}
+          </div>
+          @endif
+        </div>
+
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
     </div>

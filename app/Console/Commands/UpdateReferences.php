@@ -103,6 +103,7 @@ class UpdateReferences extends Command
             $reference->update([
                 'name' => $sourceReference['name'],
                 'status' => $sourceReference['status'],
+                'county' => $sourceReference['county'],
                 'iota_reference' => $sourceReference['iota'],
                 'wdpa_id' => $protectedPlanetId,
                 'valid_from' => ($sourceReference['validFrom'] === '0000-00-00') ? null : $sourceReference['validFrom'],

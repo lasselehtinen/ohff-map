@@ -89,6 +89,7 @@ class Reference extends Resource
             ID::make()->sortable(),
             Text::make('Reference')->sortable(),
             Text::make('Name'),
+            Text::make('County'),
             Badge::make('Status')->map([
                 'active' => 'success',
                 'deleted' => 'danger',

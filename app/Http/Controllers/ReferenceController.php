@@ -11,6 +11,7 @@ use Axiom\Rules\LocationCoordinates;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -63,12 +64,14 @@ class ReferenceController extends Controller
      */
     public function create()
     {
-        $countForThisYear = Reference::whereYear('valid_from', '2025')->count();
+        $year = 2025;
+        $countForThisYear = Reference::whereYear('valid_from', $year)->count();
 
         return view('suggest-a-reference', [
             'countForThisYear' => $countForThisYear,
             'limit' => 150,
-            'currentYear' => '2025',
+            'currentYear' => $year,
+            'counties' => config('counties'),
         ]);
     }
 
@@ -81,6 +84,7 @@ class ReferenceController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:references',
+            'county' => Rule::in(array_keys(config('counties'))),
             'coordinates' => ['required', new LocationCoordinates],
             'protected_planet_link' => 'required|url|regex:/https?:\/\/www.protectedplanet.net\/\d+/',
         ]);
@@ -106,6 +110,7 @@ class ReferenceController extends Controller
         $reference = new Reference;
         $reference->reference = strval(++$latestReference->reference); /** @phpstan-ignore-line */
         $reference->name = $request->name;
+        $reference->county = $request->county;
         $reference->status = 'proposed';
         [$latitude, $longitude] = explode(',', $request->coordinates);
         $reference->location = new Point($latitude, $longitude);

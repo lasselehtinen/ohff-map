@@ -25,7 +25,7 @@ class Reference extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['reference', 'status', 'name', 'iota_reference', 'location', 'suggested', 'wdpa_id', 'latest_activation_date', 'valid_from'];
+    protected $fillable = ['reference', 'status', 'name', 'county', 'iota_reference', 'location', 'suggested', 'wdpa_id', 'latest_activation_date', 'valid_from'];
 
     /**
      * Prepare a date for array / JSON serialization.
