@@ -107,7 +107,7 @@ class Reference extends Model
      */
     public function getETRS89Coordinates()
     {
-        $point = Cache::rememberForever('etrs98-'.$this->id, function () {
+        return Cache::rememberForever('etrs98-'.$this->id, function () {
             // Converting from WGS 84 to ETRS89
             $from = GeographicPoint::create(
                 Geographic2D::fromSRID(Geographic2D::EPSG_WGS_84),
@@ -123,8 +123,6 @@ class Reference extends Model
             } catch (\PHPCoord\Exception\UnknownConversionException $e) {
                 return null;
             }
-
-            return $point;
         });
 
         return $point;

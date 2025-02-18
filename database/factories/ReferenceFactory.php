@@ -215,7 +215,7 @@ class ReferenceFactory extends Factory
             'name' => $this->faker->streetName().' '.$this->faker->randomElement(['park', 'national park', 'nature reserve']),
             'first_activation_date' => $this->faker->date(),
             'latest_activation_date' => $this->faker->date(),
-            //'location' => new Point($this->faker->latitude(), $this->faker->longitude())
+            // 'location' => new Point($this->faker->latitude(), $this->faker->longitude())
             'status' => $this->faker->randomElement(['active', 'deleted', 'national']),
         ];
     }
