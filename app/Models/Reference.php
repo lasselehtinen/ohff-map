@@ -120,11 +120,11 @@ class Reference extends Model
 
             try {
                 $point = $from->convert($toCRS); // $to instanceof ProjectedPoint
+
+                return $point;
             } catch (\PHPCoord\Exception\UnknownConversionException $e) {
                 return null;
             }
         });
-
-        return $point;
     }
 }
