@@ -4,6 +4,13 @@ function initMap() {
   // Load map and GeoJSON
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 5,
+    zoomControl:true,
+    cameraControl:true,
+    mapTypeControl:true,
+    scaleControl:true,
+    streetViewControl:true,
+    rotateControl:true,
+    fullscreenControl:true,
     center: { lat: 64.95122, lng: 27.41089 },
     mapTypeId: google.maps.MapTypeId.TERRAIN
   });
