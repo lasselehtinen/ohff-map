@@ -12,7 +12,7 @@ function initMap() {
     rotateControl:true,
     fullscreenControl:true,
     center: { lat: 64.95122, lng: 27.41089 },
-    mapTypeId: google.maps.MapTypeId.TERRAIN
+    mapTypeId: 'terrain'
   });
 
   infoWindow = new google.maps.InfoWindow();
