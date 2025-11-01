@@ -85,9 +85,8 @@ function initMap() {
     }
 
     // Link to area boundary maps
-    contentString += '<a href=https://oh7rx.kapsi.fi/ohff/map.php?wdpaid='+ event.feature.getProperty("wdpa_id") + ' target="_new">Informative: Boundaries on background map</a><br/>';
-    contentString += '<a href=https://jouni.kapsi.fi/puska/info/index.php?wwffref='+ event.feature.getProperty("reference") + ' target="_new">Informative: Boundaries on topographic map</a><br/>';
-
+    contentString += '<a href=https://oh7rx.kapsi.fi/ohff/map.php?wdpaid='+ event.feature.getProperty("wdpa_id") + ' target="_new">Informative: Boundaries on topographic map</a><br/>';
+    
     // Add link to create github issue
     contentString += '<br/><a href="https://github.com/lasselehtinen/ohff-map/issues/new?template=reporting-issue-with-reference-information.md&title=&title=Problem%20with%20' + event.feature.getProperty("reference") + '">Report issue</a></br></p>'
   
