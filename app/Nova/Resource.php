@@ -33,7 +33,7 @@ abstract class Resource extends NovaResource
      * Build a "detail" query for the given resource.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Contracts\Database\Eloquent\Builder
      */
     public static function detailQuery(NovaRequest $request, $query)
     {
@@ -46,7 +46,7 @@ abstract class Resource extends NovaResource
      * This query determines which instances of the model may be attached to other resources.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Contracts\Database\Eloquent\Builder
      */
     public static function relatableQuery(NovaRequest $request, $query)
     {
