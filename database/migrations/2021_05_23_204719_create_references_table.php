@@ -21,7 +21,7 @@ class CreateReferencesTable extends Migration
             $table->string('name')->nullable();
             $table->date('first_activation_date')->nullable();
             $table->date('latest_activation_date')->nullable();
-            $table->point('location')->nullable();
+            $table->geography('location', subtype: 'point', srid: 4326)->nullable();
             $table->geometry('area')->nullable();
             $table->string('iota_reference', 6)->nullable();
             $table->unsignedBigInteger('program_id')->nullable();

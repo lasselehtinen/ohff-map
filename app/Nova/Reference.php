@@ -3,7 +3,6 @@
 namespace App\Nova;
 
 use App\Nova\Actions\MarkReferenceSaved;
-use Ghanem\GoogleMap\GHMap;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Boolean;
@@ -110,10 +109,6 @@ class Reference extends Resource
                 URL::make('WWFF', fn () => 'https://wwff.co/directory/?showRef='.$this->reference), /** @phpstan-ignore-line */
                 URL::make('Kansalaisen karttapaikka', fn () => 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n='.$this->getETRS89Coordinates()->getNorthing().'&e='.$this->getETRS89Coordinates()->getEasting().'&title='.$this->reference.'&desc='.urlencode($this->name).'&zoom=8'), /** @phpstan-ignore-line */
                 URL::make('Paikkatietoikkuna', fn () => 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord='.$this->getETRS89Coordinates()->getEasting().'_'.$this->getETRS89Coordinates()->getNorthing().'&mapLayers=802+100+default,1629+100+default,1627+70+default,1628+70+default&markers=2|1|ffde00|'.$this->getETRS89Coordinates()->getEasting().'_'.$this->getETRS89Coordinates()->getNorthing().'|'.$this->reference.'%20-%20'.urlencode($this->name).'&noSavedState=true&showIntro=false'), /** @phpstan-ignore-line */
-            ]),
-
-            new Panel('Map', [
-                GHMap::make('Map')->latitude(optional($this->location)->getLat())->longitude(optional($this->location)->getLng())->hideFromIndex(), /** @phpstan-ignore-line */
             ]),
         ];
     }

@@ -14,11 +14,11 @@
         },
         "0": {
             "type": "vcs",
-            "url": "https://github.com/hossam20520/laravel-mysql-spatial.git"
+            "url": "https://github.com/lasselehtinen/mediawiki-api-base.git"
         },
         "1": {
             "type": "vcs",
-            "url": "https://github.com/lasselehtinen/mediawiki-api-base.git"
+            "url": "https://github.com/jangaraev/laravel-mysql-spatial.git"
         }
     },
     "require": {
@@ -26,25 +26,24 @@
         "algolia/algoliasearch-client-php": "^3.1",
         "caneara/axiom": "^3.2",
         "gasparesganga/php-shapefile": "^3.4",
-        "ghanem/google-map": "^1.0",
-        "grimzy/laravel-mysql-spatial": "dev-l10-compatibility",
         "guzzlehttp/guzzle": "^7.3",
         "jmikola/geojson": "~1.0",
-        "laravel/framework": "^10.0",
-        "laravel/nova": "^4.0",
-        "laravel/sanctum": "^3.2",
-        "laravel/scout": "^9.3",
+        "laravel/framework": "^11.0",
+        "laravel/nova": "^5.0",
+        "laravel/sanctum": "^4.0",
+        "laravel/scout": "^10.0",
         "laravel/tinker": "^2.5",
         "league/csv": "^9.7",
         "league/flysystem-aws-s3-v3": "^3.22",
         "php-coord/datapack-europe": "^1.2",
         "php-coord/php-coord": "^5.0",
-        "simplesquid/nova-advanced-number-field": "^3.1",
+        "simplesquid/nova-advanced-number-field": "^3.3",
         "spatie/laravel-backup": "^8.4",
         "spatie/laravel-query-builder": "^5.0",
         "spatie/laravel-responsecache": "^7.1",
         "symfony/dom-crawler": "^5.3",
-        "lasselehtinen/mediawiki-api-base": "dev-main"
+        "lasselehtinen/mediawiki-api-base": "dev-main",
+        "grimzy/laravel-mysql-spatial": "@dev"
     },
     "require-dev": {
         "deployer/deployer": "^7.5",
@@ -53,7 +52,7 @@
         "laravel/sail": "^1.6",
         "lasselehtinen/laravel-conventions-checker": "^5.0",
         "mockery/mockery": "^1.4.2",
-        "nunomaduro/collision": "^7.0",
+        "nunomaduro/collision": "^8.1",
         "phpunit/phpunit": "^10.0",
         "spatie/laravel-ignition": "^2.0"
     },
