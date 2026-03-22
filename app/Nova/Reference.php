@@ -12,7 +12,6 @@ use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
 use SimpleSquid\Nova\Fields\AdvancedNumber\AdvancedNumber;
 
 class Reference extends Resource

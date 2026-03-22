@@ -3,6 +3,7 @@
 namespace App\Nova\Lenses;
 
 use App\Nova\Actions\MarkReferenceSaved;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Stack;
@@ -25,7 +26,7 @@ class NonApprovedReferences extends Lens
     /**
      * Get the query builder / paginator for the lens.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Builder  $query
      * @return mixed
      */
     public static function query(LensRequest $request, $query)

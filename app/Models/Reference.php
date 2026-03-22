@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Cache;
 use Laravel\Scout\Searchable;
 use PHPCoord\CoordinateReferenceSystem\Geographic2D;
 use PHPCoord\CoordinateReferenceSystem\Projected;
+use PHPCoord\Exception\UnknownConversionException;
 use PHPCoord\Point\GeographicPoint;
+use PHPCoord\Point\ProjectedPoint;
 use PHPCoord\UnitOfMeasure\Angle\Degree;
 
 class Reference extends Model
@@ -103,7 +105,7 @@ class Reference extends Model
     /**
      * Return ETRS89 coordinates for the given reference
      *
-     * @return \PHPCoord\Point\ProjectedPoint|null
+     * @return ProjectedPoint|null
      */
     public function getETRS89Coordinates()
     {
@@ -122,7 +124,7 @@ class Reference extends Model
                 $point = $from->convert($toCRS); // $to instanceof ProjectedPoint
 
                 return $point;
-            } catch (\PHPCoord\Exception\UnknownConversionException $e) {
+            } catch (UnknownConversionException $e) {
                 return null;
             }
         });

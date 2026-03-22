@@ -9,7 +9,9 @@ use App\Models\Reference;
 use DateTime;
 use GeoJson\Feature\Feature;
 use GeoJson\Feature\FeatureCollection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\QueryBuilderRequest;
@@ -19,7 +21,7 @@ class GeoJsonController extends Controller
     /**
      * Display GeoJSON listing for the references
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -74,7 +76,7 @@ class GeoJsonController extends Controller
     /**
      * Returns the icon URL for the given reference
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $reference
+     * @param  Model  $reference
      * @return string
      */
     public function getIcon($reference)

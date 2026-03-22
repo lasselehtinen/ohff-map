@@ -6,6 +6,7 @@ use App\Http\Resources\UserResource;
 use App\Models\Reference;
 use App\Models\User;
 use Hash;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -14,7 +15,7 @@ class UserController extends Controller
     /**
      * Create a new user
      *
-     * @return \Illuminate\Http\JsonResponse|\App\Http\Resources\UserResource
+     * @return JsonResponse|UserResource
      */
     public function store(Request $request)
     {
@@ -55,7 +56,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @return \Illuminate\Http\JsonResponse|\App\Http\Resources\UserResource
+     * @return JsonResponse|UserResource
      */
     public function show(Request $request, User $user)
     {
@@ -78,7 +79,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @return \Illuminate\Http\JsonResponse|\App\Http\Resources\UserResource
+     * @return JsonResponse|UserResource
      */
     public function update(Request $request, User $user)
     {
@@ -103,7 +104,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function userActivation(Request $request, User $user, Reference $reference)
     {
