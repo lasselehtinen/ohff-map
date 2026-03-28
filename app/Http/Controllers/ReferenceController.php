@@ -8,6 +8,7 @@ use App\Models\Dxcc;
 use App\Models\Program;
 use App\Models\Reference;
 use Axiom\Rules\LocationCoordinates;
+use DB;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -116,8 +117,6 @@ class ReferenceController extends Controller
         $reference->name = $request->name;
         $reference->county = $request->county;
         $reference->status = 'proposed';
-        [$latitude, $longitude] = explode(',', $request->coordinates);
-        $reference->location = new Point($latitude, $longitude);
         $reference->wdpa_id = $wdpaId;
 
         // Add relations
@@ -131,6 +130,15 @@ class ReferenceController extends Controller
         $reference->continent()->associate($continent);
 
         $reference->save();
+
+        // Update location
+        [$latitude, $longitude] = explode(',', $request->coordinates);
+
+        DB::table('references')
+            ->where('id', $reference->id)
+            ->update([
+                'location' => DB::raw("ST_GeomFromText('POINT(".$longitude.' '.$latitude.")')"),
+            ]);
 
         return redirect('suggest')->with('status', 'Suggested reference '.$reference->reference.' saved. It will be checked and approved soon as possible.');
     }
