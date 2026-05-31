@@ -6,9 +6,9 @@ use App\Models\Continent;
 use App\Models\Dxcc;
 use App\Models\Program;
 use App\Models\Reference;
-use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use League\Csv\Reader;
@@ -112,7 +112,7 @@ class UpdateReferences extends Command
 
             // Set or update location if changed. This is so that the model does not appear dirty unnecessarily.
             if (is_null($reference->location) || ($reference->location->getLat() !== floatval($sourceReference['latitude']) || $reference->location->getLng() !== floatval($sourceReference['longitude']))) { /** @phpstan-ignore-line */
-                $reference->location = new Point($sourceReference['latitude'], $sourceReference['longitude']); /** @phpstan-ignore-line */
+                $reference->update(['location' => DB::raw("ST_GeomFromText('POINT(".$sourceReference['longitude'].' '.$sourceReference['latitude'].")')")]);
             }
 
             // Add relations
