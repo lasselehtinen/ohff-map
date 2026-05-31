@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>OHFF-kartta</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     <script src="js/index.js"></script>
   </head>
