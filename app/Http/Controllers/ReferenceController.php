@@ -74,7 +74,7 @@ class ReferenceController extends Controller
 
         return view('suggest-a-reference', [
             'countForThisYear' => $countForThisYear,
-            'limit' => 150,
+            'limit' => 200,
             'currentYear' => $year,
             'counties' => config('counties'),
         ]);
