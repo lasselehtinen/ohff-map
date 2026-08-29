@@ -72,20 +72,20 @@ function initMap() {
       contentString += '<p>Latest activation: ' + event.feature.getProperty("latest_activation_date") + ' by ' + event.feature.getProperty("latest_activator") + '</p>';
     }
     
-    contentString += '<a href="https://wwff.co/directory/?showRef='+ event.feature.getProperty("reference") + '" target="_new">WWFF</a><br/>';
+    contentString += '<a href="https://wwff.co/directory/?showRef='+ event.feature.getProperty("reference") + '" target="_blank">WWFF</a><br/>';
 
     if (event.feature.getProperty("wdpa_id")) {
-      contentString += '<a href="https://www.protectedplanet.net/'+ event.feature.getProperty("wdpa_id") + '" target="_new">Protected Planet</a><br/>';
+      contentString += '<a href="https://www.protectedplanet.net/'+ event.feature.getProperty("wdpa_id") + '" target="_blank">Protected Planet</a><br/>';
     }
 
     if (event.feature.getProperty("is_natura_2000_area")) {
-      contentString += '<a href='+ event.feature.getProperty("paikkatietoikkuna_link") + '" target="_new">Paikkatietoikkuna</a><br/>';
+      contentString += '<a href='+ event.feature.getProperty("paikkatietoikkuna_link") + '" target="_blank">Paikkatietoikkuna</a><br/>';
     } else {
-      contentString += '<a href='+ event.feature.getProperty("karttapaikka_link") + '" target="_new">Kansalaisen karttapaikka</a><br/>';
+      contentString += '<a href='+ event.feature.getProperty("karttapaikka_link") + '" target="_blank">Kansalaisen karttapaikka</a><br/>';
     }
 
     // Link to area boundary maps
-    contentString += '<a href=https://oh7rx.kapsi.fi/ohff/map.php?wdpaid='+ event.feature.getProperty("wdpa_id") + ' target="_new">Informative: Boundaries on topographic map</a><br/>';
+    contentString += '<a href=https://oh7rx.kapsi.fi/ohff/map.php?wdpaid='+ event.feature.getProperty("wdpa_id") + ' target="_blank">Informative: Boundaries on topographic map</a><br/>';
     
     // Add link to create github issue
     contentString += '<br/><a href="https://github.com/lasselehtinen/ohff-map/issues/new?template=reporting-issue-with-reference-information.md&title=&title=Problem%20with%20' + event.feature.getProperty("reference") + '">Report issue</a></br></p>'
