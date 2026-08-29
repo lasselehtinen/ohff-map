@@ -73,7 +73,6 @@ function initMap() {
     }
     
     contentString += '<a href="https://wwff.co/directory/?showRef='+ event.feature.getProperty("reference") + '" target="_blank">WWFF</a><br/>';
-    contentString += '<a href="https://www.google.com/maps/place/'+ event.feature.getProperty("latitude") +','+ event.feature.getProperty("longitude") + '" target="_blank">Google Maps</a><br/>';
 
     if (event.feature.getProperty("wdpa_id")) {
       contentString += '<a href="https://www.protectedplanet.net/'+ event.feature.getProperty("wdpa_id") + '" target="_blank">Protected Planet</a><br/>';
@@ -87,6 +86,9 @@ function initMap() {
 
     // Link to area boundary maps
     contentString += '<a href=https://oh7rx.kapsi.fi/ohff/map.php?wdpaid='+ event.feature.getProperty("wdpa_id") + ' target="_blank">Informative: Boundaries on topographic map</a><br/>';
+
+    // Google Maps link
+    contentString += 'For navigation: <a href="https://www.google.com/maps/place/'+ event.feature.getProperty("latitude") +','+ event.feature.getProperty("longitude") + '" target="_blank">Google Maps</a><br/>';
     
     // Add link to create github issue
     contentString += '<br/><a href="https://github.com/lasselehtinen/ohff-map/issues/new?template=reporting-issue-with-reference-information.md&title=&title=Problem%20with%20' + event.feature.getProperty("reference") + '">Report issue</a></br></p>'
