@@ -50,8 +50,8 @@ class GeoJsonController extends Controller
                 // Define properties
                 $properties = [
                     'reference' => $reference->reference, /** @phpstan-ignore-line */
-                    'latitude' => $point->getEasting(),
-                    'longitude' => $point->getNorthing(),
+                    'latitude' => $reference->location->getLat(),
+                    'longitude' => $reference->location->getLng(),
                     'is_activated' => ! empty($reference->first_activation_date),
                     'first_activation_date' => $reference->first_activation_date, /** @phpstan-ignore-line */
                     'latest_activation_date' => $reference->latest_activation_date, /** @phpstan-ignore-line */
