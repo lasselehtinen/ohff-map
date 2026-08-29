@@ -73,6 +73,7 @@ function initMap() {
     }
     
     contentString += '<a href="https://wwff.co/directory/?showRef='+ event.feature.getProperty("reference") + '" target="_blank">WWFF</a><br/>';
+    contentString += '<a href="https://www.google.com/maps/place/'+ event.feature.getProperty("geometry.coordinates[0]") +','+ event.feature.getProperty("geometry.coordinates[1]") + '" target="_blank">Google Maps</a><br/>';
 
     if (event.feature.getProperty("wdpa_id")) {
       contentString += '<a href="https://www.protectedplanet.net/'+ event.feature.getProperty("wdpa_id") + '" target="_blank">Protected Planet</a><br/>';
