@@ -38,7 +38,7 @@ class GenerateCsv extends Command
         foreach (User::cursor() as $user) {
             foreach ($user->activations as $activation) {
                 $csv->insertOne([
-                    $activation->reference,
+                    $activation->reference, // @phpstan-ignore-line
                     $user->callsign,
                     Carbon::parse($activation->pivot->activation_date)->format('Y-m-d'), // @phpstan-ignore-line
                     $activation->pivot->qso_count, // @phpstan-ignore-line

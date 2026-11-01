@@ -76,7 +76,7 @@ class ParseProtectedPlanetShapeFiles extends Command
                     if (! is_null($reference)) {
                         // Set boolean if area is Natura 2000 area
                         if (in_array($shapeData['DESIG_ENG'], ['Special Areas of Conservation (Habitats Directive)', 'Special Protection Area (Birds Directive)'])) {
-                            $reference->natura_2000_area = true; /** @phpstan-ignore-line */
+                            $reference->natura_2000_area = true;
                             $reference->save();
                         }
                     }

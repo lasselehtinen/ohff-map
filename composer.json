@@ -15,45 +15,40 @@
         "0": {
             "type": "vcs",
             "url": "https://github.com/lasselehtinen/mediawiki-api-base.git"
-        },
-        "1": {
-            "type": "vcs",
-            "url": "https://github.com/jangaraev/laravel-mysql-spatial.git"
         }
     },
     "require": {
-        "php": "^8.1",
+        "php": "^8.4",
         "algolia/algoliasearch-client-php": "^3.1",
         "caneara/axiom": "^3.2",
         "gasparesganga/php-shapefile": "^3.4",
         "guzzlehttp/guzzle": "^7.3",
         "jmikola/geojson": "~1.0",
-        "laravel/framework": "^11.0",
-        "laravel/nova": "5.1.3",
+        "laravel/framework": "^13.0",
+        "laravel/nova": "^5.8",
         "laravel/sanctum": "^4.0",
         "laravel/scout": "^10.0",
-        "laravel/tinker": "^2.5",
+        "laravel/tinker": "^3.0",
+        "lasselehtinen/mediawiki-api-base": "dev-main",
         "league/csv": "^9.7",
         "league/flysystem-aws-s3-v3": "^3.22",
+        "matanyadaev/laravel-eloquent-spatial": "^4.8",
         "php-coord/datapack-europe": "^1.2",
         "php-coord/php-coord": "^5.0",
-        "simplesquid/nova-advanced-number-field": "^3.3",
-        "spatie/laravel-backup": "^8.4",
-        "spatie/laravel-query-builder": "^5.0",
-        "spatie/laravel-responsecache": "^7.1",
-        "symfony/dom-crawler": "^5.3",
-        "lasselehtinen/mediawiki-api-base": "dev-main",
-        "grimzy/laravel-mysql-spatial": "@dev"
+        "spatie/laravel-backup": "^10.0",
+        "spatie/laravel-query-builder": "^6.4",
+        "spatie/laravel-responsecache": "^8.0",
+        "symfony/dom-crawler": "^7.4 || ^8.0"
     },
     "require-dev": {
         "deployer/deployer": "^7.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.2",
         "laravel/sail": "^1.6",
-        "lasselehtinen/laravel-conventions-checker": "^5.0",
+        "lasselehtinen/laravel-conventions-checker": "^6.0",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^8.1",
-        "phpunit/phpunit": "^10.0",
+        "phpunit/phpunit": "^12.0",
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
@@ -96,6 +91,9 @@
         "sort-packages": true,
         "allow-plugins": {
             "phpro/grumphp": true
+        },
+        "platform": {
+            "php": "8.4.0"
         }
     },
     "minimum-stability": "dev",

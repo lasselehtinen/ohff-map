@@ -34,8 +34,8 @@ class ListNonApprovedReferences extends Command
             return [
                 'reference' => $reference->reference,
                 'name' => $reference->name,
-                'latitude' => $reference->location->getLat(),
-                'longitude' => $reference->location->getLng(),
+                'latitude' => $reference->location->latitude,
+                'longitude' => $reference->location->longitude,
                 'link' => 'https://www.protectedplanet.net/'.$reference->wdpa_id,
             ];
         });

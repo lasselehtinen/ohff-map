@@ -12,7 +12,6 @@ use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\LensRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Lenses\Lens;
-use SimpleSquid\Nova\Fields\AdvancedNumber\AdvancedNumber;
 
 class NonApprovedReferences extends Lens
 {
@@ -59,8 +58,8 @@ class NonApprovedReferences extends Lens
                 'saved' => 'warning',
             ])->required(),
 
-            AdvancedNumber::make('Latitude', fn () => $this->location->getLat())->decimals(5)->copyable(), /** @phpstan-ignore-line */
-            AdvancedNumber::make('Longitude', fn () => $this->location->getLng())->decimals(5)->copyable(), /** @phpstan-ignore-line */
+            Text::make('Latitude', fn () => number_format($this->location->latitude, 5))->copyable(), /** @phpstan-ignore-line */
+            Text::make('Longitude', fn () => number_format($this->location->longitude, 5))->copyable(), /** @phpstan-ignore-line */
             Stack::make('Links', [
                 URL::make('Protected Planet', fn () => 'https://www.protectedplanet.net/'.$this->wdpa_id), /** @phpstan-ignore-line */
                 URL::make('WWFF', fn () => 'https://wwff.co/directory/?showRef='.$this->reference), /** @phpstan-ignore-line */

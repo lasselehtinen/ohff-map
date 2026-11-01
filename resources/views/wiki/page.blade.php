@@ -8,9 +8,9 @@
 |-
 | '''Status''' || {{ ucfirst($reference->status) }}
 |-
-| '''Latitudi''' || {{ $reference->location->getLat() }}
+| '''Latitudi''' || {{ $reference->location->latitude }}
 |-
-| '''Longitudi''' || {{ $reference->location->getLng() }}
+| '''Longitudi''' || {{ $reference->location->longitude }}
 |-
 | '''Natura 2000 -alue''' || @if ($reference->natura_2000_area)
 Kyllä

@@ -111,21 +111,21 @@ class UpdateReferences extends Command
             ]);
 
             // Set or update location if changed. This is so that the model does not appear dirty unnecessarily.
-            if (is_null($reference->location) || ($reference->location->getLat() !== floatval($sourceReference['latitude']) || $reference->location->getLng() !== floatval($sourceReference['longitude']))) { /** @phpstan-ignore-line */
+            if (is_null($reference->location) || ($reference->location->latitude !== floatval($sourceReference['latitude']) || $reference->location->longitude !== floatval($sourceReference['longitude']))) {
                 $reference->update(['location' => DB::raw("ST_GeomFromText('POINT(".$sourceReference['longitude'].' '.$sourceReference['latitude'].")')")]);
             }
 
             // Add relations
             $program = Program::where('name', $sourceReference['program'])->firstOrFail();
-            $reference->program()->associate($program); /** @phpstan-ignore-line */
+            $reference->program()->associate($program);
             $dxcc = Dxcc::where('name', $sourceReference['dxcc'])->first();
-            $reference->dxcc()->associate($dxcc); /** @phpstan-ignore-line */
+            $reference->dxcc()->associate($dxcc);
             $continent = Continent::where('name', $sourceReference['continent'])->first();
-            $reference->continent()->associate($continent); /** @phpstan-ignore-line */
+            $reference->continent()->associate($continent);
 
             // Check if new reference has been approved or already active/deleted
             if ($sourceReference['status'] !== 'proposed') {
-                $reference->approval_status = 'saved'; /** @phpstan-ignore-line */
+                $reference->approval_status = 'saved';
             }
 
             $reference->save();

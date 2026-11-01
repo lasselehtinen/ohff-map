@@ -9,7 +9,6 @@ use App\Models\Program;
 use App\Models\Reference;
 use Axiom\Rules\LocationCoordinates;
 use DB;
-use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -17,6 +16,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use MatanYadaev\EloquentSpatial\Objects\Point;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -32,7 +32,7 @@ class ReferenceController extends Controller
         $references = QueryBuilder::for(Reference::class)
             ->allowedFilters([
                 AllowedFilter::callback('nearest', function ($query, $coordinates) {
-                    $point = new Point($coordinates[0], $coordinates[1]);
+                    $point = new Point((float) $coordinates[0], (float) $coordinates[1]);
                     $query->orderByDistance('location', $point);
                 }),
                 AllowedFilter::callback('activated_by_me', function ($query, $value) use ($request) {
@@ -113,7 +113,7 @@ class ReferenceController extends Controller
         $latestReference = Reference::orderByDesc('reference')->first();
 
         $reference = new Reference;
-        $reference->reference = strval(++$latestReference->reference); /** @phpstan-ignore-line */
+        $reference->reference = strval(++$latestReference->reference);
         $reference->name = $request->name;
         $reference->county = $request->county;
         $reference->status = 'proposed';

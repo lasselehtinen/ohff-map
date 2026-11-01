@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use DateTimeInterface;
-use Grimzy\LaravelMysqlSpatial\Eloquent\SpatialTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Scout\Searchable;
+use MatanYadaev\EloquentSpatial\Objects\Point;
+use MatanYadaev\EloquentSpatial\Traits\HasSpatial;
 use PHPCoord\CoordinateReferenceSystem\Geographic2D;
 use PHPCoord\CoordinateReferenceSystem\Projected;
 use PHPCoord\Exception\UnknownConversionException;
@@ -20,12 +21,12 @@ use PHPCoord\UnitOfMeasure\Angle\Degree;
 
 class Reference extends Model
 {
-    use HasFactory, Searchable, SpatialTrait;
+    use HasFactory, HasSpatial, Searchable;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = ['reference', 'status', 'name', 'county', 'iota_reference', 'location', 'suggested', 'wdpa_id', 'latest_activation_date', 'valid_from'];
 
@@ -38,10 +39,12 @@ class Reference extends Model
     }
 
     /**
-     * The attributes that are spatial
+     * The attributes that should be cast to native types.
+     *
+     * @var array<string, string>
      */
-    protected $spatialFields = [
-        'location',
+    protected $casts = [
+        'location' => Point::class,
     ];
 
     /**
@@ -113,8 +116,8 @@ class Reference extends Model
             // Converting from WGS 84 to ETRS89
             $from = GeographicPoint::create(
                 Geographic2D::fromSRID(Geographic2D::EPSG_WGS_84),
-                new Degree($this->location->getLat()),
-                new Degree($this->location->getLng()),
+                new Degree($this->location->latitude),
+                new Degree($this->location->longitude),
                 null
             );
 

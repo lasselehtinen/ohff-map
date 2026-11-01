@@ -12,7 +12,6 @@ use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use SimpleSquid\Nova\Fields\AdvancedNumber\AdvancedNumber;
 
 class Reference extends Resource
 {
@@ -100,8 +99,8 @@ class Reference extends Resource
                 'saved' => 'warning',
             ])->required(),
 
-            AdvancedNumber::make('Latitude', fn () => $this->location->getLat())->decimals(5)->copyable(), /** @phpstan-ignore-line */
-            AdvancedNumber::make('Longitude', fn () => $this->location->getLng())->decimals(5)->copyable(), /** @phpstan-ignore-line */
+            Text::make('Latitude', fn () => number_format($this->location->latitude, 5))->copyable(), /** @phpstan-ignore-line */
+            Text::make('Longitude', fn () => number_format($this->location->longitude, 5))->copyable(), /** @phpstan-ignore-line */
             Boolean::make('Natura 2000', 'natura_2000_area'),
             Stack::make('Links', [
                 URL::make('Protected Planet', fn () => 'https://www.protectedplanet.net/'.$this->wdpa_id), /** @phpstan-ignore-line */
