@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GeoJsonController;
+use App\Http\Controllers\StatisticsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,7 @@ Route::get('/', function (Request $request) {
 });
 
 Route::get('/geojson', [GeoJsonController::class, 'index']);
+Route::get('/statistics', [StatisticsController::class, 'index']);
 Route::get('suggest', ['middleware' => 'doNotCacheResponse', 'uses' => 'App\Http\Controllers\ReferenceController@create']);
 Route::post('store-reference', ['middleware' => 'doNotCacheResponse', 'uses' => 'App\Http\Controllers\ReferenceController@store']);
 

@@ -43,6 +43,7 @@
       Activated 3 years ago: <img src="/images/markers/orange.svg" width="16" height="16">
       Activated 4++ years ago: <img src="/images/markers/red.svg" width="16" height="16">
       Suggested: <img src="/images/markers/purple.svg" width="16" height="16">
+      <a href="/statistics">Statistics</a>
     </div>
 
     <div id="map"></div>
