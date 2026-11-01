@@ -14,9 +14,23 @@ add('shared_dirs', []);
 add('writable_dirs', []);
 
 // Hosts
-host('kartta.ohff.fi')
+host('production')
+    ->set('hostname', 'kartta.ohff.fi')
     ->set('remote_user', 'deployer')
-    ->set('deploy_path', '~/ohff-map');
+    ->set('deploy_path', '~/ohff-map')
+    ->set('branch', 'master');
+
+host('beta')
+    ->set('hostname', 'kartta.ohff.fi')
+    ->set('remote_user', 'deployer')
+    ->set('deploy_path', '~/ohff-map-beta')
+    ->set('branch', 'staging')
+    ->set('domain', 'beta.kartta.ohff.fi')
+    ->set('public_path', 'public')
+    ->set('php_version', '8.4')
+    ->set('db_type', 'mysql')
+    ->set('db_name', 'ohff_beta')
+    ->set('db_user', 'ohff_beta');
 
 // Tasks
 task('artisan:responsecache:clear', artisan('responsecache:clear'));

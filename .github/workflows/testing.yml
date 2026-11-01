@@ -52,6 +52,7 @@ jobs:
   deployment:
     name: Deployment
     needs: laravel
+    if: github.event_name == 'push' && (github.ref_name == 'master' || github.ref_name == 'staging')
     runs-on: ubuntu-latest
     steps:
         - name: Checkout
@@ -86,4 +87,4 @@ jobs:
             ssh-host: kartta.ohff.fi
 
         - name: Run deployer
-          run: vendor/bin/dep deploy
+          run: vendor/bin/dep deploy ${{ github.ref_name == 'master' && 'production' || 'beta' }}
