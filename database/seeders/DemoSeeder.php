@@ -18,10 +18,6 @@ class DemoSeeder extends Seeder
      */
     public function run(): void
     {
-        // The application writes locations without an SRID, which a column
-        // created by the current migration rejects on MySQL 8.
-        DB::statement('ALTER TABLE `references` MODIFY location POINT NULL');
-
         $admin = $this->user('Demo Admin', 'OH0ADM', 'admin@example.com', true);
         $activator = $this->user('Demo Activator', 'OH0DEM', 'activator@example.com', false);
 
