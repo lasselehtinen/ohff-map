@@ -15,6 +15,7 @@ class StatisticsController extends Controller
         return view('statistics.index', [
             'summary' => $statistics->summary(),
             'activations' => $statistics->activationsYearOverYear(),
+            'activationsPerYear' => $statistics->activationsPerYear(),
             'qsos' => $statistics->monthlyTotals('qso_count'),
             'chasers' => $statistics->monthlyTotals('chaser_count'),
             'mostReferences' => $statistics->mostReferences(),

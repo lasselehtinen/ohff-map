@@ -75,9 +75,11 @@
         @endif
       </section>
 
+      @include('statistics.columns', ['id' => 'activations-all-time', 'title' => 'Activations all time', 'note' => 'Per year, since the first logged activation. The latest year is still in progress.', 'period' => 'Year', 'unit' => 'activations', 'columns' => $activationsPerYear])
+
       <div class="chart-pair">
-        @include('statistics.columns', ['id' => 'qsos', 'title' => 'QSOs per month', 'unit' => 'QSOs', 'months' => $qsos])
-        @include('statistics.columns', ['id' => 'chasers', 'title' => 'Chasers per month', 'unit' => 'chasers', 'months' => $chasers])
+        @include('statistics.columns', ['id' => 'qsos', 'title' => 'QSOs per month', 'note' => 'Last 24 months.', 'period' => 'Month', 'unit' => 'QSOs', 'columns' => $qsos])
+        @include('statistics.columns', ['id' => 'chasers', 'title' => 'Chasers per month', 'note' => 'Last 24 months.', 'period' => 'Month', 'unit' => 'chasers', 'columns' => $chasers])
       </div>
 
       <section class="card" aria-labelledby="leaderboards-title">

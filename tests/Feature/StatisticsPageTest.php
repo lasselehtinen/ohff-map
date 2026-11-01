@@ -85,6 +85,45 @@ class StatisticsPageTest extends TestCase
         $this->assertSame(1, $latest['previous']);
     }
 
+    public function testActivationsAllTimeCountsEachYearSinceTheFirstActivation()
+    {
+        $first = $this->reference();
+        $second = $this->reference();
+        [$user, $operator] = User::factory()->count(2)->create();
+        $firstYear = now()->year - 2;
+
+        // Two operators on the same reference and date are one activation
+        $this->activate($user, $first, $firstYear.'-03-01');
+        $this->activate($operator, $first, $firstYear.'-03-01');
+        $this->activate($user, $second, $firstYear.'-03-01');
+        $this->activate($user, $first, $firstYear.'-04-01');
+        $this->activate($user, $first, now()->toDateString());
+
+        $years = app(ActivityStatistics::class)->activationsPerYear();
+
+        $this->assertSame([(string) $firstYear, (string) ($firstYear + 1), (string) now()->year], $years->pluck('label')->all());
+        $this->assertSame([3, 0, 1], $years->pluck('count')->all());
+        $this->assertSame([true, false, false], $years->pluck('is_peak')->all());
+        $this->assertSame([100.0, 0.0, 33.33], $years->pluck('height')->all());
+
+        $this->get('/statistics')->assertSee('Activations all time')->assertSee('3 activations');
+    }
+
+    public function testActivationsAllTimeLabelsEveryFifthYearOnLongHistories()
+    {
+        $this->activate(User::factory()->create(), $this->reference(), (now()->year - 12).'-01-01');
+
+        $years = app(ActivityStatistics::class)->activationsPerYear();
+
+        $this->assertCount(13, $years);
+        $this->assertTrue($years->pluck('tick')->filter()->every(fn (string $tick) => (int) $tick % 5 === 0));
+    }
+
+    public function testActivationsAllTimeIsEmptyWithoutLogs()
+    {
+        $this->assertTrue(app(ActivityStatistics::class)->activationsPerYear()->isEmpty());
+    }
+
     public function testChangeIsEmptyWithoutAnEarlierYear()
     {
         $this->activate(User::factory()->create(), $this->reference(), now()->toDateString());

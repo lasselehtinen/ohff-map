@@ -18,6 +18,11 @@ class ActivityStatistics
     private const LEADERBOARD_SIZE = 10;
 
     /**
+     * Above this many years, only every fifth year is labelled so labels don't collide on phones.
+     */
+    private const MAX_YEARS_WITH_TICKS = 8;
+
+    /**
      * Activators and activations in the last 12 months, compared to the 12 months before.
      *
      * @return array{active_activators: int, new_activators: int, activations: int, previous_activations: int, activations_change: float|null}
@@ -79,6 +84,32 @@ class ActivityStatistics
     }
 
     /**
+     * Activations per year, from the first logged year to the current one.
+     *
+     * @return Collection<int, array{label: string, tick: string|null, count: int, height: float, is_peak: bool}>
+     */
+    public function activationsPerYear(): Collection
+    {
+        $counts = $this->activations()
+            ->distinct()
+            ->get(['reference_id', 'activation_date'])
+            ->countBy(fn (object $row) => (int) substr((string) $row->activation_date, 0, 4));
+
+        if ($counts->isEmpty()) {
+            return collect();
+        }
+
+        $years = collect(range((int) $counts->keys()->min(), now()->year));
+        $tickInterval = $years->count() > self::MAX_YEARS_WITH_TICKS ? 5 : 1;
+
+        return $this->columns($years->map(fn (int $year) => [
+            'label' => (string) $year,
+            'tick' => $year % $tickInterval === 0 ? (string) $year : null,
+            'count' => $counts->get($year, 0),
+        ]));
+    }
+
+    /**
      * Totals of a logged count per month for the last 24 months.
      *
      * @param  'qso_count'|'chaser_count'  $column
@@ -90,23 +121,11 @@ class ActivityStatistics
             ->groupBy(fn (object $row) => substr((string) $row->activation_date, 0, 7))
             ->map(fn (Collection $rows) => (int) $rows->sum($column));
 
-        $peak = $totals->max() ?? 0;
-        $largest = max($peak, 1);
-        $peakShown = false;
-
-        return $this->months(24)->map(function (Carbon $month) use ($totals, $largest, $peak, &$peakShown) {
-            $count = $totals->get($month->format('Y-m'), 0);
-            $isPeak = $peak > 0 && $count === $peak && ! $peakShown;
-            $peakShown = $peakShown || $isPeak;
-
-            return [
-                'label' => $month->format('M Y'),
-                'tick' => in_array($month->month, [1, 7]) ? $month->format('M Y') : null,
-                'count' => $count,
-                'height' => round($count / $largest * 100, 2),
-                'is_peak' => $isPeak,
-            ];
-        });
+        return $this->columns($this->months(24)->map(fn (Carbon $month) => [
+            'label' => $month->format('M Y'),
+            'tick' => in_array($month->month, [1, 7]) ? $month->format('M Y') : null,
+            'count' => $totals->get($month->format('Y-m'), 0),
+        ]));
     }
 
     /**
@@ -213,6 +232,30 @@ class ActivityStatistics
         return $this->activations()
             ->whereDate('activation_date', '>=', $this->months(24)->first()->toDateString())
             ->get(['reference_id', 'activation_date', 'qso_count', 'chaser_count']);
+    }
+
+    /**
+     * Add each column's height and mark the first column with the highest count.
+     *
+     * @param  Collection<int, array{label: string, tick: string|null, count: int}>  $columns
+     * @return Collection<int, array{label: string, tick: string|null, count: int, height: float, is_peak: bool}>
+     */
+    private function columns(Collection $columns): Collection
+    {
+        $peak = $columns->max('count') ?? 0;
+        $largest = max($peak, 1);
+        $peakShown = false;
+
+        return $columns->map(function (array $column) use ($peak, $largest, &$peakShown) {
+            $isPeak = $peak > 0 && $column['count'] === $peak && ! $peakShown;
+            $peakShown = $peakShown || $isPeak;
+
+            return [
+                ...$column,
+                'height' => round($column['count'] / $largest * 100, 2),
+                'is_peak' => $isPeak,
+            ];
+        });
     }
 
     /**
