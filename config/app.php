@@ -2,7 +2,7 @@
 
 use App\Providers\AppServiceProvider;
 use App\Providers\EventServiceProvider;
-use App\Providers\NovaServiceProvider;
+use App\Providers\Filament\AdminPanelProvider;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\AuthServiceProvider;
 use Illuminate\Auth\Passwords\PasswordResetServiceProvider;
@@ -235,7 +235,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         EventServiceProvider::class,
-        NovaServiceProvider::class,
+        AdminPanelProvider::class,
         RouteServiceProvider::class,
         // App\Providers\TelescopeServiceProvider::class,
 

@@ -53,7 +53,7 @@ class GeoJsonController extends Controller
                     'reference' => $reference->reference,
                     'latitude' => $reference->location->latitude,
                     'longitude' => $reference->location->longitude,
-                    'is_activated' => ! empty($reference->first_activation_date),
+                    'is_activated' => ! empty($reference->latest_activation_date),
                     'first_activation_date' => $reference->first_activation_date,
                     'latest_activation_date' => $reference->latest_activation_date,
                     'latest_activator' => $reference->activators->sortByDesc('pivot.activation_date')->pluck('callsign')->first(),
@@ -85,12 +85,12 @@ class GeoJsonController extends Controller
     public function getIcon($reference)
     {
         if (in_array($reference->approval_status, ['received', 'approved'])) { /** @phpstan-ignore-line */
-            return 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/purple.png';
+            return '/images/markers/purple.svg';
         }
 
         /* @phpstan-ignore-next-line */
         if (is_null($reference->latest_activation_date)) {
-            return 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/tree.png';
+            return '/images/markers/tree.svg';
         }
 
         // Calculate years from latest activation
@@ -119,6 +119,6 @@ class GeoJsonController extends Controller
                 break;
         }
 
-        return sprintf('https://maps.google.com/intl/en_us/mapfiles/ms/micons/%s.png', $iconColor);
+        return sprintf('/images/markers/%s.svg', $iconColor);
     }
 }

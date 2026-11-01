@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -80,18 +81,21 @@ class Handler extends ExceptionHandler
                 ],
             ], 404);
         });
-
-        $this->reportable(function (Throwable $e) {});
     }
 
     /**
      * Convert an authentication exception into a response.
      *
      * @param  Request  $request
-     * @return Response
+     * @return Response|RedirectResponse
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
+        // The admin panel is the only part of the app with a login form
+        if ($request->routeIs('filament.*')) {
+            return redirect()->guest(route('filament.admin.auth.login'));
+        }
+
         return response()->json([
             'errors' => [
                 [

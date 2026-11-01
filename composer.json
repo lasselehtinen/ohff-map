@@ -8,10 +8,6 @@
     ],
     "license": "MIT",
     "repositories": {
-        "nova": {
-            "type": "composer",
-            "url": "https://nova.laravel.com"
-        },
         "0": {
             "type": "vcs",
             "url": "https://github.com/lasselehtinen/mediawiki-api-base.git"
@@ -21,11 +17,11 @@
         "php": "^8.4",
         "algolia/algoliasearch-client-php": "^3.1",
         "caneara/axiom": "^3.2",
+        "filament/filament": "^5.0",
         "gasparesganga/php-shapefile": "^3.4",
         "guzzlehttp/guzzle": "^7.3",
         "jmikola/geojson": "~1.0",
         "laravel/framework": "^13.0",
-        "laravel/nova": "^5.8",
         "laravel/sanctum": "^4.0",
         "laravel/scout": "^10.0",
         "laravel/tinker": "^3.0",
@@ -66,7 +62,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
@@ -94,6 +91,9 @@
         },
         "platform": {
             "php": "8.4.0"
+        },
+        "audit": {
+            "abandoned": "report"
         }
     },
     "minimum-stability": "dev",

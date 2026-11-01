@@ -36,12 +36,11 @@ class CacheWarmup extends Command
         // Warm up cache
         $urls = [
             url('/geojson'),
-            url('/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bapproval_status%5D='),
-            url('/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bnot_activated%5D=on&filter%5Bapproval_status%5D='),
-            url('/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bactivited_this_year%5D=on&filter%5Bapproval_status%5D='),
-            url('/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bapproval_status%5D=received'),
-            url('/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bapproval_status%5D=approved'),
-            url('/geojson?filter%5Bactivated_by%5D=&filter%5Bnot_activated_by%5D=&filter%5Breference%5D=&filter%5Bapproval_status%5D=saved'),
+            url('/geojson?filter%5Bnot_activated%5D=on'),
+            url('/geojson?filter%5Bactivited_this_year%5D=on'),
+            url('/geojson?filter%5Bapproval_status%5D=received'),
+            url('/geojson?filter%5Bapproval_status%5D=approved'),
+            url('/geojson?filter%5Bapproval_status%5D=saved'),
         ];
 
         if (App::environment('production')) {

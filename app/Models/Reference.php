@@ -28,7 +28,7 @@ class Reference extends Model
      *
      * @var list<string>
      */
-    protected $fillable = ['reference', 'status', 'name', 'county', 'iota_reference', 'location', 'suggested', 'wdpa_id', 'latest_activation_date', 'valid_from'];
+    protected $fillable = ['reference', 'status', 'name', 'county', 'iota_reference', 'location', 'suggested', 'wdpa_id', 'latest_activation_date', 'valid_from', 'approval_status'];
 
     /**
      * Prepare a date for array / JSON serialization.
@@ -94,7 +94,7 @@ class Reference extends Model
      */
     public function scopeActivated(Builder $query): Builder
     {
-        return $query->whereNotNull('first_activation_date');
+        return $query->whereNotNull('latest_activation_date');
     }
 
     /**
@@ -102,7 +102,31 @@ class Reference extends Model
      */
     public function scopeNotActivated(Builder $query): Builder
     {
-        return $query->whereNull('first_activation_date');
+        return $query->whereNull('latest_activation_date');
+    }
+
+    /**
+     * Get the external links shown in the admin panel.
+     *
+     * @return array<string, string>
+     */
+    public function adminLinks(): array
+    {
+        $links = [
+            'Protected Planet' => 'https://www.protectedplanet.net/'.$this->wdpa_id,
+            'WWFF' => 'https://wwff.co/directory/?showRef='.$this->reference,
+        ];
+
+        $point = $this->getETRS89Coordinates();
+
+        if (is_null($point)) {
+            return $links;
+        }
+
+        return $links + [
+            'Kansalaisen karttapaikka' => 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n='.$point->getNorthing().'&e='.$point->getEasting().'&title='.$this->reference.'&desc='.urlencode((string) $this->name).'&zoom=8',
+            'Paikkatietoikkuna' => 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord='.$point->getEasting().'_'.$point->getNorthing().'&mapLayers=802+100+default,1629+100+default,1627+70+default,1628+70+default&markers=2|1|ffde00|'.$point->getEasting().'_'.$point->getNorthing().'|'.$this->reference.'%20-%20'.urlencode((string) $this->name).'&noSavedState=true&showIntro=false',
+        ];
     }
 
     /**
@@ -112,6 +136,10 @@ class Reference extends Model
      */
     public function getETRS89Coordinates()
     {
+        if (is_null($this->location)) {
+            return null;
+        }
+
         return Cache::rememberForever('etrs98-'.$this->id, function () {
             // Converting from WGS 84 to ETRS89
             $from = GeographicPoint::create(
