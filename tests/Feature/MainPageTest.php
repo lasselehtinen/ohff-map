@@ -7,7 +7,11 @@ use App\Models\Continent;
 use App\Models\Dxcc;
 use App\Models\Program;
 use App\Models\Reference;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use MatanYadaev\EloquentSpatial\Objects\Point;
 use Tests\TestCase;
 
 class MainPageTest extends TestCase
@@ -91,6 +95,45 @@ class MainPageTest extends TestCase
 
         $this->assertEquals([$unactivated->id], Reference::notActivated()->pluck('id')->all());
         $this->assertEquals([$imported->id], Reference::activated()->pluck('id')->all());
+    }
+
+    public function testLatestActivatorsPicksTheNewestActivationOfEachReference()
+    {
+        $factory = Reference::factory()->for(Program::factory())->for(Dxcc::factory())->for(Continent::factory());
+        $first = $factory->create();
+        $second = $factory->create();
+        $untouched = $factory->create();
+        $older = User::factory()->create(['callsign' => 'OH0OLD']);
+        $newer = User::factory()->create(['callsign' => 'OH0NEW']);
+
+        foreach ([[$newer, $first, '2024-05-01'], [$older, $first, '2020-05-01'], [$older, $second, '2021-01-01'], [$newer, $second, null]] as [$user, $reference, $date]) {
+            DB::table('user_activations')->insert(['user_id' => $user->id, 'reference_id' => $reference->id, 'activation_date' => $date]);
+        }
+
+        $activators = Reference::latestActivators(collect([$first->id, $second->id, $untouched->id]));
+
+        $this->assertSame('OH0NEW', $activators[$first->id]);
+        $this->assertSame('OH0OLD', $activators[$second->id]);
+        $this->assertArrayNotHasKey($untouched->id, $activators);
+    }
+
+    public function testCoordinatesAreConvertedAndCachedAsPlainValues()
+    {
+        $reference = new Reference;
+        $reference->id = 123;
+        $reference->location = new Point(60.1699, 24.9384);
+
+        $coordinates = $reference->getETRS89Coordinates();
+
+        $this->assertEqualsWithDelta(6672117.81, (float) $coordinates['northing'], 0.01);
+        $this->assertEqualsWithDelta(385610.58, (float) $coordinates['easting'], 0.01);
+        $this->assertSame($coordinates, Cache::get('etrs89-coordinates-123'));
+        $this->assertIsString($coordinates['northing']);
+    }
+
+    public function testReferenceWithoutLocationHasNoCoordinates()
+    {
+        $this->assertNull((new Reference)->getETRS89Coordinates());
     }
 
     public function testMarkerIconsAreServedLocally()

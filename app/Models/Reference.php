@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Traits\HasSpatial;
@@ -16,7 +18,6 @@ use PHPCoord\CoordinateReferenceSystem\Geographic2D;
 use PHPCoord\CoordinateReferenceSystem\Projected;
 use PHPCoord\Exception\UnknownConversionException;
 use PHPCoord\Point\GeographicPoint;
-use PHPCoord\Point\ProjectedPoint;
 use PHPCoord\UnitOfMeasure\Angle\Degree;
 
 class Reference extends Model
@@ -124,15 +125,33 @@ class Reference extends Model
         }
 
         return $links + [
-            'Kansalaisen karttapaikka' => 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n='.$point->getNorthing().'&e='.$point->getEasting().'&title='.$this->reference.'&desc='.urlencode((string) $this->name).'&zoom=8',
-            'Paikkatietoikkuna' => 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord='.$point->getEasting().'_'.$point->getNorthing().'&mapLayers=802+100+default,1629+100+default,1627+70+default,1628+70+default&markers=2|1|ffde00|'.$point->getEasting().'_'.$point->getNorthing().'|'.$this->reference.'%20-%20'.urlencode((string) $this->name).'&noSavedState=true&showIntro=false',
+            'Kansalaisen karttapaikka' => 'https://asiointi.maanmittauslaitos.fi/karttapaikka/?lang=fi&share=customMarker&n='.$point['northing'].'&e='.$point['easting'].'&title='.$this->reference.'&desc='.urlencode((string) $this->name).'&zoom=8',
+            'Paikkatietoikkuna' => 'https://kartta.paikkatietoikkuna.fi/?zoomLevel=10&coord='.$point['easting'].'_'.$point['northing'].'&mapLayers=802+100+default,1629+100+default,1627+70+default,1628+70+default&markers=2|1|ffde00|'.$point['easting'].'_'.$point['northing'].'|'.$this->reference.'%20-%20'.urlencode((string) $this->name).'&noSavedState=true&showIntro=false',
         ];
     }
 
     /**
-     * Return ETRS89 coordinates for the given reference
+     * Get the latest activator's callsign for the given references, keyed by reference ID.
      *
-     * @return ProjectedPoint|null
+     * @param  Collection<int, int>  $referenceIds
+     * @return Collection<int, string>
+     */
+    public static function latestActivators(Collection $referenceIds): Collection
+    {
+        // Later rows overwrite earlier ones, so each reference is left with its latest activation
+        return DB::table('user_activations')
+            ->join('users', 'users.id', '=', 'user_activations.user_id')
+            ->whereIn('user_activations.reference_id', $referenceIds)
+            ->orderBy('user_activations.activation_date')
+            ->orderByDesc('user_activations.id')
+            ->pluck('users.callsign', 'user_activations.reference_id');
+    }
+
+    /**
+     * Return ETRS89 coordinates for the given reference. Only the coordinates are
+     * cached, because unserializing the whole point is slow when done for every marker.
+     *
+     * @return array{northing: string, easting: string}|null
      */
     public function getETRS89Coordinates()
     {
@@ -140,7 +159,7 @@ class Reference extends Model
             return null;
         }
 
-        return Cache::rememberForever('etrs98-'.$this->id, function () {
+        return Cache::rememberForever('etrs89-coordinates-'.$this->id, function () {
             // Converting from WGS 84 to ETRS89
             $from = GeographicPoint::create(
                 Geographic2D::fromSRID(Geographic2D::EPSG_WGS_84),
@@ -152,9 +171,9 @@ class Reference extends Model
             $toCRS = Projected::fromSRID(Projected::EPSG_ETRS89_TM35FIN_N_E);
 
             try {
-                $point = $from->convert($toCRS); // $to instanceof ProjectedPoint
+                $point = $from->convert($toCRS);
 
-                return $point;
+                return ['northing' => (string) $point->getNorthing(), 'easting' => (string) $point->getEasting()];
             } catch (UnknownConversionException $e) {
                 return null;
             }
